@@ -1,6 +1,6 @@
 
 const dbConnection = require('./dbConnection')
-require('dotenv').config()
+
 const connectionData =[
     process.env.DB_NAME,
     process.env.DB_USER,

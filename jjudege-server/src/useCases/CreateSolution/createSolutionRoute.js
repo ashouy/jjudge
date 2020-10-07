@@ -1,15 +1,17 @@
 const express = require('express')
 const SolutionDTO = require('./SolutionDTO')
-const Solution = require('../../entities/Solution')
+const { json } = require('body-parser')
 const router = express.Router()
+const createSolutionPersistence = require('./createSolutionPersistence')
 
 router.post('/', (req, res) => {
     const solutionDTO = new SolutionDTO(
-        req.body. id,
-        req.body.codigo
+       req.body.codigo,
+       req.body.questionId
     )
-    const solution = Solution(solutionDTO.id,solutionDTO.codigo)
-    
+    createSolutionPersistence.save(solutionDTO)
+
+    res.send('solution submitted')
     
 })
 

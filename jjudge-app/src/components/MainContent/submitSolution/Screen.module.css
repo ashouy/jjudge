@@ -1,0 +1,33 @@
+.main_row:after{
+    content: "";
+    display: table;
+    clear: both;
+    height: 100%;
+}
+.code{
+    height: 400px;
+    padding-left: 25%;
+    padding-right: 25%;
+    outline: none;
+}
+.submit_div{
+    height: 100%;
+}
+.column{
+    float: left;
+    padding: 5px;
+}
+.column.enun{
+    width: 40%;
+
+}
+.column.cod{
+    width: 60%;
+}
+
+
+@media screen and (max-width:600px) {
+    .column.cod, .column.enun {
+      width: 100%;
+    }
+}
