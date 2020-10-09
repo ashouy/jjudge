@@ -97,7 +97,7 @@ function ListItemLink(props) {
         <li>
             <ListItem button component={CustomLink} key={primary}>
                 <ListItem>{icon}</ListItem>
-                <ListItemText primary = {primary}/>
+                <ListItemText primary = {primary} />
             </ListItem>
         </li>
     )
