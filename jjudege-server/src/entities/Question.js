@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize')
 const dbInstance = require('../database/dbInstance')
 
 const Question = dbInstance.define('Question', {
-    id:{
+    id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
@@ -23,7 +23,7 @@ const Question = dbInstance.define('Question', {
 
 })
 module.exports = {
-    getQuestionModel: ()=>{
+    getQuestionModel: () => {
         return Question
     },
     createQuestionTable: () => {
@@ -37,7 +37,17 @@ module.exports = {
                 expected: expected,
             })
         } catch (error) {
-            console, console.log( error);
+            console, console.log(error);
+        }
+    },
+    findProblemById(id) {
+        const problem = await Question.findByPk(id, {
+            attributes: ['title', 'enunciated']})
+        if( problem === null){
+            return console.log('not found')
+        }else{
+            return problem
         }
     }
+
 }
