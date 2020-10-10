@@ -26,7 +26,7 @@ const SubmitSolution = props => {
                 container spacing={2}
             >
                 <Grid item xs >
-                    <Problem enunciated="{Enunciated}"/>
+                    <Problem enunciated="{Enunciated}" description="problem's description here"/>
                 </Grid>
                 <Grid item xs >
                     <Solution />
