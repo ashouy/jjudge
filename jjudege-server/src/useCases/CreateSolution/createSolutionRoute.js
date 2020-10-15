@@ -15,9 +15,10 @@ router.post('/', (req, res) => {
     res.send('solution submitted')
     
 })
-router.get('/', async (req,res) =>{
+router.get('/:id', async (req,res) =>{
     try{
-        res.send( await getProblemToSolution(req.body.id))
+        const p = await getProblemToSolution(req.params.id)
+        res.send(p)
     }catch(error){
         throw error
     }

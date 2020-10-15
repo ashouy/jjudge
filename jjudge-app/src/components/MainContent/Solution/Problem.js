@@ -23,10 +23,10 @@ const Problem = props => {
         <Card className={classes.root}>
             <CardContent>
                 <Typography className={classes.title} color='textSecondary' gutterBottom>
-                    {props.enunciated}
+                    {props.title}
                 </Typography>
                 <Typography>
-                    {props.description}
+                    {props.enunciated}
                 </Typography>
 
 
