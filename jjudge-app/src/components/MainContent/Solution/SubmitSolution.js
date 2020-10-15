@@ -2,8 +2,8 @@ import { makeStyles } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
 import Solution from './Solution'
 import Problem from './Problem'
-import React from 'react'
-
+import React, {useEffect} from 'react'
+import axios from 'axios'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -13,10 +13,14 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-
 const SubmitSolution = props => {
 
     const classes = useStyles()
+
+    useEffect(async () =>{
+        const problem =  await axios.get()
+    })
+
 
     return (
         <div className={classes.root}>
@@ -29,7 +33,7 @@ const SubmitSolution = props => {
                     <Problem enunciated="{Enunciated}" description="problem's description here"/>
                 </Grid>
                 <Grid item xs >
-                    <Solution />
+                    <Solution questionId={}/>
                 </Grid>
             </Grid>
         </div>

@@ -40,14 +40,14 @@ module.exports = {
             console, console.log(error);
         }
     },
-    findProblemById(id) {
-        const problem = await Question.findByPk(id, {
-            attributes: ['title', 'enunciated']})
-        if( problem === null){
-            return console.log('not found')
-        }else{
-            return problem
+    findProblemById: async (id) => {
+        try {
+            return await Question.findByPk(id)
         }
+        catch (error) {
+            throw error
+        }
+
     }
 
 }

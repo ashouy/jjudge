@@ -29,7 +29,7 @@ const Solution = props => {
     const runCodehandler = () => {
         const data = {
             codigo: code,
-            questionId: 2
+            questionId: props.questionId
         }
         axios.post("http://localhost:3001/createSolution", data)
             .then(function (response) {

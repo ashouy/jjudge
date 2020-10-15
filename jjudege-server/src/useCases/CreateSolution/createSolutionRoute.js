@@ -3,7 +3,7 @@ const SolutionDTO = require('./SolutionDTO')
 const { json } = require('body-parser')
 const router = express.Router()
 const createSolutionPersistence = require('./createSolutionPersistence')
-const { findProblemById } = require('../../entities/Question')
+const { getProblemToSolution } = require('./createSolutionPersistence')
 
 router.post('/', (req, res) => {
     const solutionDTO = new SolutionDTO(
@@ -15,8 +15,12 @@ router.post('/', (req, res) => {
     res.send('solution submitted')
     
 })
-router.get('/', (req,res) =>{
-    res.send(findProblemById(req.body.id))
+router.get('/', async (req,res) =>{
+    try{
+        res.send( await getProblemToSolution(req.body.id))
+    }catch(error){
+        throw error
+    }
     
 })
 

@@ -4,8 +4,8 @@ module.exports = {
     save: (solution) =>{
         createSolution(solution)
     },
-    getProblemToSolution: problemId =>{
-        findProblemById(problemId)
+    getProblemToSolution: async problemId =>{
+        return await findProblemById(problemId)
     }
     
 }
