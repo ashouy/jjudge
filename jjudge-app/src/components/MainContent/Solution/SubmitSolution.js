@@ -34,11 +34,6 @@ const SubmitSolution = props => {
             })
     }, [])
 
-    const getProblem = () => {
-        return problem
-    }
-
-    console.log(problem)
 
     if (load) {
         return (

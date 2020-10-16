@@ -19,6 +19,8 @@ import { BrowserRouter, Route, Link } from 'react-router-dom'
 import SubmitSolution from '../components/MainContent/Solution/SubmitSolution'
 import Home from '../components/MainContent/Home'
 import CodeIcon from '@material-ui/icons/Code';
+import PostAddIcon from '@material-ui/icons/PostAdd';
+import CreateProblem from '../components/MainContent/Problem/CreateProblem'
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -168,12 +170,14 @@ const App = () => {
                     <List>
                         <ListItemLink to="/" primary="Home" icon= {<HomeIcon/>}/>
                         <ListItemLink to="submitSolution" primary="Solução" icon={<CodeIcon/>}/>
+                        <ListItemLink to="createProblem" primary="Criar Problema" icon={<PostAddIcon/>}/>
                     </List>
                 </Drawer>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
                     <Route path="/" exact component={Home}></Route>
                     <Route path="/submitSolution" exact component={SubmitSolution}></Route>
+                    <Route path="/createProblem" exact component={CreateProblem}></Route>
                 </main>
             </div>
         </BrowserRouter>
