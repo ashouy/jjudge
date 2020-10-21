@@ -25,6 +25,7 @@ const SubmitSolution = props => {
     useEffect(() => {
         axios.get(`http://localhost:3001/createSolution/${2}`) // props.id
             .then(res => {
+                console.log(res.data)
                 setProblem(res.data)
                 setLoad(true)
             })

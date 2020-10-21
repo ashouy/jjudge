@@ -47,16 +47,22 @@ const useStyles = makeStyles((theme) => ({
 const Solution = props => {
     const classes = useStyles()
     const [code, setCode] = useState('')
-    const [lenguage, setlenguage] = useState('none')
+    const [language, setlanguage] = useState('none')
     const [open, setOpen] = useState(false)
     const [resultExpand, setResultExpand] = useState(false)
+    const [submit, setSubmit] = useState(false)
+    const [result, setResult] = useState('')
+    const [load, setLoad] = useState(false)
+
 
     const handleExpandClick = () => {
         setResultExpand(!resultExpand);
     }
-
+    const openExpandClick= () =>{
+        setResultExpand(true)
+    }
     const changeLenguageHandler = (event) => {
-        setlenguage(event.target.value)
+        setlanguage(event.target.value)
     }
     const handleClose = () => {
         setOpen(false)
@@ -64,14 +70,42 @@ const Solution = props => {
     const handleOpen = () => {
         setOpen(true)
     }
-    const runCodehandler = () => { // submit
+    const runCodeHandler = () => {
+        openExpandClick()
+        setSubmit(false)
         const data = {
             codigo: code,
-            questionId: props.questionId
+            language: language,
+            expected: props.expected,
+            submit: submit
+        }
+
+        axios.post("http://localhost:3001/createSolution", data)
+            .then(function (response) {
+                console.log(response.data)
+                setResult(response.data.runResult.output)
+                setLoad(true)
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+    }
+    const submitCodeHandler = () => {
+        openExpandClick()
+        setSubmit(true)
+        const data = {
+            codigo: code,
+            questionId: props.questionId,
+            language: language,
+            expected: props.expected,
+            submit: submit
         }
         axios.post("http://localhost:3001/createSolution", data)
             .then(function (response) {
                 console.log(response)
+                console.log(data)
+                setResult(response.data.runResult.output)
+                setLoad(true)
             })
             .catch(function (error) {
                 console.log(error)
@@ -86,26 +120,26 @@ const Solution = props => {
                 title="Solution"
                 action={
                     <FormControl className={classes.formControl}>
-                        <InputLabel id="lenguages">Lenguages</InputLabel>
+                        <InputLabel id="languages">Languages</InputLabel>
                         <Select
-                            labelId="lenguages"
-                            id="open-lenguages"
+                            labelId="languages"
+                            id="open-languages"
                             open={open}
                             onClose={handleClose}
                             onOpen={handleOpen}
-                            value={lenguage}
+                            value={language}
                             onChange={changeLenguageHandler}
                         >
                             <MenuItem value="">
                                 <em>None</em>
                             </MenuItem>
-                            <MenuItem value='JavaScript'>Javascript</MenuItem>
-                            <MenuItem value='Java'>Java</MenuItem>
+                            <MenuItem value='nodejs'>Javascript</MenuItem>
+                            <MenuItem value='java'>Java</MenuItem>
                             <MenuItem value='C++'>C++</MenuItem>
                         </Select>
                     </FormControl>
                 }
-                subheader={lenguage}
+                subheader={language}
             />
 
             <CardContent>
@@ -115,9 +149,9 @@ const Solution = props => {
                 >
                 </TextareaAutosize>
             </CardContent>
-            <CardActions disableSpacing>
+            <CardActions >
                 <Button
-                    onClick={runCodehandler}
+                    onClick={runCodeHandler}
                     variant="contained"
                     size="small"
                     color="primary">
@@ -125,6 +159,7 @@ const Solution = props => {
                 </Button>
 
                 <Button
+                    onClick={submitCodeHandler}
                     variant="contained"
                     size="small"
                     color="primary">
@@ -138,13 +173,16 @@ const Solution = props => {
                     onClick={handleExpandClick}
                     aria-expanded={resultExpand}
                     aria-label="show more">
-                    <ExpandMoreIcon/>
+                    <ExpandMoreIcon />
                 </IconButton>
             </CardActions>
             <Collapse in={resultExpand} timeout="auto" unmountOnExit>
-                    <CardContent>
-                         <Result expected={props.expected} code={code}/>
-                    </CardContent>
+                <CardContent>
+                    {load
+                        ? <Typography>{result}</Typography>
+                        : <Typography>loading...</Typography>
+                    }
+                </CardContent>
             </Collapse>
         </Card>
     )
