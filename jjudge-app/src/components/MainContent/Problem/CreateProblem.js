@@ -1,8 +1,7 @@
 import { Grid, makeStyles, Paper, TextField, Typography, FormControlLabel, Checkbox, Button } from '@material-ui/core'
 import React, { useState } from 'react'
 import TestCases from './TestCases'
-import TestCase from './TestCases'
-
+import axios from 'axios'
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1
@@ -21,34 +20,77 @@ const CreateProblem = props => {
     const [isInvisible, setIsInvisible] = useState(false)
     const classes = useStyles()
     const [addedTestCases, setAddedTestCases] = useState([])
-    
-    const addTestCaseHandler = () => {       
+    const [error, setError] = useState(false)
+    const [error2, setError2] = useState(false)
+    const [title, setTitle] = useState('')
+    const [enunciated, setEnunciated] = useState('')
+
+    const addTestCaseHandler = () => {
+        if (testName === '' || input === '' || expectedOutput === '') {
+            setError(true)
+        } else {
+            setAddedTestCases(prevAddedTestCases =>
+                [...prevAddedTestCases,
+                {
+                    id: Math.random(),
+                    title: testName,
+                    input: input,
+                    expected: expectedOutput,
+                    isInvisible: isInvisible
+                }]
+            )
+
+            setError(false)
+        }
+    }
+    const removeTestCaseHandler = id => {
+        console.log(id)
         setAddedTestCases(prevAddedTestCases =>
-            [...prevAddedTestCases,
-            {
-                id: Math.random().toString,
-                title: testName,
-                input: input,
-                expected: expectedOutput,
-                isInvisible: isInvisible
-            }]
+            prevAddedTestCases.filter(testCase => testCase.id !== id)
         )
     }
-
-    const isInvisibleHandler = event =>{
-        setIsInvisible(event.target.value)
+    const saveProblemHandler = () =>{
+        if(title === '' || enunciated === ''){
+            setError2(true)
+        }else{
+            const data={
+                title: title,
+                enunciated: enunciated,
+                testcases: addedTestCases
+            }
+            axios.post('http://localhost:3001/...', data)
+            .then(function (response) {
+                console.log(response)
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+            setError2(false)
+        }
     }
-    const testNameHandler = event =>{
+
+    const changeEnunciatedHandler = event =>{
+        setEnunciated(event.target.value)
+    }
+
+    const changeTitleHandler = event =>{
+        setTitle(event.target.value)
+    }
+
+    const isInvisibleHandler = event => {
+        setIsInvisible(event.target.checked)
+    }
+    const testNameHandler = event => {
         setTestName(event.target.value)
     }
-    const expectedOutputHandler = event =>{
+    const expectedOutputHandler = event => {
         setExpectedOutput(event.target.value)
     }
 
-    const inputHandler = event =>{
-     setInput(event.target.value)   
+    const inputHandler = event => {
+        setInput(event.target.value)
     }
-    
+
 
     return (
         <Grid container className={classes.root}
@@ -62,10 +104,12 @@ const CreateProblem = props => {
                     <Typography >Create Problem</Typography>
                     <Grid container direction='column' spacing={3}>
                         <Grid item>
-                            <TextField label="Title" />
+                            <TextField error={error2} label="Title" onChange={changeTitleHandler}/>
                         </Grid>
                         <Grid item >
                             <TextField
+                                error={error2}
+                                onChange={changeEnunciatedHandler}
                                 label="Enunciated"
                                 multiline
                                 fullWidth
@@ -79,19 +123,19 @@ const CreateProblem = props => {
                 <Paper className={classes.Paper}>
                     <Typography>Create Test Cases</Typography>
 
-                    <Grid container className={classes.root} spacing={2}>
+                    <Grid container className={classes.root} spacing={2} alignItems='center' justify='space-between'>
                         <Grid item>
-                            <TextField label="Name"></TextField>
+                            <TextField error={error} label="Name" onChange={testNameHandler}></TextField>
                         </Grid>
                         <Grid item>
-                            <TextField label="Input" multiline variant='outlined'></TextField>
+                            <TextField error={error} label="Input" multiline variant='outlined' onChange={inputHandler}></TextField>
                         </Grid>
                         <Grid item>
-                            <TextField label="Expected Output" multiline variant='outlined'></TextField>
+                            <TextField error={error} label="Expected Output" multiline variant='outlined' onChange={expectedOutputHandler}></TextField>
                         </Grid>
                         <Grid item>
                             <FormControlLabel
-                                control={<Checkbox name="checkInv" color='primary'/>}
+                                control={<Checkbox name="checkInv" color='primary' onChange={isInvisibleHandler} checked={isInvisible} />}
                                 label="Invisible?"
                             />
                         </Grid>
@@ -103,15 +147,14 @@ const CreateProblem = props => {
             </Grid>
             <Grid item >
                 <Paper className={classes.Paper}>
-                    <Typography>Added Test Cases</Typography>
-                    <Grid className={classes.root} container >
-                        <TestCases listTestCases={addedTestCases} />
-                    </Grid>
+
+                    <TestCases listTestCases={addedTestCases} onRemoveItem={removeTestCaseHandler} />
+
                 </Paper>
             </Grid>
             <Grid item>
                 <Grid container justify='center'>
-                    <Button variant='contained' color='primary'>Save</Button>
+                    <Button variant='contained' color='primary' onClick={saveProblemHandler}>Save</Button>
                 </Grid>
             </Grid>
         </Grid>
