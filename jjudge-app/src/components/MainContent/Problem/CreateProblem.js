@@ -58,7 +58,7 @@ const CreateProblem = props => {
                 enunciated: enunciated,
                 testcases: addedTestCases
             }
-            axios.post('http://localhost:3001/...', data)
+            axios.post('http://localhost:3001/createProblem', data)
             .then(function (response) {
                 console.log(response)
             })

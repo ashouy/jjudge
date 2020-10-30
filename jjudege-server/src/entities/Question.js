@@ -15,10 +15,6 @@ const Question = dbInstance.define('Question', {
     enunciated: {
         type: DataTypes.STRING,
         allowNull: false
-    },
-    expected: {
-        type: DataTypes.STRING,
-        allowNull: false
     }
 
 })
@@ -29,15 +25,15 @@ module.exports = {
     createQuestionTable: () => {
         Question.sync()
     },
-    createQuestion: (title, enunciated, expected) => {
+    createQuestion: (params) => {
         try {
-            const q = Question.create({
-                title: title,
-                enunciated: enunciated,
-                expected: expected,
+            const question = Question.create({
+                title: params.title,
+                enunciated: params.enunciated
             })
+            return question
         } catch (error) {
-            console, console.log(error);
+            return error
         }
     },
     findProblemById: async (id) => {

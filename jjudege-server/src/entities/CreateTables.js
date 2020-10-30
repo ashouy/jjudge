@@ -4,9 +4,12 @@ const Relation = require('./Relations')
 
 
 module.exports = {
-    createTables: () =>{
-        Question.createQuestionTable()
-        Relation.makeRealations()
-        
+    createTables: async () => {
+        try {
+            await Question.createQuestionTable()
+            await Relation.makeRealations()
+        } catch (error) {
+            error
+        }
     }
 }
