@@ -2,18 +2,18 @@ const { createTestCase } = require('../../entities/TestCase')
 const { createQuestion } = require('../../entities/Question')
 module.exports = {
     saveQuestion: async (question) => {
+        console.log('in save question')
         try {
             const q = await createQuestion(question)
-            return q.id
+            return  q.id
         } catch (error) {
-            return error
+            console.log(error)
         }
     },
-    saveTestCases:async (testCases, questionId) => {
+    saveTestCases: (testCases, questionId) => {
         try {
-            for (let i = 0; i < testCases.length; i++) {
-                await createTestCase(testCases[i], questionId)
-                console.log(`inserted : ${i}`)
+            for(let i = 0 ; i < testCases.length ; i++){
+                createTestCase(testCases[i], questionId)
             }
             return 'ok'
         } catch (error) {

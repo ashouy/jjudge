@@ -14,8 +14,6 @@ const Solution = dbInstance.define('Solution',{
     }
 })
 
-
-
 module.exports = {
     getSolutionModel: ()=>{
         return Solution

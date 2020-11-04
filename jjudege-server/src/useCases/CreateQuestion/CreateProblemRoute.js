@@ -1,28 +1,31 @@
 const express = require('express')
 const router = express.Router()
 const { saveQuestion, saveTestCases } = require('./CreateProblemPercistence')
+const ProblemDTO = require('./ProblemDTO')
+const TestCaseDTO = require('./TestCaseDTO')
 
 router.post('/', async (req, res) => {
-    const question = {
-        title: req.body.title,
-        enunciated: req.body.enunciated
-    }
-    const testCases = req.body.testcases
+
+    const problem = new ProblemDTO(req.body.title, req.body.enunciated)
+    const testCases = new TestCaseDTO(req.body.testcases)
+    console.log(problem)
+    console.log(testCases)
     var status = 200
     var message = 'saved'
     var qId = 0
     var questionSaved = false
     try {
-        qId = await saveQuestion(question)
+        qId = await saveQuestion(problem)
         questionSaved = true
     } catch (error) {
         console.log(error)
         status = 400
         message = `can't save`
     }
-    if (questionSaved) {
+
+    if (questionSaved === true) {
         try {
-            await saveTestCases(testCases, qId)
+            await saveTestCases(testCases.testCases, qId)
         } catch (error) {
             console.log(error)
             status = 400

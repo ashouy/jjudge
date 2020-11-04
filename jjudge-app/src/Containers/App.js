@@ -16,11 +16,13 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home'
 import { BrowserRouter, Route, Link } from 'react-router-dom'
-import SubmitSolution from '../components/MainContent/Solution/SubmitSolution'
+import SubmitSolution from '../components/MainContent/solution/SubmitSolution'
 import Home from '../components/MainContent/Home'
 import CodeIcon from '@material-ui/icons/Code';
 import PostAddIcon from '@material-ui/icons/PostAdd';
-import CreateProblem from '../components/MainContent/Problem/CreateProblem'
+import CreateProblem from '../components/MainContent/problem/CreateProblem'
+import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import ShowProblemsScreen from '../components/MainContent/showProblems/ShowProblemsScreen'
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -172,6 +174,7 @@ const App = () => {
                         <ListItemLink to="/" primary="Home" icon= {<HomeIcon/>}/>
                         <ListItemLink to="submitSolution" primary="Solução" icon={<CodeIcon/>}/>
                         <ListItemLink to="createProblem" primary="Criar Problema" icon={<PostAddIcon/>}/>
+                        <ListItemLink to="problems" primary="Problemas" icon={<FormatListBulletedIcon/>} />
                     </List>
                 </Drawer>
                 <main className={classes.content}>
@@ -179,6 +182,7 @@ const App = () => {
                     <Route path="/" exact component={Home}></Route>
                     <Route path="/submitSolution" exact component={SubmitSolution}></Route>
                     <Route path="/createProblem" exact component={CreateProblem}></Route>
+                    <Route path="/problems" exact component={ShowProblemsScreen}></Route>
                 </main>
             </div>
         </BrowserRouter>

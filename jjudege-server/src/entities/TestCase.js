@@ -36,15 +36,15 @@ module.exports = {
     createTestCase: (params, questionId) => {
         try {     
             const testCase = TestCase.create({
-                name: params.name,
+                name: params.title,
                 input: params.input,
-                expectedOutput: params.expectedOutput,
-                visibility: params.visibility,
+                expectedOutput: params.expected,
+                visibility: params.isInvisible,
                 QuestionId: questionId
             })
             return testCase
         } catch (error) {
-            return error
+            console.log(error)
         }
     }
 }
