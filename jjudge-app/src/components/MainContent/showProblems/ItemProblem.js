@@ -1,9 +1,12 @@
-import { FormControlLabel,IconButton, Grid, makeStyles, Typography } from '@material-ui/core'
+import { FormControlLabel, IconButton, Grid, makeStyles, Typography, Paper } from '@material-ui/core'
 import React from 'react'
 import SearchIcon from '@material-ui/icons/Search';
-const useStyles = makeStyles((theme) = ({
+const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1
+    },
+    paper: {
+        padding: theme.spacing(2)
     }
 }))
 
@@ -15,23 +18,25 @@ const ItemProblem = props => { //problemsData
             {props.problemsData.map(problem => {
                 return (
                     <Grid item key={problem.id}>
-                        <Grid container justify='space-between' alignItems='center'>
-                            <Grid item>
-                                <Typography>
-                                    {problem.id}
-                                </Typography>
+                        <Paper className={classes.paper}>
+                            <Grid container justify='space-between' alignItems='center'>
+                                <Grid item>
+                                    <Typography>
+                                        {problem.id}
+                                    </Typography>
+                                </Grid>
+                                <Grid>
+                                    <Typography>
+                                        {problem.title}
+                                    </Typography>
+                                </Grid>
+                                <Grid item>
+                                    <IconButton >
+                                        <SearchIcon />
+                                    </IconButton>
+                                </Grid>
                             </Grid>
-                            <Grid>
-                                <Typography>
-                                    {problem.title}
-                                </Typography>
-                            </Grid>
-                            <Grid item>
-                                <IconButton >
-                                    <SearchIcon />
-                                </IconButton>
-                            </Grid>
-                        </Grid>
+                        </Paper>
                     </Grid>
                 )
             })
