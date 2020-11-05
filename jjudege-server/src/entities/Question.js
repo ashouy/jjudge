@@ -47,7 +47,9 @@ module.exports = {
     },
     findAll: async () =>{
         try{
-            const questions = Question.findAll()
+            const questions = Question.findAll({
+                order:[['title', 'DESC']]
+            })
             return questions
         }catch(error){
             console.log(error)
