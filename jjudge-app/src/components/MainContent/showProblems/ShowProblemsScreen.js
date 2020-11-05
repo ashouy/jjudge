@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Typography } from '@material-ui/core'
+import { Grid, Paper, Typography } from '@material-ui/core'
 import axios from 'axios'
+import ItemProblem from './ItemProblem'
 const ShowProblemsScreen = props => {
     const [load, setLoad] = useState(false)
     const [problems, setProblems] = useState([])
@@ -15,14 +16,19 @@ const ShowProblemsScreen = props => {
                 setError(err)
                 setLoad(true)
             })
-    })
+    },[])
     if (load) {
         return (
-            <div>
-                <Typography>
-                    {problems}
-                </Typography>
-            </div>
+            <Grid container direction='column' spacing={2}>
+                <Grid item>
+                    <Typography>
+                        Problems
+                    </Typography>
+                </Grid>
+                <Grid item>
+                    <ItemProblem problemsData={problems}/>
+                </Grid>
+            </Grid>
         )
     } else {
         return (

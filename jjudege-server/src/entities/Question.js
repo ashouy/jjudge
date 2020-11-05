@@ -41,9 +41,17 @@ module.exports = {
             return await Question.findByPk(id)
         }
         catch (error) {
-            throw error
+            console.log(error)
         }
 
+    },
+    findAll: async () =>{
+        try{
+            const questions = Question.findAll()
+            return questions
+        }catch(error){
+            console.log(error)
+        }
     }
 
 }
