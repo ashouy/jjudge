@@ -172,7 +172,6 @@ const App = () => {
                     <Divider />
                     <List>
                         <ListItemLink to="/" primary="Home" icon= {<HomeIcon/>}/>
-                        <ListItemLink to="submitSolution" primary="Solução" icon={<CodeIcon/>}/>
                         <ListItemLink to="createProblem" primary="Criar Problema" icon={<PostAddIcon/>}/>
                         <ListItemLink to="problems" primary="Problemas" icon={<FormatListBulletedIcon/>} />
                     </List>

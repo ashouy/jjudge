@@ -1,6 +1,8 @@
 import { FormControlLabel, IconButton, Grid, makeStyles, Typography, Paper } from '@material-ui/core'
 import React from 'react'
 import SearchIcon from '@material-ui/icons/Search';
+import { BrowserRouter, Route, Link } from 'react-router-dom'
+
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1
@@ -10,6 +12,26 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
+function ListItemLink(props) {
+    const { icon, to, id } = props;
+    const CustomLink = React.useMemo(
+        () =>
+            React.forwardRef((linkProps, ref) => (
+                <Link {...linkProps} ref={ref} to={{
+                    pathname:to,
+                    state:{
+                        id:id
+                    }
+                }}/>
+            )),
+        [to],
+    )
+    return (
+        <Grid item component={CustomLink}>
+            <IconButton>{icon}</IconButton>
+        </Grid>
+    )
+}
 const ItemProblem = props => { //problemsData
     const classes = useStyles()
 
@@ -30,11 +52,10 @@ const ItemProblem = props => { //problemsData
                                         {problem.title}
                                     </Typography>
                                 </Grid>
-                                <Grid item>
-                                    <IconButton >
-                                        <SearchIcon />
-                                    </IconButton>
-                                </Grid>
+                                <ListItemLink to="/submitSolution"
+                                    icon={<SearchIcon />}
+                                    id={problem.id}
+                                />
                             </Grid>
                         </Paper>
                     </Grid>

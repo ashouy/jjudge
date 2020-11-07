@@ -21,9 +21,10 @@ const SubmitSolution = props => {
     const [problem, setProblem] = useState([])
     const [error, setError] = useState('')
     const [load, setLoad] = useState(false)
+    const id = props.location.state
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/createSolution/${2}`) // props.id
+        axios.get(`http://localhost:3001/createSolution/${id.id}`) // props.id
             .then(res => {
                 console.log(res.data)
                 setProblem(res.data)
@@ -48,7 +49,7 @@ const SubmitSolution = props => {
                         <Problem title={problem.title} enunciated={problem.enunciated}/>
                     </Grid>
                     <Grid item xs >
-                        <Solution questionId={problem.id} expected={problem.expected}/>
+                        <Solution questionId={props.id} expected={props.expected}/>
                     </Grid>
                 </Grid>
             </div>
