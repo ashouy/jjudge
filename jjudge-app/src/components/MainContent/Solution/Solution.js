@@ -51,7 +51,7 @@ const Solution = props => {
     const [open, setOpen] = useState(false)
     const [resultExpand, setResultExpand] = useState(false)
     const [submit, setSubmit] = useState(false)
-    const [result, setResult] = useState('')
+    const [result, setResult] = useState([])
     const [load, setLoad] = useState(false)
 
 
@@ -75,15 +75,16 @@ const Solution = props => {
         setSubmit(false)
         const data = {
             codigo: code,
+            questionId: props.questionId,
             language: language,
-            expected: props.expected,
-            submit: submit
+            submit: false
         }
 
         axios.post("http://localhost:3001/createSolution", data)
             .then(function (response) {
                 console.log(response.data)
-                setResult(response.data.runResult.output)
+                setResult(response.data)
+                console.log(result)
                 setLoad(true)
             })
             .catch(function (error) {
@@ -97,14 +98,14 @@ const Solution = props => {
             codigo: code,
             questionId: props.questionId,
             language: language,
-            expected: props.expected,
-            submit: submit
+            submit: true
         }
         axios.post("http://localhost:3001/createSolution", data)
             .then(function (response) {
-                console.log(response)
-                console.log(data)
-                setResult(response.data.runResult.output)
+                console.log(response.data)
+                setResult(response.data)
+                console.log('result')
+                console.log(result)
                 setLoad(true)
             })
             .catch(function (error) {
@@ -179,7 +180,7 @@ const Solution = props => {
             <Collapse in={resultExpand} timeout="auto" unmountOnExit>
                 <CardContent>
                     {load
-                        ? <Typography>{result}</Typography>
+                        ? <Typography>{result.output}</Typography>
                         : <Typography>loading...</Typography>
                     }
                 </CardContent>

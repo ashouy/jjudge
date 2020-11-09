@@ -49,7 +49,7 @@ const SubmitSolution = props => {
                         <Problem title={problem.title} enunciated={problem.enunciated}/>
                     </Grid>
                     <Grid item xs >
-                        <Solution questionId={props.id} expected={props.expected}/>
+                        <Solution questionId={problem.id} />
                     </Grid>
                 </Grid>
             </div>

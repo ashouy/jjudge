@@ -3,8 +3,12 @@ const SolutionDTO = require('./SolutionDTO')
 const { json } = require('body-parser')
 const router = express.Router()
 const createSolutionPersistence = require('./CreateSolutionPersistence')
-const { getProblemToSolution } = require('./CreateSolutionPersistence')
+const { getProblemToSolution, getVisibleTestCases } = require('./CreateSolutionPersistence')
 const request = require('request')
+const {runCode} = require('./RunCode')
+
+
+
 router.post('/', async (req, res) => {
 
     //  const data ={
@@ -14,70 +18,71 @@ router.post('/', async (req, res) => {
     //      submit: submit
     //  }
 
+    const url ='https://api.jdoodle.com/v1/execute'
     const program = {
-        script : req.body.codigo,
+        script: req.body.codigo,
         language: req.body.language,
         versionIndex: "0",
         clientId: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET
     }
     if (req.body.submit == false) {
-        try{
+        try {
+            const testCases = await getVisibleTestCases(req.body.questionId)
+            console.log(testCases)
+            //res.send(await runCode(program,url))
             request.post({
-                url :"https://api.jdoodle.com/v1/execute",
+                url: url,
                 method: "POST",
                 json: program
             })
-            .on('error', (error) =>{
-                console.log('request.post error'. error)
-                return res.status(400).send(error)
-            })
-            .on('data', (data) =>{
-                const parseData = JSON.parse(data.toString())
-                if(parseData.error){
-                    return res.status(400).send(parseData)
-                }else{
-                    return res.status(200).send({runResult: parseData})
-                }
-            })
-        }catch(error){
-            console.log('request fail')
+                .on('error', (error) => {
+                    console.log('request.post error'.error)
+                    return res.status(400).send(error)
+                })
+                .on('data', (data) => {
+                    return res.status(200).send(data)
+
+                })
+                    
+        } catch (error) {
+            console.log(error)
             return res.status(400).send('request fail')
         }
 
 
-    }else{
-        try{
-            request.post({
-                url :"https://api.jdoodle.com/v1/execute",
-                method: "POST",
-                json: program
-            })
-            .on('error', (error) =>{
-                console.log('request.post error'. error)
-                return res.status(400).send(error)
-            })
-            .on('data', (data) =>{
-                const parseData = JSON.parse(data.toString())
-                if(parseData.error){
-                    return res.status(400).send(parseData)
-                }else{
-                    return res.status(200).send({runResult: parseData})
-                }
-            })
-
+    } else {
+        try {
             const solutionDTO = new SolutionDTO(
                 req.body.codigo,
                 req.body.questionId
             )
+            console.log('solution DTO')
+            console.log(solutionDTO)
             createSolutionPersistence.save(solutionDTO)
 
-        }catch(error){
+            request.post({
+                url: url,
+                method: "POST",
+                json: program
+            })
+                .on('error', (error) => {
+                    console.log('request.post error'.error)
+                    return res.status(400).send(error)
+                })
+                .on('data', (data) => {
+                    return res.status(200).send(data)
+
+                })
+
+        } catch (error) {
             console.log('request fail')
             return res.status(400).send('request fail')
-        }   
+        }
     }
 })
+
+
 router.get('/:id', async (req, res) => {
     try {
         const p = await getProblemToSolution(req.params.id)

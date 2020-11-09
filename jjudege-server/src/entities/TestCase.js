@@ -46,5 +46,18 @@ module.exports = {
         } catch (error) {
             console.log(error)
         }
+    },
+    findVisibleTestCases: (questionId) =>{
+        try{
+            const visibleTestCases = TestCase.findAll({
+                where:{
+                    visibility: true,
+                    QuestionId: questionId
+                }
+            })
+            return visibleTestCases
+        }catch(error){
+            console.log(error)
+        }
     }
 }
