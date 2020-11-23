@@ -24,7 +24,7 @@ const SubmitSolution = props => {
     const id = props.location.state
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/createSolution/${id.id}`) // props.id
+        axios.get(`http://localhost:3001/createSolution/problemToSolution/${id.id}`) // props.id
             .then(res => {
                 console.log(res.data)
                 setProblem(res.data)

@@ -1,5 +1,5 @@
-import { Button, Card, CardActions, CardContent, CardHeader, Collapse, IconButton, makeStyles, TextareaAutosize, Typography, } from '@material-ui/core'
-import React, { useState } from 'react'
+import { Button, Card, CardActions, CardContent, CardHeader, Collapse, IconButton, makeStyles, TextareaAutosize, TextField, Typography, } from '@material-ui/core'
+import React, { useEffect, useState, version } from 'react'
 import axios from 'axios'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
@@ -8,6 +8,8 @@ import MenuItem from '@material-ui/core/MenuItem'
 import clsx from 'clsx'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Result from './Result'
+import ResultTestCases from './ResultTestCases'
+import request from 'request'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -47,18 +49,35 @@ const useStyles = makeStyles((theme) => ({
 const Solution = props => {
     const classes = useStyles()
     const [code, setCode] = useState('')
-    const [language, setlanguage] = useState('none')
+    const [language, setlanguage] = useState('nodejs')
     const [open, setOpen] = useState(false)
     const [resultExpand, setResultExpand] = useState(false)
     const [submit, setSubmit] = useState(false)
     const [result, setResult] = useState([])
     const [load, setLoad] = useState(false)
-
-
+    const [testCases, setTestCases] = useState([])
+    const [testCasesInputs, setTestCasesInputs] = useState([])
+    const [oldCode, setOldCode] = useState('')
+    useEffect(() => {
+        axios.get(`http://localhost:3001/createSolution/visibleTestCases`)
+            .then(res => {
+                verifyRepeats(res.data)
+                console.log('test cases:')
+                console.log(res.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }, [])
+    const verifyRepeats = fetchedList => {
+        if (fetchedList.length != testCasesInputs.length) {
+            setTestCasesInputs(fetchedList)
+        }
+    }
     const handleExpandClick = () => {
         setResultExpand(!resultExpand);
     }
-    const openExpandClick= () =>{
+    const openExpandClick = () => {
         setResultExpand(true)
     }
     const changeLenguageHandler = (event) => {
@@ -70,16 +89,54 @@ const Solution = props => {
     const handleOpen = () => {
         setOpen(true)
     }
-    const runCodeHandler = () => {
+    const runCodeHandler = async () => {
+        if (oldCode == code) {
+            alert('Do something with Code')
+        } else {
+            setOldCode(code)
+            let program = {
+                script: code,
+                language: language,
+                stdin: '',
+            }
+            let temp = []
+            for (let i = 0; i < testCasesInputs.length; i++) {
+                try {
+                    program.stdin = testCasesInputs[i].input
+                    let res = await axios({
+                        method: 'POST',
+                        url: 'http://localhost:3001/createSolution/run',
+                        data: program,
+                    })
+                    let proto = {
+                        id: testCasesInputs[i].id,
+                        title: testCasesInputs[i].title,
+                        input: testCasesInputs[i].input,
+                        expected: testCasesInputs[i].expected,
+                        output: res.data.output
+                    }
+                    temp.push(proto)
+                } catch (error) {
+                    console.log(error)
+                    break
+                }
+            }
+            setTestCases(temp)
+            console.log('formated test cases:')
+            console.log(testCases)
+            if(testCases.length > 0){
+                setLoad(true)
+            } 
+        }
         openExpandClick()
-        setSubmit(false)
-        const data = {
+
+        /** 
+                 const data = {
             codigo: code,
             questionId: props.questionId,
             language: language,
             submit: false
         }
-
         axios.post("http://localhost:3001/createSolution", data)
             .then(function (response) {
                 console.log(response.data)
@@ -90,6 +147,7 @@ const Solution = props => {
             .catch(function (error) {
                 console.log(error)
             })
+            */
     }
     const submitCodeHandler = () => {
         openExpandClick()
@@ -178,9 +236,9 @@ const Solution = props => {
                 </IconButton>
             </CardActions>
             <Collapse in={resultExpand} timeout="auto" unmountOnExit>
-                <CardContent>
+                <CardContent >
                     {load
-                        ? <Typography>{result.output}</Typography>
+                        ? <ResultTestCases resultTestCases={testCases} />
                         : <Typography>loading...</Typography>
                     }
                 </CardContent>
