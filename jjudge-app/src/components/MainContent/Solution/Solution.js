@@ -7,9 +7,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import clsx from 'clsx'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Result from './Result'
 import ResultTestCases from './ResultTestCases'
-import request from 'request'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -52,12 +50,11 @@ const Solution = props => {
     const [language, setlanguage] = useState('nodejs')
     const [open, setOpen] = useState(false)
     const [resultExpand, setResultExpand] = useState(false)
-    const [submit, setSubmit] = useState(false)
-    const [result, setResult] = useState([])
     const [load, setLoad] = useState(false)
     const [testCases, setTestCases] = useState([])
     const [testCasesInputs, setTestCasesInputs] = useState([])
     const [oldCode, setOldCode] = useState('')
+    const [newSolution, setNewSolution] = useState({})
     useEffect(() => {
         axios.get(`http://localhost:3001/createSolution/visibleTestCases`)
             .then(res => {
@@ -69,6 +66,21 @@ const Solution = props => {
                 console.log(err)
             })
     }, [])
+    useEffect(() => {//passar o id do usuário parar saber se ele ja fez uma solução para esse problema
+        //recebe um objeto com 1 campo "new" igual a false se nãi tiver feito
+        //ou um objeto com "new" = true junto com os atributos do problema
+        axios.get(`http://localhost:3001/createSolution/exist/${id.id}`) //user id
+            .then(res => {
+                let s = res.data
+                console.log(s)
+                setNewSolution(s)
+                if (!s.new) { //se ja existe
+                    setCode(s.code)
+                    setlanguage(s.language)
+                }
+            })
+    }, [])
+
     const verifyRepeats = fetchedList => {
         if (fetchedList.length != testCasesInputs.length) {
             setTestCasesInputs(fetchedList)
@@ -124,9 +136,9 @@ const Solution = props => {
             setTestCases(temp)
             console.log('formated test cases:')
             console.log(testCases)
-            if(testCases.length > 0){
+            if (testCases.length > 0) {
                 setLoad(true)
-            } 
+            }
         }
         openExpandClick()
 
@@ -151,24 +163,31 @@ const Solution = props => {
     }
     const submitCodeHandler = () => {
         openExpandClick()
-        setSubmit(true)
-        const data = {
-            codigo: code,
-            questionId: props.questionId,
-            language: language,
-            submit: true
+        if (newSolution.new) { //se não existe
+            const data = {
+                solutionId: props.questionId,
+                userId: props.userId,
+                codigo: code,
+                language: language,
+            }
+            axios.post(`http://localhost:3001/createSolution`, data)
+                .then(res => {
+                    console.log(res.data) //solução criada, observar status da avaliação desta solução nas listas de avaliações
+                })
+        } else { //se já existe
+            const data = {
+                id: newSolution.id,
+                codigo: code,
+                language: language,
+            }   
+            axios.post("http://localhost:3001/createSolution/updateSolution", data)
+                .then(res => {
+                    console.log(res.data) // solução atualizada
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
         }
-        axios.post("http://localhost:3001/createSolution", data)
-            .then(function (response) {
-                console.log(response.data)
-                setResult(response.data)
-                console.log('result')
-                console.log(result)
-                setLoad(true)
-            })
-            .catch(function (error) {
-                console.log(error)
-            })
     }
     const changeCodeHandler = (event) => {
         setCode(event.target.value)

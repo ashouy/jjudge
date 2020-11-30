@@ -10,6 +10,14 @@ const ShowAvaliationsScreen = props => {
             .then(res => {
                 setavaliations(res.data)
                 setLoad(true)
+                /**
+                 * Avaliation={
+                 *  id:
+                 *  id_solução:
+                 *  estado: 0, 1, 2 
+                 *  resultado: 0, 1
+                 * }
+                 */
             })
             .catch(err => {
                 setLoad(true)
