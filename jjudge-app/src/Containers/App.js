@@ -19,6 +19,7 @@ import { BrowserRouter, Route, Link } from 'react-router-dom'
 import SubmitSolution from '../components/MainContent/solution/SubmitSolution'
 import Home from '../components/MainContent/Home'
 import CodeIcon from '@material-ui/icons/Code';
+import ShowAvaliationsScreen from '../components/MainContent/avaliations/ShowAvaliationsScreen'
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import CreateProblem from '../components/MainContent/problem/CreateProblem'
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
@@ -174,6 +175,7 @@ const App = () => {
                         <ListItemLink to="/" primary="Home" icon= {<HomeIcon/>}/>
                         <ListItemLink to="createProblem" primary="Criar Problema" icon={<PostAddIcon/>}/>
                         <ListItemLink to="problems" primary="Problemas" icon={<FormatListBulletedIcon/>} />
+                        <ListItemLink to="avaliations" primary="Avaliações" icon={<FormatListBulletedIcon/>} />
                     </List>
                 </Drawer>
                 <main className={classes.content}>
@@ -182,6 +184,7 @@ const App = () => {
                     <Route path="/submitSolution" exact component={SubmitSolution}></Route>
                     <Route path="/createProblem" exact component={CreateProblem}></Route>
                     <Route path="/problems" exact component={ShowProblemsScreen}></Route>
+                    <Route path="/avaliations" exact component={ShowAvaliationsScreen}></Route>
                 </main>
             </div>
         </BrowserRouter>
