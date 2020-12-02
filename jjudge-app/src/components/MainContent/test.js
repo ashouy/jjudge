@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Home = props =>{
+const test = props =>{
     return(
         <div>
-            <h1>Introdução</h1>
+            <h1>test</h1>
         </div>
     )
 }
 
-export default Home
+export default test

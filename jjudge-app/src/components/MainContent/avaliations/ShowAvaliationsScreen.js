@@ -5,7 +5,7 @@ import ItemAvaliation from './ItemAvaliation'
 const ShowAvaliationsScreen = props => {
     const [load, setLoad] = useState(false)
     const [avaliations, setavaliations] = useState([])
-
+    
     useEffect(() => {
         axios.get(`http://localhost:3001/avaliations/${id.id}`) //id do usuário para pegar sua avaliações
             .then(res => {
@@ -27,7 +27,7 @@ const ShowAvaliationsScreen = props => {
                 console.log(err)
             })
     },[])
-
+    
     if(load){
         return(
             <Grid container direction='column' spacing={2}>
