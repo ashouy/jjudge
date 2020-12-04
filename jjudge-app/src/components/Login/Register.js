@@ -11,35 +11,70 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import React from 'react'
+import React, { useState } from 'react'
+import axios from 'axios'
 
-const useStyles = makeStyles((theme) =>({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      },
-      avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-      },
-      form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3),
-      },
-      submit: {
-        margin: theme.spacing(3, 0, 2),
-      },
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(3),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
 
 }))
 
 
 const Register = props => {
-    const classes = useStyles();
 
-    return(
-        <Container component="main" maxWidth="xs">
+  const classes = useStyles();
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const changeNameHandler = (event) => {
+    setName(event.target.value)
+  }
+  const changeEmailHandler = (event) => {
+    setEmail(event.targer.value)
+  }
+  const changePasswordHandler = (event) => {
+    setPassword(event.target.value)
+  }
+
+  const signUpHandler = () => {
+      try{
+        const data = {
+          name: name,
+          email: email,
+          password: password
+        }
+        axios.post(`http://localhost:3001/createUser`,data)
+          .then(res=>{
+            console.log(res.data)
+            props.register()
+          })
+          .catch(error=>{
+            console.log(error)
+          })
+
+      }catch(error){
+        console.log(error)
+      }
+  }
+
+  return (
+    <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -52,6 +87,7 @@ const Register = props => {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
+                onChange={changeNameHandler}
                 autoComplete="fname"
                 name="firstName"
                 variant="outlined"
@@ -62,19 +98,9 @@ const Register = props => {
                 autoFocus
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-              />
-            </Grid>
             <Grid item xs={12}>
               <TextField
+                onChange={changeEmailHandler}
                 variant="outlined"
                 required
                 fullWidth
@@ -86,6 +112,7 @@ const Register = props => {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                onChange={changePasswordHandler}
                 variant="outlined"
                 required
                 fullWidth
@@ -117,7 +144,7 @@ const Register = props => {
         </form>
       </div>
     </Container>
-    )
+  )
 }
 
 export default Register

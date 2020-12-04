@@ -22,7 +22,7 @@ module.exports = {
     getQuestionModel: () => {
         return Question
     },
-    createQuestionTable: () => {
+    createQuestionTable: async() => {
         Question.sync()
     },
     createQuestion: (params) => {

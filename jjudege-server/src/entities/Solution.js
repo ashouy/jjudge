@@ -21,11 +21,12 @@ module.exports = {
     createSolutionTable: () =>{
         Solution.sync()
     },
-    createSolution: (solution) =>{
+    createSolution: async(solution) =>{
         try{
-            const s = Solution.create({
+            const s = await Solution.create({
                 codigo: solution.codigo,
-                QuestionId: solution.questionId
+                QuestionId: solution.questionId,
+                UserId: solution.userId
             })
         }catch(error){
             console.log(error)

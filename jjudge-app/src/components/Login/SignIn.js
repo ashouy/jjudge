@@ -13,7 +13,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import React, { useState } from 'react'
 import Register from './Register';
-
+import axios from 'axios'
+import jwt from 'jwt-decode'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -39,31 +40,57 @@ const SignIn = props => {
     const classes = useStyles()
     const [isAuth, setIsAuth] = useState(false)
     const [register, setRegister] = useState(false)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const changeEmailHandler = (event) => {
+        setEmail(event.target.value)
+    }
+    const changePasswordHandler = (event) => {
+        setPassword(event.target.value)
+    }
     
-    const authHandler = () =>{
-        setIsAuth(true)
+    const authHandler = () => {
+        try {
+            const data = {
+                email: email,
+                password: password
+            }
+            axios.post(`http://localhost:3001/login/signIn`,data)
+                .then(res => {
+                    const token = res.data.token
+                    const user = jwt(token)
+                    console.log(user)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+
+        } catch (error) {
+            console.log(error)
+        }
         console.log(isAuth)
     }
-    const registerHandler = () =>{
+    const registerHandler = () => { //just to switch forms
         setRegister(!register)
     }
-    if(isAuth){
+    if (isAuth) {
         props.verifyAuth(isAuth)
     }
     return (
-        register?
-        <Register register={registerHandler}/>
-        :
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Sign in
+        register ?
+            <Register register={registerHandler} />
+            :
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <div className={classes.paper}>
+                    <Avatar className={classes.avatar}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Sign in
                  </Typography>
                     <TextField
+                        onChange={changeEmailHandler}
                         variant="outlined"
                         margin="normal"
                         required
@@ -75,6 +102,7 @@ const SignIn = props => {
                         autoFocus
                     />
                     <TextField
+                        onChange={changePasswordHandler}
                         variant="outlined"
                         margin="normal"
                         required
@@ -106,11 +134,11 @@ const SignIn = props => {
                             </Link>
                         </Grid>
                     </Grid>
-                
-            </div>
-        </Container>
-        
-   )
+
+                </div>
+            </Container>
+
+    )
 
 }
 

@@ -5,9 +5,7 @@ const router = express.Router()
 const createSolutionPersistence = require('./CreateSolutionPersistence')
 const { getProblemToSolution, getVisibleTestCases } = require('./CreateSolutionPersistence')
 const request = require('request')
-const { runCode } = require('./RunCode')
 const axios = require('axios')
-const fs = require('fs')
 
 
 const url = 'https://api.jdoodle.com/v1/execute'
@@ -108,8 +106,6 @@ router.post('/', async (req, res) => { //submit
         }
     }
 })
-
-
 router.get('/problemToSolution/:id', async (req, res) => {
     try {
         const p = await getProblemToSolution(req.params.id)

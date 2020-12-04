@@ -17,8 +17,26 @@ const Avaliation = dbInstance.define('Avaliation', {
 })
 
 module.exports = {
-    getAvaliationModel: async () => { },
-    createAvaliation: async () => { },
+    getAvaliationModel: () => { 
+        return Avaliation
+    },
+    createAvaliationTable: async () => {
+        await Avaliation.sync()
+     },
+    createAvaliation: async avaliation => {
+        try{
+            const a = await Avaliation.create({
+                status: avaliation.status,
+                result: avaliation.result,
+                SolutionId: avaliation.SolutionId,
+                UserId: avaliation.UserId
+            })
+            return a
+        }catch(error){
+            console.log(error)
+            return error
+        }
+     },
     findAvaliationById: async () => { },
     fundAvaliationByUser: async () => { }
 }

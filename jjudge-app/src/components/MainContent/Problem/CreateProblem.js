@@ -59,10 +59,10 @@ const CreateProblem = props => {
                 testcases: addedTestCases
             }
             axios.post('http://localhost:3001/createProblem', data)
-            .then(function (response) {
-                console.log(response)
+            .then( res=> {
+                console.log(res.data)
             })
-            .catch(function (error) {
+            .catch(error=> {
                 console.log(error)
             })
             setError2(false)
