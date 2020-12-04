@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import clsx from 'clsx';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -132,8 +133,13 @@ const App = () => {
     const [open, setOpen] = React.useState(false);
     const [auth, setAuth] = useState(false)
 
-    const authHandler = (isAuth) =>{
-        setAuth(isAuth)
+    const authHandler = () =>{
+        const aux = localStorage.getItem('auth')
+        if(aux != null){
+            setAuth(aux)
+        }else{
+            setAuth(false)
+        }
     }
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -142,6 +148,11 @@ const App = () => {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
+    const exitAppHandler = () =>{
+        localStorage.removeItem('auth')
+        window.location.reload()
+    }
 
 
     console.log(auth)
@@ -194,7 +205,9 @@ const App = () => {
                     <Divider />
                     <List>
                         <ListItemLink to="/" primary="Home" icon= {<HomeIcon/>}/>
-                        <ListItemLink to="/test" primary="test" icon= {<HomeIcon/>}/>
+                        <IconButton onClick={exitAppHandler} aria-label='Log-Out'>
+                            <ExitToAppIcon/>
+                        </IconButton>
                         
                     </List>
                 </Drawer>

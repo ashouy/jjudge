@@ -48,18 +48,23 @@ const SignIn = props => {
     const changePasswordHandler = (event) => {
         setPassword(event.target.value)
     }
-    
+
     const authHandler = () => {
         try {
             const data = {
                 email: email,
                 password: password
             }
-            axios.post(`http://localhost:3001/login/signIn`,data)
+            axios.post(`http://localhost:3001/login/signIn`, data)
                 .then(res => {
                     const token = res.data.token
                     const user = jwt(token)
                     console.log(user)
+                    localStorage.setItem('userId',user.userId)
+                    localStorage.setItem('userName',user.userName)
+                    localStorage.setItem('auth',true)
+                    setIsAuth(true)
+                    props.verifyAuth()
                 })
                 .catch(error => {
                     console.log(error)
@@ -73,11 +78,14 @@ const SignIn = props => {
     const registerHandler = () => { //just to switch forms
         setRegister(!register)
     }
+    /*
     if (isAuth) {
         props.verifyAuth(isAuth)
     }
+    */
     return (
-        register ?
+        register 
+            ?
             <Register register={registerHandler} />
             :
             <Container component="main" maxWidth="xs">

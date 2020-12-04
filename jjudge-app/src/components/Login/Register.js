@@ -46,7 +46,7 @@ const Register = props => {
     setName(event.target.value)
   }
   const changeEmailHandler = (event) => {
-    setEmail(event.targer.value)
+    setEmail(event.target.value)
   }
   const changePasswordHandler = (event) => {
     setPassword(event.target.value)
@@ -59,10 +59,10 @@ const Register = props => {
           email: email,
           password: password
         }
-        axios.post(`http://localhost:3001/createUser`,data)
+        axios.post(`http://localhost:3001/login/signUp`,data)
           .then(res=>{
             console.log(res.data)
-            props.register()
+           // props.register()
           })
           .catch(error=>{
             console.log(error)
@@ -126,6 +126,7 @@ const Register = props => {
 
           </Grid>
           <Button
+            onClick={signUpHandler}
             type="submit"
             fullWidth
             variant="contained"
