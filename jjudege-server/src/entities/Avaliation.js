@@ -28,7 +28,7 @@ module.exports = {
             const a = await Avaliation.create({
                 status: avaliation.status,
                 result: avaliation.result,
-                SolutionId: avaliation.SolutionId,
+                SolutionId: avaliation.solutionId,
                 UserId: avaliation.UserId
             })
             return a
@@ -37,6 +37,54 @@ module.exports = {
             return error
         }
      },
-    findAvaliationById: async () => { },
-    fundAvaliationByUser: async () => { }
+    findAvaliationBySolutionId: async solutionId => {
+        try{
+            const a = await Avaliation.findOne({
+                where:{
+                    SolutionId: solutionId
+                }
+            })
+            return a
+        }catch(error){
+            console.log(error)
+        }
+     },
+    updateAvaliationState: async (status, id) =>{
+        try{
+            await Avaliation.update({status: status},{
+                where:{
+                    id: id
+                }
+            })
+        }catch(error){
+            console.log(error)
+        }
+    },
+    updateAvaliationResult: async (result, id) =>{
+        try{
+            await Avaliation.update({result: result},{
+                where:{
+                    id:id
+                }
+            })
+        }catch(error){
+            console.log(error)
+        }
+    },
+    refreshAvaliation: async avaliationId =>{
+        try{
+            const a = await Avaliation.findOne({
+                where:{
+                    id: avaliationId
+                }
+            })
+            a.status = 0
+            a.result = 1
+            await a.save()
+            return a
+        }catch(error){
+            console.log(error)
+        }
+    }
+
 }

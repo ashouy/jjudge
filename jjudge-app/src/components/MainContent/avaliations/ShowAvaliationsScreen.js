@@ -5,9 +5,16 @@ import ItemAvaliation from './ItemAvaliation'
 const ShowAvaliationsScreen = props => {
     const [load, setLoad] = useState(false)
     const [avaliations, setavaliations] = useState([])
-    
+    const token = localStorage.getItem('token')
+    const userId = localStorage.getItem('userId')
+
+
     useEffect(() => {
-        axios.get(`http://localhost:3001/avaliations/${id.id}`) //id do usuário para pegar sua avaliações
+        axios({
+            method: 'get',
+            url: `http://localhost:3001/avaliations/${userId}`,
+            headers: {'x-access-token': token}
+        })
             .then(res => {
                 console.log('data--->')
                 console.log(res.data)

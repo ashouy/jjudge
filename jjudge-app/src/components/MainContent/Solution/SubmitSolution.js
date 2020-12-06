@@ -22,13 +22,19 @@ const SubmitSolution = props => {
     const [error, setError] = useState('')
     const [load, setLoad] = useState(false)
     const id = props.location.state //props
+    const userId = localStorage.getItem('userId')
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/createSolution/problemToSolution/${id.id}`)
+        const token = localStorage.getItem('token')
+        axios({
+            method: 'get',
+            url: `http://localhost:3001/createSolution/problemToSolution/${id.id}`,
+            headers: { 'x-access-token': token }
+        })
             .then(res => {
                 console.log(res.data)
                 setProblem(res.data)
-                setLoad(true)
+                setLoad(true) 
             })
             .catch(err => {
                 setError(err)
@@ -46,16 +52,16 @@ const SubmitSolution = props => {
                     container spacing={2}
                 >
                     <Grid item xs >
-                        <Problem title={problem.title} enunciated={problem.enunciated}/>
+                        <Problem title={problem.title} enunciated={problem.enunciated} />
                     </Grid>
                     <Grid item xs >
-                        <Solution questionId={problem.id} userId={/**ID do usuário*/} /> 
+                        <Solution questionId={problem.id} userId={userId} />
                     </Grid>
                 </Grid>
             </div>
         )
-    }else{
-        return(
+    } else {
+        return (
             <div>Loading...</div>
         )
     }

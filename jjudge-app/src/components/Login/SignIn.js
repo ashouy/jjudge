@@ -63,6 +63,7 @@ const SignIn = props => {
                     localStorage.setItem('userId',user.userId)
                     localStorage.setItem('userName',user.userName)
                     localStorage.setItem('auth',true)
+                    localStorage.setItem('token',token)
                     setIsAuth(true)
                     props.verifyAuth()
                 })

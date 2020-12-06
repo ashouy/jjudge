@@ -17,7 +17,7 @@ const CreateProblem = props => {
     const [testName, setTestName] = useState('')
     const [input, setInput] = useState('')
     const [expectedOutput, setExpectedOutput] = useState('')
-    const [isInvisible, setIsInvisible] = useState(false)
+    const [visibility, setVisibility] = useState(false)
     const classes = useStyles()
     const [addedTestCases, setAddedTestCases] = useState([])
     const [error, setError] = useState(false)
@@ -36,7 +36,7 @@ const CreateProblem = props => {
                     title: testName,
                     input: input,
                     expected: expectedOutput,
-                    isInvisible: isInvisible
+                    visibility: visibility
                 }]
             )
 
@@ -58,7 +58,14 @@ const CreateProblem = props => {
                 enunciated: enunciated,
                 testcases: addedTestCases
             }
+            const token = localStorage.getItem('token')
             axios.post('http://localhost:3001/createProblem', data)
+            axios({
+                method: 'post',
+                url: 'http://localhost:3001/createProblem',
+                data:data,
+                headers:{'x-access-token':token}
+            })
             .then( res=> {
                 console.log(res.data)
             })
@@ -77,8 +84,8 @@ const CreateProblem = props => {
         setTitle(event.target.value)
     }
 
-    const isInvisibleHandler = event => {
-        setIsInvisible(event.target.checked)
+    const visibilityHandler = event => {
+        setVisibility(event.target.checked)
     }
     const testNameHandler = event => {
         setTestName(event.target.value)
@@ -135,8 +142,8 @@ const CreateProblem = props => {
                         </Grid>
                         <Grid item>
                             <FormControlLabel
-                                control={<Checkbox name="checkInv" color='primary' onChange={isInvisibleHandler} checked={isInvisible} />}
-                                label="Invisible?"
+                                control={<Checkbox name="checkInv" color='primary' onChange={visibilityHandler} checked={visibility}/>}
+                                label="Visibility"
                             />
                         </Grid>
                         <Grid item >

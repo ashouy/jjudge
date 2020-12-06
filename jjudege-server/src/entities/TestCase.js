@@ -39,7 +39,7 @@ module.exports = {
                 name: params.title,
                 input: params.input,
                 expectedOutput: params.expected,
-                visibility: params.isInvisible,
+                visibility: params.visibility,
                 QuestionId: questionId
             })
             return testCase
@@ -47,9 +47,9 @@ module.exports = {
             console.log(error)
         }
     },
-    findVisibleTestCases: (questionId) =>{
+    findVisibleTestCases: async (questionId) =>{
         try{
-            const visibleTestCases = TestCase.findAll({
+            const visibleTestCases = await TestCase.findAll({
                 where:{
                     visibility: true,
                     QuestionId: questionId
@@ -58,6 +58,19 @@ module.exports = {
             return visibleTestCases
         }catch(error){
             console.log(error)
+        }
+    },
+    getTestCases: async questionId =>{
+        try{
+            const testCases = await TestCase.findAll({
+                where:{
+                    QuestionId: questionId
+                }
+            })
+            return testCases
+        }catch(error){
+            console.log(error)
+            return error
         }
     }
 }

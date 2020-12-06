@@ -57,8 +57,13 @@ const Solution = props => {
     const [newSolution, setNewSolution] = useState({})
     const [check1, setCheck1] = useState(false)
     const [check2, setCheck2] = useState(false)
+    const token = localStorage.getItem('token')
     useEffect(() => {
-        axios.get(`http://localhost:3001/createSolution/visibleTestCases`)
+        axios({
+            method: 'get',
+            url: `http://localhost:3001/createSolution/visibleTestCases/${props.questionId}`,
+            headers: { 'x-access-token': token }
+        })
             .then(res => {
                 verifyRepeats(res.data)
                 console.log('test cases:')
@@ -70,22 +75,38 @@ const Solution = props => {
             })
     }, [])
     useEffect(() => {//passar o id do usuário parar saber se ele ja fez uma solução para esse problema
-        //recebe um objeto com 1 campo "new" igual a false se nãi tiver feito
+        //recebe um objeto com 1 campo "new" igual a false se ja tiver feito
         //ou um objeto com "new" = true junto com os atributos do problema
         const data = {
             userId: props.userId,
-            questionId: props.questionId
+            questionId: props.questionId,
         }
-        axios.post(`http://localhost:3001/createSolution/exist/`, data) //user id
+        axios({
+            method: 'post',
+            url: 'http://localhost:3001/createSolution/exist',
+            data: data,
+            headers: { 'x-access-token': token }
+        })
             .then(res => {
+                /**
+                 * data ={
+                 *  new: true/false
+                 *  codigo:
+                 *  lenguage:
+                 * }
+                 */
+                console.log(res.data)
                 let s = res.data
-                console.log(s)
-                setNewSolution(s)
                 if (!s.new) { //se ja existe
-                    setCode(s.code)
+                    setCode(s.codigo)
                     setlanguage(s.language)
                 }
+                setNewSolution(s)
+                console.log(newSolution)
                 setCheck2(true)
+            })
+            .catch(error =>{
+                console.log(error)
             })
     }, [])
 
@@ -127,12 +148,13 @@ const Solution = props => {
                         method: 'POST',
                         url: 'http://localhost:3001/createSolution/run',
                         data: program,
+                        headers: {'x-access-token': token}
                     })
                     let proto = {
                         id: testCasesInputs[i].id,
-                        title: testCasesInputs[i].title,
+                        title: testCasesInputs[i].name,
                         input: testCasesInputs[i].input,
-                        expected: testCasesInputs[i].expected,
+                        expected: testCasesInputs[i].expectedOutput,
                         output: res.data.output
                     }
                     temp.push(proto)
@@ -149,46 +171,43 @@ const Solution = props => {
             }
         }
         openExpandClick()
-
-        /** 
-                 const data = {
-            codigo: code,
-            questionId: props.questionId,
-            language: language,
-            submit: false
-        }
-        axios.post("http://localhost:3001/createSolution", data)
-            .then(function (response) {
-                console.log(response.data)
-                setResult(response.data)
-                console.log(result)
-                setLoad(true)
-            })
-            .catch(function (error) {
-                console.log(error)
-            })
-            */
     }
     const submitCodeHandler = () => {
+        console.log("new Solution :")
+        console.log(newSolution.new)
         openExpandClick()
-        if (newSolution.new) { //se não existe
+        if (newSolution.new == true) { //se não existe
             const data = {
                 questionId: props.questionId,
                 userId: props.userId,
                 codigo: code,
                 language: language,
             }
-            axios.post(`http://localhost:3001/createSolution`, data)
+            axios({
+                method: 'post',
+                url: 'http://localhost:3001/createSolution',
+                data: data,
+                headers: { 'x-access-token': token }
+            })
                 .then(res => {
                     console.log(res.data) //solução criada, observar status da avaliação desta solução nas listas de avaliações
+                    let aux = newSolution
+                    aux.new = false
+                    setNewSolution(aux)
                 })
         } else { //se já existe
             const data = {
-                id: newSolution.id, //id da solução que eu quero alterar
+                solutionId: newSolution.solutionId, //id da solução que eu quero alterar
                 codigo: code,
                 language: language,
+                questionId: props.questionId,
             }
-            axios.post("http://localhost:3001/createSolution/updateSolution", data)
+            axios({
+                method: 'post',
+                url: 'http://localhost:3001/createSolution/updateSolution',
+                data: data,
+                headers: { 'x-access-token': token }
+            })
                 .then(res => {
                     console.log(res.data) // solução atualizada
                 })
@@ -233,6 +252,7 @@ const Solution = props => {
                     <TextareaAutosize className={classes.textarea}
                         onChange={changeCodeHandler}
                         placeholder="enter code here"
+                        value={code}
                     >
                     </TextareaAutosize>
                 </CardContent>

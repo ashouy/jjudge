@@ -3,9 +3,10 @@ const router = express.Router()
 const { saveQuestion, saveTestCases } = require('./CreateProblemPercistence')
 const ProblemDTO = require('./ProblemDTO')
 const TestCaseDTO = require('./TestCaseDTO')
-
-router.post('/', async (req, res) => {
-
+const {} = require('../verifyJWT')
+const {verifyToken} = require('../verifyJWT')
+router.post('/', verifyToken, async (req, res) => {
+    
     const problem = new ProblemDTO(req.body.title, req.body.enunciated)
     const testCases = new TestCaseDTO(req.body.testcases)
     console.log(problem)

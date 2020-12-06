@@ -17,15 +17,15 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home'
 import { BrowserRouter, Route, Link } from 'react-router-dom'
-//import SubmitSolution from '../components/MainContent/solution/SubmitSolution'
+import SubmitSolution from '../components/MainContent/solution/SubmitSolution'
 import Home from '../components/MainContent/Home'
 import test from '../components/MainContent/test'
 import CodeIcon from '@material-ui/icons/Code';
 //import ShowAvaliationsScreen from '../components/MainContent/avaliations/ShowAvaliationsScreen'
 import PostAddIcon from '@material-ui/icons/PostAdd';
-//import CreateProblem from '../components/MainContent/problem/CreateProblem'
+import CreateProblem from '../components/MainContent/problem/CreateProblem'
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
-//import ShowProblemsScreen from '../components/MainContent/showProblems/ShowProblemsScreen'
+import ShowProblemsScreen from '../components/MainContent/showProblems/ShowProblemsScreen'
 import SignIn from '../components/Login/SignIn'
 
 const drawerWidth = 240;
@@ -116,13 +116,13 @@ const ListItemLink = (props)=> {
 
 
 /**
- *                     <Route path="/submitSolution" exact component={SubmitSolution}></Route>
-                    <Route path="/createProblem" exact component={CreateProblem}></Route>
-                    <Route path="/problems" exact component={ShowProblemsScreen}></Route>
+ *                     
+                    
+                    
                     <Route path="/avaliations" exact component={ShowAvaliationsScreen}></Route>
  * 
- *  <ListItemLink to="createProblem" primary="Criar Problema" icon={<PostAddIcon/>}/>
-                        <ListItemLink to="problems" primary="Problemas" icon={<FormatListBulletedIcon/>} />
+ *                      
+                        
                         <ListItemLink to="avaliations" primary="Avaliações" icon={<FormatListBulletedIcon/>} />
  */
 
@@ -151,7 +151,10 @@ const App = () => {
 
     const exitAppHandler = () =>{
         localStorage.removeItem('auth')
+        localStorage.removeItem('userId')
+        localStorage.removeItem('userName')
         window.location.reload()
+        window.location.replace('/')
     }
 
 
@@ -205,6 +208,8 @@ const App = () => {
                     <Divider />
                     <List>
                         <ListItemLink to="/" primary="Home" icon= {<HomeIcon/>}/>
+                        <ListItemLink to="/createProblem" primary="Criar Problema" icon={<PostAddIcon/>}/>
+                        <ListItemLink to="problems" primary="Problemas" icon={<FormatListBulletedIcon/>} />
                         <IconButton onClick={exitAppHandler} aria-label='Log-Out'>
                             <ExitToAppIcon/>
                         </IconButton>
@@ -214,6 +219,9 @@ const App = () => {
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
                     <Route path="/" exact component={Home}></Route>
+                    <Route path="/createProblem" exact component={CreateProblem}></Route>
+                    <Route path="/problems" exact component={ShowProblemsScreen}></Route>
+                    <Route path="/submitSolution" exact component={SubmitSolution}></Route>
                     <Route path="/test" exact component={test}></Route>
 
                 </main>

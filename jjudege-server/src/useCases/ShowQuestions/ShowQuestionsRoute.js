@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const { getProblems } = require('./ShowQuestionsPersistence')
+const {verifyToken} = require('../verifyJWT')
 
-router.get('/', async (req, res) => {
+router.get('/',verifyToken, async (req, res) => {
     try {
         res.send(await getProblems())
     } catch (error) {

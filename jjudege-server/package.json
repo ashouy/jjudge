@@ -22,7 +22,8 @@
     "pg-hstore": "^2.3.3",
     "request": "^2.88.2",
     "sequelize": "^6.3.5",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.0",
+    "uuidv4": "^6.2.5"
   },
   "proxy": "https://api.jdoodle.com/v1/execute"
 }
