@@ -7,6 +7,7 @@ const problems = require('./useCases/ShowQuestions/ShowQuestionsRoute')
 const bodyParse = require('body-parser')
 const CreateTables = require('./entities/CreateTables')
 const login = require('./useCases/login/loginRoute')
+const avaliations = require('./useCases/ShowAvaliations/ShowAvaliationRoute')
 const Tests = require('./Test/test')
 
 require('dotenv').config()
@@ -16,10 +17,11 @@ CreateTables.createTables()
 
 app.use(cors())
 app.use(bodyParse.json())
-app.use('/createSolution',createSolution )
-app.use('/createProblem',createProblem)
-app.use('/problems',problems)
-app.use('/login',login)
+app.use('/createSolution', createSolution)
+app.use('/createProblem', createProblem)
+app.use('/problems', problems)
+app.use('/login', login)
+app.use('/avaliations', avaliations)
 
 
 app.listen(port, () => {

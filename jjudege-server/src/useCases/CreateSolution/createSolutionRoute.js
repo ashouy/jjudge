@@ -21,7 +21,7 @@ router.post('/', async (req, res) => { //submit
             status: 0, //enfileirada
             result: 1, //errado
             solutionId: s.id,
-            userid: req.body.userId
+            userId: req.body.userId
         }
         const a = await saveAvaliation(avaliation)
         const testCases = await getTestCases(req.body.questionId)
@@ -34,6 +34,7 @@ router.post('/', async (req, res) => { //submit
     } catch (error) {
         console.log(error)
         res.status(400).send("can't save")
+        
     }
 })
 router.get('/problemToSolution/:id', async (req, res) => {

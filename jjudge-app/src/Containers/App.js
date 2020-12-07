@@ -21,7 +21,7 @@ import SubmitSolution from '../components/MainContent/solution/SubmitSolution'
 import Home from '../components/MainContent/Home'
 import test from '../components/MainContent/test'
 import CodeIcon from '@material-ui/icons/Code';
-//import ShowAvaliationsScreen from '../components/MainContent/avaliations/ShowAvaliationsScreen'
+import ShowAvaliationsScreen from '../components/MainContent/avaliations/ShowAvaliationsScreen'
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import CreateProblem from '../components/MainContent/problem/CreateProblem'
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
@@ -117,12 +117,9 @@ const ListItemLink = (props)=> {
 
 /**
  *                     
-                    
-                    
+
                     <Route path="/avaliations" exact component={ShowAvaliationsScreen}></Route>
- * 
- *                      
-                        
+               
                         <ListItemLink to="avaliations" primary="Avaliações" icon={<FormatListBulletedIcon/>} />
  */
 
@@ -209,7 +206,8 @@ const App = () => {
                     <List>
                         <ListItemLink to="/" primary="Home" icon= {<HomeIcon/>}/>
                         <ListItemLink to="/createProblem" primary="Criar Problema" icon={<PostAddIcon/>}/>
-                        <ListItemLink to="problems" primary="Problemas" icon={<FormatListBulletedIcon/>} />
+                        <ListItemLink to="/problems" primary="Problemas" icon={<FormatListBulletedIcon/>} />
+                        <ListItemLink to="/avaliations" primary="Avaliações" icon={<FormatListBulletedIcon/>} />
                         <IconButton onClick={exitAppHandler} aria-label='Log-Out'>
                             <ExitToAppIcon/>
                         </IconButton>
@@ -222,6 +220,7 @@ const App = () => {
                     <Route path="/createProblem" exact component={CreateProblem}></Route>
                     <Route path="/problems" exact component={ShowProblemsScreen}></Route>
                     <Route path="/submitSolution" exact component={SubmitSolution}></Route>
+                    <Route path="/avaliations" exact component={ShowAvaliationsScreen}></Route>
                     <Route path="/test" exact component={test}></Route>
 
                 </main>

@@ -31,8 +31,6 @@ const ItemAvaliation = props => {
      */
 
     const statustHandler = statusCode => {
-        let color
-        let
         if (statusCode == 2) {
             return (
                 <Avatar className={classes.white}>

@@ -29,7 +29,7 @@ module.exports = {
                 status: avaliation.status,
                 result: avaliation.result,
                 SolutionId: avaliation.solutionId,
-                UserId: avaliation.UserId
+                UserId: avaliation.userId
             })
             return a
         }catch(error){
@@ -81,6 +81,18 @@ module.exports = {
             a.status = 0
             a.result = 1
             await a.save()
+            return a
+        }catch(error){
+            console.log(error)
+        }
+    },
+    findAvaliationByUserId: async userId =>{
+        try{
+            const a = await Avaliation.findAll({
+                where:{
+                    UserId: userId
+                }
+            })
             return a
         }catch(error){
             console.log(error)
