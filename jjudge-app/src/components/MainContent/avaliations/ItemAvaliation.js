@@ -1,7 +1,7 @@
 import { Avatar, Grid, makeStyles, Paper, Typography } from '@material-ui/core'
 import React from 'react'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import Result from './Result'
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1
@@ -30,21 +30,6 @@ const ItemAvaliation = props => {
      * }
      */
 
-    const statustHandler = statusCode => {
-        if (statusCode == 2) {
-            return (
-                <Avatar className={classes.white}>
-                    <CheckCircleOutlineIcon />
-                </Avatar>
-            )
-        } else {
-            return (
-                <Avatar className={classes.white}>
-                    <ErrorOutlineIcon />
-                </Avatar>
-            )
-        }
-    }
 
     return (
         <Grid className={classes.root} container direction='column' spacing={1}>
@@ -64,12 +49,10 @@ const ItemAvaliation = props => {
                                     </Typography>
                                 </Grid>
                                 <Grid item>
-                                    {statustHandler(avaliation.status)}
+                                    {avaliation.status}
                                 </Grid>
                                 <Grid item>
-                                    <Typography>
-                                        {avaliation.result}
-                                    </Typography>
+                                    <Result resultCode={avaliation.result}/>
                                 </Grid>
                             </Grid>
                         </Paper>

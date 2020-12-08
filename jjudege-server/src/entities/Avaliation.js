@@ -6,6 +6,10 @@ const Avaliation = dbInstance.define('Avaliation', {
         primaryKey: true,
         autoIncrement: true
     },
+    problemTitle:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     status: {
         type: DataTypes.INTEGER,
         allowNull: false
@@ -26,6 +30,7 @@ module.exports = {
     createAvaliation: async avaliation => {
         try{
             const a = await Avaliation.create({
+                problemTitle: avaliation.problemTitle,
                 status: avaliation.status,
                 result: avaliation.result,
                 SolutionId: avaliation.solutionId,

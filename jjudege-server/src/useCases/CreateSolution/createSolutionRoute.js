@@ -18,6 +18,7 @@ router.post('/', async (req, res) => { //submit
         }
         const s = await save(solution)
         const avaliation = {
+            problemTitle: req.body.problemTitle,
             status: 0, //enfileirada
             result: 1, //errado
             solutionId: s.id,

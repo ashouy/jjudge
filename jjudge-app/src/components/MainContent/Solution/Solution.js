@@ -178,6 +178,7 @@ const Solution = props => {
         openExpandClick()
         if (newSolution.new == true) { //se não existe
             const data = {
+                problemTitle: props.problemTitle,
                 questionId: props.questionId,
                 userId: props.userId,
                 codigo: code,
