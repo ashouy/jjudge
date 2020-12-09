@@ -31,7 +31,7 @@ const TestCases = props => {
                             </Grid>
                             <Grid item >
                                 <FormControlLabel
-                                    control={<Checkbox name="checkInv2" color='primary' checked={testCase.visibility} />}
+                                    control={<Checkbox name="checkInv2" color='primary' checked={testCase.visibility} disabled/>}
                                     label="Visibility"
                                 />
                             </Grid>

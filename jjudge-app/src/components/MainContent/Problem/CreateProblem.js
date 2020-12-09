@@ -117,6 +117,8 @@ const CreateProblem = props => {
                                     multiline
                                     fullWidth
                                     variant='outlined'
+                                    rows={10}
+                                    rowsMax={15}
                                 />
                             </Grid>
                         </Grid>
@@ -126,15 +128,15 @@ const CreateProblem = props => {
                     <Paper className={classes.Paper}>
                         <Typography>Create Test Cases</Typography>
 
-                        <Grid container className={classes.root} spacing={2} alignItems='center' justify='space-between'>
+                        <Grid container className={classes.root} spacing={2}  direction='column'>
                             <Grid item>
                                 <TextField error={error} label="Name" onChange={testNameHandler}></TextField>
                             </Grid>
                             <Grid item>
-                                <TextField error={error} label="Input" multiline variant='outlined' onChange={inputHandler}></TextField>
+                                <TextField error={error} label="Input" multiline variant='outlined' rows={4} onChange={inputHandler} fullWidth></TextField>
                             </Grid>
                             <Grid item>
-                                <TextField error={error} label="Expected Output" multiline variant='outlined' onChange={expectedOutputHandler}></TextField>
+                                <TextField error={error} label="Expected Output" multiline variant='outlined' rows={4} onChange={expectedOutputHandler} fullWidth></TextField>
                             </Grid>
                             <Grid item>
                                 <FormControlLabel

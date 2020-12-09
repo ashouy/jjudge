@@ -44,8 +44,6 @@ const SubmitSolution = props => {
                 setLoad(true)
             })
     }, [])
-
-
     if (load) {
         return (
             <div className={classes.root}>
@@ -54,10 +52,10 @@ const SubmitSolution = props => {
                     className={classes.grid}
                     container spacing={2}
                 >
-                    <Grid item xs >
+                    <Grid item xs ={12} >
                         <Problem title={problem.title} enunciated={problem.enunciated} />
                     </Grid>
-                    <Grid item xs >
+                    <Grid item xs ={12} >
                         <Solution questionId={problem.id} userId={userId} problemTitle={problem.title}/>
                     </Grid>
                 </Grid>
