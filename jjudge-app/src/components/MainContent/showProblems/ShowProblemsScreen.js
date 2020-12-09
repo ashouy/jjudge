@@ -17,6 +17,7 @@ const ShowProblemsScreen = props => {
                 setLoad(true)
             })
             .catch(err => {
+                window.location.replace('/signIn')
                 setLoad(true)
             })
     },[])

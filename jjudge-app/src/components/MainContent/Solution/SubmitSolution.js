@@ -41,6 +41,8 @@ const SubmitSolution = props => {
                 setLoad(true) 
             })
             .catch(err => {
+                console.log(err)
+                window.location.replace('/signIn')
                 setLoad(true)
             })
     }, [])

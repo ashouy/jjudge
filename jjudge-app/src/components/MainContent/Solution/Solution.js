@@ -105,7 +105,7 @@ const Solution = props => {
                 console.log(newSolution)
                 setCheck2(true)
             })
-            .catch(error =>{
+            .catch(error => {
                 console.log(error)
             })
     }, [])
@@ -148,7 +148,7 @@ const Solution = props => {
                         method: 'POST',
                         url: 'http://localhost:3001/createSolution/run',
                         data: program,
-                        headers: {'x-access-token': token}
+                        headers: { 'x-access-token': token }
                     })
                     let proto = {
                         id: testCasesInputs[i].id,
@@ -195,6 +195,12 @@ const Solution = props => {
                     let aux = newSolution
                     aux.new = false
                     setNewSolution(aux)
+                    alert("Solução criada. observar na tela de soluções")
+                })
+                .catch(err => {
+                    alert('logue-se novamente')
+                    console.log(err)
+                    window.location.replace('/signIn')
                 })
         } else { //se já existe
             const data = {
@@ -211,9 +217,12 @@ const Solution = props => {
             })
                 .then(res => {
                     console.log(res.data) // solução atualizada
+                    alert('solução atualizada')
                 })
-                .catch(function (error) {
-                    console.log(error)
+            
+                .catch(err=> {
+                    alert('Logue-se novamente')
+                    console.log(err)
                 })
         }
     }

@@ -71,6 +71,7 @@ const CreateProblem = props => {
                 })
                 .catch(error => {
                     console.log(error)
+                    window.location.replace('/signIn')
                 })
             setError2(false)
         }
