@@ -1,7 +1,7 @@
-import { FormControlLabel, IconButton, Grid, makeStyles, Typography, Paper } from '@material-ui/core'
+import { IconButton, Grid, makeStyles, Typography, Paper } from '@material-ui/core'
 import React from 'react'
 import SearchIcon from '@material-ui/icons/Search';
-import { BrowserRouter, Route, Link } from 'react-router-dom'
+import {Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     root: {

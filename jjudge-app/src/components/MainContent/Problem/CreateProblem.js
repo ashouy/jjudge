@@ -49,11 +49,11 @@ const CreateProblem = props => {
             prevAddedTestCases.filter(testCase => testCase.id !== id)
         )
     }
-    const saveProblemHandler = () =>{
-        if(title === '' || enunciated === ''){
+    const saveProblemHandler = () => {
+        if (title === '' || enunciated === '') {
             setError2(true)
-        }else{
-            const data={
+        } else {
+            const data = {
                 title: title,
                 enunciated: enunciated,
                 testcases: addedTestCases
@@ -63,27 +63,24 @@ const CreateProblem = props => {
             axios({
                 method: 'post',
                 url: 'http://localhost:3001/createProblem',
-                data:data,
-                headers:{'x-access-token':token}
+                data: data,
+                headers: { 'x-access-token': token }
             })
-            .then( res=> {
-                console.log(res.data)
-            })
-            .catch(error=> {
-                console.log(error)
-            })
+                .then(res => {
+                    console.log(res.data)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
             setError2(false)
         }
     }
-
-    const changeEnunciatedHandler = event =>{
+    const changeEnunciatedHandler = event => {
         setEnunciated(event.target.value)
     }
-
-    const changeTitleHandler = event =>{
+    const changeTitleHandler = event => {
         setTitle(event.target.value)
     }
-
     const visibilityHandler = event => {
         setVisibility(event.target.checked)
     }
@@ -93,79 +90,88 @@ const CreateProblem = props => {
     const expectedOutputHandler = event => {
         setExpectedOutput(event.target.value)
     }
-
     const inputHandler = event => {
         setInput(event.target.value)
     }
-
-
-    return (
-        <Grid container className={classes.root}
-            direction='column'
-            justify='flex-start'
-            alignItems='stretch'
-            spacing={2}
-        >
-            <Grid item>
-                <Paper className={classes.Paper} xs >
-                    <Typography >Create Problem</Typography>
-                    <Grid container direction='column' spacing={3}>
-                        <Grid item>
-                            <TextField error={error2} label="Title" onChange={changeTitleHandler}/>
+    console.log(localStorage.getItem('admin'))
+    if (localStorage.getItem('admin') == 1) {
+        return (
+            <Grid container className={classes.root}
+                direction='column'
+                justify='flex-start'
+                alignItems='stretch'
+                spacing={2}
+            >
+                <Grid item>
+                    <Paper className={classes.Paper} >
+                        <Typography >Create Problem</Typography>
+                        <Grid container direction='column' spacing={3}>
+                            <Grid item>
+                                <TextField error={error2} label="Title" onChange={changeTitleHandler} />
+                            </Grid>
+                            <Grid item >
+                                <TextField
+                                    error={error2}
+                                    onChange={changeEnunciatedHandler}
+                                    label="Enunciated"
+                                    multiline
+                                    fullWidth
+                                    variant='outlined'
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item >
-                            <TextField
-                                error={error2}
-                                onChange={changeEnunciatedHandler}
-                                label="Enunciated"
-                                multiline
-                                fullWidth
-                                variant='outlined'
-                            />
+                    </Paper>
+                </Grid>
+                <Grid item>
+                    <Paper className={classes.Paper}>
+                        <Typography>Create Test Cases</Typography>
+
+                        <Grid container className={classes.root} spacing={2} alignItems='center' justify='space-between'>
+                            <Grid item>
+                                <TextField error={error} label="Name" onChange={testNameHandler}></TextField>
+                            </Grid>
+                            <Grid item>
+                                <TextField error={error} label="Input" multiline variant='outlined' onChange={inputHandler}></TextField>
+                            </Grid>
+                            <Grid item>
+                                <TextField error={error} label="Expected Output" multiline variant='outlined' onChange={expectedOutputHandler}></TextField>
+                            </Grid>
+                            <Grid item>
+                                <FormControlLabel
+                                    control={<Checkbox name="checkInv" color='primary' onChange={visibilityHandler} checked={visibility} />}
+                                    label="Visibility"
+                                />
+                            </Grid>
+                            <Grid item >
+                                <Button variant='contained' color='primary' onClick={addTestCaseHandler}> ADD</Button>
+                            </Grid>
                         </Grid>
+                    </Paper>
+                </Grid>
+                <Grid item >
+                    <Paper className={classes.Paper}>
+
+                        <TestCases listTestCases={addedTestCases} onRemoveItem={removeTestCaseHandler} />
+
+                    </Paper>
+                </Grid>
+                <Grid item>
+                    <Grid container justify='center'>
+                        <Button variant='contained' color='primary' onClick={saveProblemHandler}>Save</Button>
                     </Grid>
-                </Paper>
-            </Grid>
-            <Grid item>
-                <Paper className={classes.Paper}>
-                    <Typography>Create Test Cases</Typography>
-
-                    <Grid container className={classes.root} spacing={2} alignItems='center' justify='space-between'>
-                        <Grid item>
-                            <TextField error={error} label="Name" onChange={testNameHandler}></TextField>
-                        </Grid>
-                        <Grid item>
-                            <TextField error={error} label="Input" multiline variant='outlined' onChange={inputHandler}></TextField>
-                        </Grid>
-                        <Grid item>
-                            <TextField error={error} label="Expected Output" multiline variant='outlined' onChange={expectedOutputHandler}></TextField>
-                        </Grid>
-                        <Grid item>
-                            <FormControlLabel
-                                control={<Checkbox name="checkInv" color='primary' onChange={visibilityHandler} checked={visibility}/>}
-                                label="Visibility"
-                            />
-                        </Grid>
-                        <Grid item >
-                            <Button variant='contained' color='primary' onClick={addTestCaseHandler}> ADD</Button>
-                        </Grid>
-                    </Grid>
-                </Paper>
-            </Grid>
-            <Grid item >
-                <Paper className={classes.Paper}>
-
-                    <TestCases listTestCases={addedTestCases} onRemoveItem={removeTestCaseHandler} />
-
-                </Paper>
-            </Grid>
-            <Grid item>
-                <Grid container justify='center'>
-                    <Button variant='contained' color='primary' onClick={saveProblemHandler}>Save</Button>
                 </Grid>
             </Grid>
-        </Grid>
-    )
+
+        )
+    } else {
+        return (
+            <div>
+                <Typography>
+                    Você não tem permissão para cadastrar um problema
+            </Typography>
+            </div>
+        )
+    }
 }
 
 export default CreateProblem

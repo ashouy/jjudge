@@ -6,7 +6,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -64,6 +63,7 @@ const SignIn = props => {
                     localStorage.setItem('userName',user.userName)
                     localStorage.setItem('auth',true)
                     localStorage.setItem('token',token)
+                    localStorage.setItem('admin',user.userAdmin)
                     setIsAuth(true)
                     props.verifyAuth()
                 })
@@ -79,11 +79,7 @@ const SignIn = props => {
     const registerHandler = () => { //just to switch forms
         setRegister(!register)
     }
-    /*
-    if (isAuth) {
-        props.verifyAuth(isAuth)
-    }
-    */
+
     return (
         register 
             ?

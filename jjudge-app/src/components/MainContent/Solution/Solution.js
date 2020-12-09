@@ -1,5 +1,5 @@
-import { Button, Card, CardActions, CardContent, CardHeader, Collapse, IconButton, makeStyles, TextareaAutosize, TextField, Typography, } from '@material-ui/core'
-import React, { useEffect, useState, version } from 'react'
+import { Button, Card, CardActions, CardContent, CardHeader, Collapse, IconButton, makeStyles, TextareaAutosize, Typography, } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
@@ -111,7 +111,7 @@ const Solution = props => {
     }, [])
 
     const verifyRepeats = fetchedList => {
-        if (fetchedList.length != testCasesInputs.length) {
+        if (fetchedList.length !== testCasesInputs.length) {
             setTestCasesInputs(fetchedList)
         }
     }
@@ -131,7 +131,7 @@ const Solution = props => {
         setOpen(true)
     }
     const runCodeHandler = async () => {
-        if (oldCode == code) {
+        if (oldCode === code) {
             alert('Do something with Code')
         } else {
             setOldCode(code)
@@ -176,7 +176,7 @@ const Solution = props => {
         console.log("new Solution :")
         console.log(newSolution.new)
         openExpandClick()
-        if (newSolution.new == true) { //se não existe
+        if (newSolution.new === true) { //se não existe
             const data = {
                 problemTitle: props.problemTitle,
                 questionId: props.questionId,

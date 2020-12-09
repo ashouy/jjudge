@@ -3,8 +3,10 @@ const router = express.Router()
 const { json } = require('body-parser')
 const { save, getUser } = require('./loginPersistence')
 const jwt = require('jsonwebtoken')
+const { setUserId } = require('../Logs/Logs')
 
 router.post('/signUp', async (req, res) => {
+    
     /**
      const data = {
           name: name,
@@ -36,10 +38,11 @@ router.post('/signIn', async (req, res) => {
         console.log(user.dataValues)
         if (user != null) {
             const token = jwt.sign(
-                { userId: user.id, userName: user.name },
+                { userId: user.id, userName: user.name, userAdmin: user.admin },
                 process.env.JWTSECRETE,
                 { expiresIn: 600 }
             )
+            setUserId(user.id)
             res.json({ auth: true, token })
         } else {
             

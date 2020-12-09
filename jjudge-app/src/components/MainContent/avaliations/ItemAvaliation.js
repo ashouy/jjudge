@@ -1,7 +1,7 @@
-import { Avatar, Grid, makeStyles, Paper, Typography } from '@material-ui/core'
+import {Grid, makeStyles, Paper, Typography } from '@material-ui/core'
 import React from 'react'
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import Result from './Result'
+import Status from './Status'
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1
@@ -49,7 +49,7 @@ const ItemAvaliation = props => {
                                     </Typography>
                                 </Grid>
                                 <Grid item>
-                                    {avaliation.status}
+                                    <Status statusCode={avaliation.status}/>
                                 </Grid>
                                 <Grid item>
                                     <Result resultCode={avaliation.result}/>

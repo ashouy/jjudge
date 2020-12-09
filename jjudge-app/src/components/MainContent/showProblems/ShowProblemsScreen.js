@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Grid, Paper, Typography } from '@material-ui/core'
+import { Grid,  Typography } from '@material-ui/core'
 import axios from 'axios'
 import ItemProblem from './ItemProblem'
 const ShowProblemsScreen = props => {
     const [load, setLoad] = useState(false)
     const [problems, setProblems] = useState([])
-    const [error, setError] = useState('')
     useEffect(() => {
         const token = localStorage.getItem('token')
         axios({
@@ -18,7 +17,6 @@ const ShowProblemsScreen = props => {
                 setLoad(true)
             })
             .catch(err => {
-                setError(err)
                 setLoad(true)
             })
     },[])

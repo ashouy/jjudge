@@ -3,8 +3,8 @@ const router = express.Router()
 const { saveQuestion, saveTestCases } = require('./CreateProblemPercistence')
 const ProblemDTO = require('./ProblemDTO')
 const TestCaseDTO = require('./TestCaseDTO')
-const {} = require('../verifyJWT')
 const {verifyToken} = require('../verifyJWT')
+const {saveLog} = require('../Logs/Logs')
 router.post('/', verifyToken, async (req, res) => {
     
     const problem = new ProblemDTO(req.body.title, req.body.enunciated)
@@ -23,10 +23,10 @@ router.post('/', verifyToken, async (req, res) => {
         status = 400
         message = `can't save`
     }
-
     if (questionSaved === true) {
         try {
             await saveTestCases(testCases.testCases, qId)
+            saveLog('/createProblem')
         } catch (error) {
             console.log(error)
             status = 400

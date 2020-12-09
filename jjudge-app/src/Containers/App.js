@@ -20,14 +20,13 @@ import { BrowserRouter, Route, Link } from 'react-router-dom'
 import SubmitSolution from '../components/MainContent/solution/SubmitSolution'
 import Home from '../components/MainContent/Home'
 import test from '../components/MainContent/test'
-import CodeIcon from '@material-ui/icons/Code';
 import ShowAvaliationsScreen from '../components/MainContent/avaliations/ShowAvaliationsScreen'
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import CreateProblem from '../components/MainContent/problem/CreateProblem'
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import ShowProblemsScreen from '../components/MainContent/showProblems/ShowProblemsScreen'
 import SignIn from '../components/Login/SignIn'
-
+import {red} from '@material-ui/core/colors'
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -89,12 +88,12 @@ const useStyles = makeStyles((theme) => ({
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
-        backgroundColor:'#D1F9F2'
+        backgroundColor: '#D1F9F2'
     },
 }));
 
 
-const ListItemLink = (props)=> {
+const ListItemLink = (props) => {
     const { icon, primary, to } = props;
     const CustomLink = React.useMemo(
         () =>
@@ -107,34 +106,31 @@ const ListItemLink = (props)=> {
         <li>
             <ListItem button component={CustomLink} key={primary}>
                 <ListItem>{icon}</ListItem>
-                <ListItemText primary = {primary} />
+                <ListItemText primary={primary} />
             </ListItem>
         </li>
     )
 }
-
-
-
-/**
- *                     
-
-                    <Route path="/avaliations" exact component={ShowAvaliationsScreen}></Route>
-               
-                        <ListItemLink to="avaliations" primary="Avaliações" icon={<FormatListBulletedIcon/>} />
- */
 
 const App = () => {
 
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-    const [auth, setAuth] = useState(false)
+    const [auth, setAuth] = useState(() => {
+        return (
+            localStorage.getItem('auth') === null ?
+                false
+                :
+                true
+        )
+    })
 
-    const authHandler = () =>{
+    const authHandler = () => {
         const aux = localStorage.getItem('auth')
-        if(aux != null){
+        if (aux != null) {
             setAuth(aux)
-        }else{
+        } else {
             setAuth(false)
         }
     }
@@ -146,88 +142,87 @@ const App = () => {
         setOpen(false);
     };
 
-    const exitAppHandler = () =>{
+    const exitAppHandler = async () => {
         localStorage.removeItem('auth')
         localStorage.removeItem('userId')
         localStorage.removeItem('userName')
         window.location.reload()
         window.location.replace('/')
     }
-
-
+    console.log(localStorage.getItem('auth'))
     console.log(auth)
     return (
-        auth?
-        <BrowserRouter>
-            <div className={classes.root}>
-                <CssBaseline />
-                <AppBar
-                    position="fixed"
-                    className={clsx(classes.appBar, {
-                        [classes.appBarShift]: open,
-                    })}
-                >
-                    <Toolbar>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            edge="start"
-                            className={clsx(classes.menuButton, {
-                                [classes.hide]: open,
-                            })}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" noWrap>
-                            JJudge
-                </Typography>
-                    </Toolbar>
-                </AppBar>
-                <Drawer
-                    variant="permanent"
-                    className={clsx(classes.drawer, {
-                        [classes.drawerOpen]: open,
-                        [classes.drawerClose]: !open,
-                    })}
-                    classes={{
-                        paper: clsx({
+        auth ?
+            <BrowserRouter>
+                <div className={classes.root}>
+                    <CssBaseline />
+                    <AppBar
+                        position="fixed"
+                        className={clsx(classes.appBar, {
+                            [classes.appBarShift]: open,
+                        })}
+                    >
+                        <Toolbar>
+                            <IconButton
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={handleDrawerOpen}
+                                edge="start"
+                                className={clsx(classes.menuButton, {
+                                    [classes.hide]: open,
+                                })}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography variant="h6" noWrap>
+                                JJudge
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+                    <Drawer
+                        variant="permanent"
+                        className={clsx(classes.drawer, {
                             [classes.drawerOpen]: open,
                             [classes.drawerClose]: !open,
-                        }),
-                    }}
-                >
-                    <div className={classes.toolbar}>
-                        <IconButton onClick={handleDrawerClose}>
-                            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                        </IconButton>
-                    </div>
-                    <Divider />
-                    <List>
-                        <ListItemLink to="/" primary="Home" icon= {<HomeIcon/>}/>
-                        <ListItemLink to="/createProblem" primary="Criar Problema" icon={<PostAddIcon/>}/>
-                        <ListItemLink to="/problems" primary="Problemas" icon={<FormatListBulletedIcon/>} />
-                        <ListItemLink to="/avaliations" primary="Avaliações" icon={<FormatListBulletedIcon/>} />
-                        <IconButton onClick={exitAppHandler} aria-label='Log-Out'>
-                            <ExitToAppIcon/>
-                        </IconButton>
-                        
-                    </List>
-                </Drawer>
-                <main className={classes.content}>
-                    <div className={classes.toolbar} />
-                    <Route path="/" exact component={Home}></Route>
-                    <Route path="/createProblem" exact component={CreateProblem}></Route>
-                    <Route path="/problems" exact component={ShowProblemsScreen}></Route>
-                    <Route path="/submitSolution" exact component={SubmitSolution}></Route>
-                    <Route path="/avaliations" exact component={ShowAvaliationsScreen}></Route>
-                    <Route path="/test" exact component={test}></Route>
+                        })}
+                        classes={{
+                            paper: clsx({
+                                [classes.drawerOpen]: open,
+                                [classes.drawerClose]: !open,
+                            }),
+                        }}
+                    >
+                        <div className={classes.toolbar}>
+                            <IconButton onClick={handleDrawerClose}>
+                                {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                            </IconButton>
+                        </div>
+                        <Divider />
+                        <List>
+                            <ListItemLink to="/" primary="Home" icon={<HomeIcon />} />
+                            <ListItemLink to="/createProblem" primary="Criar Problema" icon={<PostAddIcon />} />
+                            <ListItemLink to="/problems" primary="Problemas" icon={<FormatListBulletedIcon />} />
+                            <ListItemLink to="/avaliations" primary="Avaliações" icon={<FormatListBulletedIcon />} />
+                            <IconButton onClick={exitAppHandler} aria-label='Log-Out'>
+                                <ExitToAppIcon style={{color: red[500]}}/>
+                            </IconButton>
 
-                </main>
-            </div>
-        </BrowserRouter>
-        :
-        <SignIn verifyAuth={authHandler}/>
+                        </List>
+                    </Drawer>
+                    <main className={classes.content}>
+                        <div className={classes.toolbar} />
+                        <Route path="/" exact component={Home}></Route>
+                        <Route path="/createProblem" exact component={CreateProblem}></Route>
+                        <Route path="/problems" exact component={ShowProblemsScreen}></Route>
+                        <Route path="/submitSolution" exact component={SubmitSolution}></Route>
+                        <Route path="/avaliations" exact component={ShowAvaliationsScreen}></Route>
+                        <Route path="/test" exact component={test}></Route>
+
+                    </main>
+                </div>
+            </BrowserRouter>
+            :
+            <SignIn verifyAuth={authHandler} />
     )
 }
 

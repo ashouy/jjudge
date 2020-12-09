@@ -6,7 +6,7 @@ const Avaliation = dbInstance.define('Avaliation', {
         primaryKey: true,
         autoIncrement: true
     },
-    problemTitle:{
+    problemTitle: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -21,65 +21,71 @@ const Avaliation = dbInstance.define('Avaliation', {
 })
 
 module.exports = {
-    getAvaliationModel: () => { 
+    getAvaliationModel: () => {
         return Avaliation
     },
     createAvaliationTable: async () => {
         await Avaliation.sync()
-     },
+    },
     createAvaliation: async avaliation => {
-        try{
-            const a = await Avaliation.create({
-                problemTitle: avaliation.problemTitle,
-                status: avaliation.status,
-                result: avaliation.result,
-                SolutionId: avaliation.solutionId,
-                UserId: avaliation.userId
-            })
+        try {
+            const a = await Avaliation.create(
+                {
+                    problemTitle: avaliation.problemTitle,
+                    status: avaliation.status,
+                    result: avaliation.result,
+                    SolutionId: avaliation.solutionId,
+                    UserId: avaliation.userId
+                }, { transaction: avaliation.transaction })
             return a
-        }catch(error){
+        } catch (error) {
             console.log(error)
             return error
         }
-     },
+    },
     findAvaliationBySolutionId: async solutionId => {
-        try{
+        try {
             const a = await Avaliation.findOne({
-                where:{
+                where: {
                     SolutionId: solutionId
                 }
             })
             return a
-        }catch(error){
+        } catch (error) {
             console.log(error)
         }
-     },
-    updateAvaliationState: async (status, id) =>{
-        try{
-            await Avaliation.update({status: status},{
-                where:{
+    },
+    updateAvaliationState: async (status, id, transaction) => {
+        try {
+            await Avaliation.update(
+                { status: status },
+                {
+                    where: {
+                        id: id
+                    },
+                    transaction: transaction
+                }
+            )
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    updateAvaliationResult: async (result, id, transaction) => {
+        try {
+            await Avaliation.update({ result: result }, {
+                where: {
                     id: id
-                }
+                },
+                transaction: transaction
             })
-        }catch(error){
+        } catch (error) {
             console.log(error)
         }
     },
-    updateAvaliationResult: async (result, id) =>{
-        try{
-            await Avaliation.update({result: result},{
-                where:{
-                    id:id
-                }
-            })
-        }catch(error){
-            console.log(error)
-        }
-    },
-    refreshAvaliation: async avaliationId =>{
-        try{
+    refreshAvaliation: async avaliationId => {
+        try {
             const a = await Avaliation.findOne({
-                where:{
+                where: {
                     id: avaliationId
                 }
             })
@@ -87,19 +93,19 @@ module.exports = {
             a.result = 1
             await a.save()
             return a
-        }catch(error){
+        } catch (error) {
             console.log(error)
         }
     },
-    findAvaliationByUserId: async userId =>{
-        try{
+    findAvaliationByUserId: async userId => {
+        try {
             const a = await Avaliation.findAll({
-                where:{
+                where: {
                     UserId: userId
                 }
             })
             return a
-        }catch(error){
+        } catch (error) {
             console.log(error)
         }
     }

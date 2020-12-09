@@ -27,12 +27,13 @@ module.exports = {
     },
     createSolution: async solution => {
         try {
-            const s = await Solution.create({
-                codigo: solution.codigo,
-                language: solution.language,
-                QuestionId: solution.questionId,
-                UserId: solution.userId
-            })
+            const s = await Solution.create(
+                {
+                    codigo: solution.codigo,
+                    language: solution.language,
+                    QuestionId: solution.questionId,
+                    UserId: solution.userId
+                },{transaction: solution.transaction})
             return s
         } catch (error) {
             console.log(error)
@@ -55,12 +56,12 @@ module.exports = {
     updateSolution: async (language, codigo, solutionId) => {
         try {
             const s = await Solution.findOne({
-                where:{
+                where: {
                     id: solutionId
                 }
             })
             s.codigo = codigo,
-            s.language = language
+                s.language = language
             await s.save()
             return s
         } catch (error) {

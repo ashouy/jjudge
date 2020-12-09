@@ -19,13 +19,17 @@ const SubmitSolution = props => {
 
 
     const [problem, setProblem] = useState([])
-    const [error, setError] = useState('')
     const [load, setLoad] = useState(false)
     const id = props.location.state //props
     const userId = localStorage.getItem('userId')
 
     useEffect(() => {
         const token = localStorage.getItem('token')
+        if(token == null){
+            window.location.replace('/')
+        }else if(id === undefined){
+            window.location.replace('/problems')
+        }
         axios({
             method: 'get',
             url: `http://localhost:3001/createSolution/problemToSolution/${id.id}`,
@@ -37,7 +41,6 @@ const SubmitSolution = props => {
                 setLoad(true) 
             })
             .catch(err => {
-                setError(err)
                 setLoad(true)
             })
     }, [])

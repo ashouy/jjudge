@@ -4,27 +4,36 @@ const { json } = require('body-parser')
 const router = express.Router()
 const { getProblemToSolution, getVisibleTestCases, save, saveAvaliation, getTestCases, updateSolution, getAvaliationBySolutionId, refreshAvaliation, solutionAlredyExist } = require('./CreateSolutionPersistence')
 const axios = require('axios')
-const { verifyToken } = require('../verifyJWT')
 const { avaliate } = require('./DoAvaliation')
+const sequelize = require('../../database/dbInstance')
+const { verifyToken } = require('../verifyJWT')
+const {saveLog} = require('../Logs/Logs')
 
 const url = 'https://api.jdoodle.com/v1/execute'
-router.post('/', async (req, res) => { //submit
+router.post('/', verifyToken, async (req, res) => { //submit
     try {
-        const solution = {
-            codigo: req.body.codigo,
-            language: req.body.language,
-            questionId: req.body.questionId,
-            userId: req.body.userId
-        }
-        const s = await save(solution)
-        const avaliation = {
-            problemTitle: req.body.problemTitle,
-            status: 0, //enfileirada
-            result: 1, //errado
-            solutionId: s.id,
-            userId: req.body.userId
-        }
-        const a = await saveAvaliation(avaliation)
+
+        const result = sequelize.transaction(async (t) => {
+
+            const solution = {
+                codigo: req.body.codigo,
+                language: req.body.language,
+                questionId: req.body.questionId,
+                userId: req.body.userId,
+                transaction: t
+            }
+            const s = await save(solution)
+            const avaliation = {
+                problemTitle: req.body.problemTitle,
+                status: 0, //enfileirada
+                result: 1, //errado
+                solutionId: s.id,
+                userId: req.body.userId,
+                transaction: t
+            }
+            const a = await saveAvaliation(avaliation)
+        })
+        saveLog('/createSolution')
         const testCases = await getTestCases(req.body.questionId)
 
         res.status(200).send('submitted')
@@ -35,10 +44,10 @@ router.post('/', async (req, res) => { //submit
     } catch (error) {
         console.log(error)
         res.status(400).send("can't save")
-        
+
     }
 })
-router.get('/problemToSolution/:id', async (req, res) => {
+router.get('/problemToSolution/:id', verifyToken, async (req, res) => {
     try {
         const p = await getProblemToSolution(req.params.id)
         res.send(p)
@@ -47,7 +56,7 @@ router.get('/problemToSolution/:id', async (req, res) => {
     }
 
 })
-router.post('/run', async (req, res) => {
+router.post('/run', verifyToken, async (req, res) => {
     try {
         console.log(req.body)
         const program = {
@@ -61,6 +70,7 @@ router.post('/run', async (req, res) => {
         let output = await axios.post('https://api.jdoodle.com/v1/execute', program)
 
         console.log(output.data)
+        saveLog('createSolution/run')
         res.send(output.data)
     } catch (error) {
         console.log(error)
@@ -83,7 +93,7 @@ router.get('/visibleTestCases/:questionId', verifyToken, async (req, res) => {
     }
 
 })
-router.post('/exist', async (req, res) => {
+router.post('/exist', verifyToken, async (req, res) => {
     try {
         let solution = {
             new: true
@@ -108,7 +118,7 @@ router.post('/exist', async (req, res) => {
         res.status(400).send(error)
     }
 })
-router.post('/updateSolution', async (req, res) => {
+router.post('/updateSolution', verifyToken, async (req, res) => {
     try {
         const prevAvaliation = await getAvaliationBySolutionId(req.body.solutionId)
         const a = await refreshAvaliation(prevAvaliation.id)
@@ -118,8 +128,8 @@ router.post('/updateSolution', async (req, res) => {
         console.log('solução alterada -->')
         console.log(s)
         res.status(200).send('updated')
-
-        avaliate(a,s,testCases)
+        saveLog('createSolution/updateSolution')
+        avaliate(a, s, testCases)
 
 
     } catch (error) {

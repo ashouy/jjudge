@@ -37,7 +37,7 @@ module.exports = {
                 name: user.name,
                 email: user.email,
                 password: user.password,
-                admin: 1
+                admin: 0
             })
             return u
         } catch (error) {
