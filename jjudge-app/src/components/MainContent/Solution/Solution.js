@@ -52,28 +52,11 @@ const Solution = props => {
     const [resultExpand, setResultExpand] = useState(false)
     const [load, setLoad] = useState(false)
     const [testCases, setTestCases] = useState([])
-    const [testCasesInputs, setTestCasesInputs] = useState([])
     const [oldCode, setOldCode] = useState('')
     const [newSolution, setNewSolution] = useState({})
-    const [check1, setCheck1] = useState(false)
     const [check2, setCheck2] = useState(false)
     const token = localStorage.getItem('token')
-    useEffect(() => {
-        axios({
-            method: 'get',
-            url: `http://localhost:3001/createSolution/visibleTestCases/${props.questionId}`,
-            headers: { 'x-access-token': token }
-        })
-            .then(res => {
-                verifyRepeats(res.data)
-                console.log('test cases:')
-                console.log(res.data)
-                setCheck1(true)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }, [])
+
     useEffect(() => {//passar o id do usuário parar saber se ele ja fez uma solução para esse problema
         //recebe um objeto com 1 campo "new" igual a false se ja tiver feito
         //ou um objeto com "new" = true junto com os atributos do problema
@@ -110,11 +93,6 @@ const Solution = props => {
             })
     }, [])
 
-    const verifyRepeats = fetchedList => {
-        if (fetchedList.length !== testCasesInputs.length) {
-            setTestCasesInputs(fetchedList)
-        }
-    }
     const handleExpandClick = () => {
         setResultExpand(!resultExpand);
     }
@@ -141,9 +119,9 @@ const Solution = props => {
                 stdin: '',
             }
             let temp = []
-            for (let i = 0; i < testCasesInputs.length; i++) {
+            for (let i = 0; i < props.testCasesInputs.length; i++) {
                 try {
-                    program.stdin = testCasesInputs[i].input
+                    program.stdin = props.testCasesInputs[i].input
                     let res = await axios({
                         method: 'POST',
                         url: 'http://localhost:3001/createSolution/run',
@@ -151,10 +129,10 @@ const Solution = props => {
                         headers: { 'x-access-token': token }
                     })
                     let proto = {
-                        id: testCasesInputs[i].id,
-                        title: testCasesInputs[i].name,
-                        input: testCasesInputs[i].input,
-                        expected: testCasesInputs[i].expectedOutput,
+                        id: props.testCasesInputs[i].id,
+                        title: props.testCasesInputs[i].name,
+                        input: props.testCasesInputs[i].input,
+                        expected: props.testCasesInputs[i].expectedOutput,
                         output: res.data.output
                     }
                     temp.push(proto)
@@ -229,7 +207,7 @@ const Solution = props => {
     const changeCodeHandler = (event) => {
         setCode(event.target.value)
     }
-    if (check1 && check2) {
+    if (check2) {
         return (
             <Card className={classes.root}>
                 <CardHeader

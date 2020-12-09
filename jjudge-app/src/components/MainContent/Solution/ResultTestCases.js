@@ -18,13 +18,11 @@ const ResultTestCases = props => {
                     <Grid item key={result.id}>
                         <Grid container spacing={1} alignItems='stretch' direction='column' >
                             <Grid item>
-                                <Typography>{result.title}</Typography>
-                            </Grid>
-                            <Grid item >
-                                <Typography>Expected</Typography>
+                                <Typography>TestCase: {result.title}</Typography>
                             </Grid>
                             <Grid item >
                                 <TextField
+                                    label='Expected'
                                     multiline
                                     variant='outlined'
                                     value={result.expected}
@@ -32,11 +30,9 @@ const ResultTestCases = props => {
                                 >
                                 </TextField>
                             </Grid>
-                            <Grid item>
-                                <Typography>your output</Typography>
-                            </Grid>
                             <Grid item >
                                 <TextField
+                                    label='Your Output'
                                     multiline
                                     variant='outlined'
                                     value={result.output}

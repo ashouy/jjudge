@@ -43,7 +43,7 @@ const ItemAvaliation = props => {
                                         {avaliation.id}
                                     </Typography>
                                 </Grid>
-                                <Grid item>
+                                <Grid item xs={3}>
                                     <Typography>
                                         {avaliation.problemTitle}
                                     </Typography>

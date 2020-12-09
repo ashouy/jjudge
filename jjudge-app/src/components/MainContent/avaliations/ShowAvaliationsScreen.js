@@ -30,6 +30,7 @@ const ShowAvaliationsScreen = props => {
                  */
             })
             .catch(err => {
+                localStorage.removeItem('auth')
                 window.location.replace('/signIn')
                 setLoad(true)
                 console.log(err)

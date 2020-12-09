@@ -70,8 +70,9 @@ const CreateProblem = props => {
                     console.log(res.data)
                 })
                 .catch(error => {
+                    localStorage.removeItem('auth')
                     console.log(error)
-                    window.location.replace('/signIn')
+                    window.location.replace('/')
                 })
             setError2(false)
         }
