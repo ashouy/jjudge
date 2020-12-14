@@ -44,15 +44,15 @@ module.exports ={
             onUpdate:'CASCADE'
         })
         Avaliation.belongsTo(Solution)
-        
-
-
-        Solution.sync()
-        TestCase.sync()
-        Avaliation.sync()
-        Logger.sync()
+        // Solution.sync()
+        // TestCase.sync()
+        // Avaliation.sync()
+        // Logger.sync()
+        dbInstance.sync()
     }catch(error){
         return error
     }
     }
+
+
 }

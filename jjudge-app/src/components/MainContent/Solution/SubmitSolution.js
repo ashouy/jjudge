@@ -30,6 +30,11 @@ const SubmitSolution = props => {
             console.log(res.data)
             setVisibleTestCases(res.data)
         })
+        .catch(err =>{
+            console.log(err)
+            localStorage.removeItem('auth')
+            window.location.replace('/signUp')
+        })
     }, [])
     useEffect(() => {
         if (token == null) {
@@ -51,7 +56,7 @@ const SubmitSolution = props => {
             .catch(err => {
                 console.log(err)
                 localStorage.removeItem('auth')
-                window.location.replace('/')
+                window.location.replace('/signIn')
                 setLoad(true)
             })
     }, [])

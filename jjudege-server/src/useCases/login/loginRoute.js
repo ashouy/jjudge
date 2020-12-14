@@ -29,6 +29,7 @@ router.post('/signUp', async (req, res) => {
 })
 
 router.post('/signIn', async (req, res) => {
+    console.log('teste')
     try {
         const userLogin = {
             email: req.body.email,

@@ -1,19 +1,17 @@
 const app = require('./app')
 const cors = require('cors')
 const port = 3001
-const createSolution = require('./useCases/CreateSolution/createSolutionRoute')
+const host = '0.0.0.0'
 const createProblem = require('./useCases/CreateQuestion/CreateProblemRoute')
+const createSolution = require('./useCases/CreateSolution/CreateSolutionRoute')
 const problems = require('./useCases/ShowQuestions/ShowQuestionsRoute')
 const bodyParse = require('body-parser')
-const CreateTables = require('./entities/CreateTables')
 const login = require('./useCases/login/loginRoute')
 const avaliations = require('./useCases/ShowAvaliations/ShowAvaliationRoute')
-const Tests = require('./Test/test')
+const {startSever} = require('./migrate')
 
 require('dotenv').config()
-
-CreateTables.createTables()
-
+startSever()
 
 app.use(cors())
 app.use(bodyParse.json())
@@ -23,7 +21,7 @@ app.use('/problems', problems)
 app.use('/login', login)
 app.use('/avaliations', avaliations)
 
-
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+app.listen()
+app.listen(port,host,()=>{
+    console.log(port)
 })

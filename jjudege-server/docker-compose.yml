@@ -1,0 +1,35 @@
+version: "3"
+services:
+
+  db:
+    image: postgres
+    container_name: db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  app: 
+    build: .
+    container_name: app
+    restart: always
+    environment: 
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: db
+      DB_DIALECT: postgres
+    logging: 
+      driver: "json-file"
+      options: 
+        max-size: "10m"
+        max-file: "5"
+    depends_on:
+      - db
+    ports:
+      - "3001:3001"
+    volumes: 
+      - .:/usr/src/app

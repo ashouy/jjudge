@@ -18,7 +18,8 @@ const ShowProblemsScreen = props => {
             })
             .catch(err => {
                 localStorage.removeItem('auth')
-                window.location.replace('/')
+                window.location.replace('/signIp')
+                
                 setLoad(true)
             })
     },[])
