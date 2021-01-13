@@ -29,7 +29,7 @@ module.exports = {
     },
     createAvaliation: async avaliation => {
         try {
-            const a = await Avaliation.create(
+            const newAvaliation = await Avaliation.create(
                 {
                     problemTitle: avaliation.problemTitle,
                     status: avaliation.status,
@@ -37,10 +37,10 @@ module.exports = {
                     SolutionId: avaliation.solutionId,
                     UserId: avaliation.userId
                 }, { transaction: avaliation.transaction })
-            return a
-        } catch (error) {
+            return newAvaliation
+        } catch (err) {
             console.log(error)
-            return error
+            return err
         }
     },
     findAvaliationBySolutionId: async solutionId => {
@@ -51,10 +51,14 @@ module.exports = {
                 }
             })
             return a
-        } catch (error) {
-            console.log(error)
+        } catch (err) {
+            console.log(err)
+            return err
         }
     },
+    /***
+     * 
+     */
     updateAvaliationState: async (status, id, transaction) => {
         try {
             await Avaliation.update(
@@ -66,8 +70,9 @@ module.exports = {
                     transaction: transaction
                 }
             )
-        } catch (error) {
-            console.log(error)
+        } catch (err) {
+            console.log(err)
+            return err
         }
     },
     updateAvaliationResult: async (result, id, transaction) => {
