@@ -26,14 +26,27 @@ module.exports = {
     },
     createLog: async (log) => {
         try {
-            const c = await Logger.create({
+            const userLog = await Logger.create({
                 userId: log.id,
                 log: log.log
             })
-            return c
-        } catch (error) {
-            console.log(error)
-            return error
+            return userLog
+        } catch (err) {
+            console.log(err)
+            return err
+        }
+    },
+    findByUserId: async (userId) =>{
+        try{
+            const logs = await Logger.findAll({
+                where:{
+                    userId: userId
+                }
+            })
+            return logs
+        }catch(err){
+            console.log(err)
+            return err
         }
     }
 }

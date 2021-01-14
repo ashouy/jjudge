@@ -45,20 +45,17 @@ module.exports = {
     },
     findAvaliationBySolutionId: async solutionId => {
         try {
-            const a = await Avaliation.findOne({
+            const avaliation = await Avaliation.findOne({
                 where: {
                     SolutionId: solutionId
                 }
             })
-            return a
+            return avaliation
         } catch (err) {
             console.log(err)
             return err
         }
     },
-    /***
-     * 
-     */
     updateAvaliationState: async (status, id, transaction) => {
         try {
             await Avaliation.update(
@@ -83,35 +80,47 @@ module.exports = {
                 },
                 transaction: transaction
             })
-        } catch (error) {
-            console.log(error)
+        } catch (err) {
+            console.log(err)
+            return err
         }
     },
+    /**
+     * Change avaliation status/result to initial state,
+     * to redo the avaliation process
+     * @param {*} avaliationId 
+     */
     refreshAvaliation: async avaliationId => {
         try {
-            const a = await Avaliation.findOne({
+            const updatedAvaliation = await Avaliation.findOne({
                 where: {
                     id: avaliationId
                 }
             })
-            a.status = 0
-            a.result = 1
-            await a.save()
-            return a
-        } catch (error) {
-            console.log(error)
+            updatedAvaliation.status = 0
+            updatedAvaliation.result = 1
+            await updatedAvaliation.save()
+            return updatedAvaliation
+        } catch (err) {
+            console.log(err)
+            return err
         }
     },
-    findAvaliationByUserId: async userId => {
+    /**
+     * 
+     * @param {*} userId - the user id to bring him all avaliations
+     */
+    findAllAvaliationByUserId: async userId => {
         try {
-            const a = await Avaliation.findAll({
+            const avaliations = await Avaliation.findAll({
                 where: {
                     UserId: userId
                 }
             })
-            return a
-        } catch (error) {
-            console.log(error)
+            return avaliations
+        } catch (err) {
+            console.log(err)
+            return err
         }
     }
 
