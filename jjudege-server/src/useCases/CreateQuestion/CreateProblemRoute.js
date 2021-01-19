@@ -3,14 +3,18 @@ const router = express.Router()
 const { saveQuestion, saveTestCases } = require('./CreateProblemPercistence')
 const ProblemDTO = require('./ProblemDTO')
 const TestCaseDTO = require('./TestCaseDTO')
-const {verifyToken} = require('../verifyJWT')
-const {saveLog} = require('../Logs/Logs')
-router.post('/', verifyToken, async (req, res) => {
+const { saveLog } = require('../Logs/Logs')
+
+router.post('/', async (req, res) => {
     
-    const problem = new ProblemDTO(req.body.title, req.body.enunciated)
+    const problem = new ProblemDTO(
+        req.body.title,
+        req.body.enunciated,
+        req.body.level,
+        req.body.rate)
+
     const testCases = new TestCaseDTO(req.body.testcases)
-    console.log(problem)
-    console.log(testCases)
+        
     var status = 200
     var message = 'saved'
     var qId = 0

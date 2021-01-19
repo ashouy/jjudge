@@ -1,57 +1,68 @@
 const dbInstance = require('../database/dbInstance')
-const {getQuestionModel} = require('./Question')
-const {getSolutionModel } = require('./Solution')
+const { getSolutionModel } = require('./Solution')
 const { getTestCaseModel } = require('./TestCase')
-const {getUserModel} = require('./User')
-const {getLoggerModel} = require('./Logger')
-const {getAvaliationModel} = require('./Avaliation')
+const { getUserModel } = require('./User')
+const { getLoggerModel } = require('./Logger')
+const { getAvaliationModel } = require('./Avaliation')
+const { getProblemModel } = require('./Problem')
+const {getTagModel} = require('./Tag')
 const Question = getQuestionModel()
+const Problem = getProblemModel()
 const Solution = getSolutionModel()
 const TestCase = getTestCaseModel()
 const User = getUserModel()
 const Avaliation = getAvaliationModel()
 const Logger = getLoggerModel()
+const Tag = getTagModel()
+module.exports = {
+    makeRealations: async () => {
+        try {
+            Problem.hasMany(Solution, {
+                onDelete: 'CASCADE',
+                onUpdate: 'CASCADE'
+            })
+            Solution.belongsTo(Problem)
 
-module.exports ={
-    makeRealations: () =>{
-        try{
-        Question.hasMany(Solution,{
-            onDelete: 'CASCADE',
-            onUpdate: 'CASCADE'
-        })
-        Solution.belongsTo(Question)
-        
-        Question.hasMany(TestCase,{
-            onDelete: 'CASCADE',
-            onUpdate: 'CASCADE'
-        })
-        TestCase.belongsTo(Question)
+            User.hasMany(Solution, {
+                onDelete: 'CASCADE',
+                onUpdate: 'CASCADE'
+            })
+            Solution.belongsTo(User)
 
-        User.hasMany(Solution,{
-            onDelete: 'CASCADE',
-            onUpdate: 'CASCADE'
-        })
-        Solution.belongsTo(User)
-        
-        User.hasMany(Avaliation,{
-            onDelete:'CASCADE',
-            onUpdate: 'CASCADE'
-        })
-        Avaliation.belongsTo(User)
+            Solution.hasOne(Avaliation, {
+                onDelete: 'CASCADE',
+                onUpdate: 'CASCADE'
+            })
+            Avaliation.belongsTo(Solution)
 
-        Solution.hasOne(Avaliation,{
-            onDelete:'CASCADE',
-            onUpdate:'CASCADE'
-        })
-        Avaliation.belongsTo(Solution)
-        // Solution.sync()
-        // TestCase.sync()
-        // Avaliation.sync()
-        // Logger.sync()
-        dbInstance.sync()
-    }catch(error){
-        return error
-    }
+            Tag.hasOne(Problem,{
+                onUpdate: 'CASCADE',
+                onDelete: 'NO ACTION'
+            })
+            Problem.belongsTo(Tag)
+            
+            User.hasMany(Logger,{
+                onDelete: 'CASCADE',
+                onUpdate: 'CASCADE'
+            })
+            Logger.belongsTo(User)
+
+            Problem.hasMany(TestCase,{
+                onDelete: 'CASCADE',
+                onUpdate: 'CASCADE'
+            })
+            TestCase.belongsTo(Problem)
+
+            User.hasMany(Problem,{
+                onDelete: 'NO ACTION',
+                onUpdate: 'CASCADE'
+            })
+            Problem.belongsTo(User)
+            
+            await dbInstance.sync()
+        } catch (error) {
+            return error
+        }
     }
 
 

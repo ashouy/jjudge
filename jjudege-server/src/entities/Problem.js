@@ -19,10 +19,6 @@ const Problem = dbInstance.define('Problem', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    tag:{
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
     rate:{
         type: DataTypes.FLOAT,
         allowNull: false
@@ -34,7 +30,7 @@ module.exports = {
         return Problem
     },
     createQuestionTable: async() => {
-        Problem.sync()
+        await Problem.sync()
     },
     createQuestion: async (problem) => {    
         try {
@@ -42,7 +38,6 @@ module.exports = {
                 title: problem.title,
                 enunciated: problem.enunciated,
                 level: problem.level,
-                tag: problem.tag,
                 rate: problem.rate
             })
             return newProblem
