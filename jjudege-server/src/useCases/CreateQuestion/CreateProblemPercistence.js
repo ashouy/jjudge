@@ -1,23 +1,21 @@
 const { createTestCase } = require('../../entities/TestCase')
-const { createQuestion } = require('../../entities/Question')
+const { createProblem } = require('../../entities/Problem')
+const sequelize = require('../../database/dbInstance')
 module.exports = {
-    saveQuestion: async (question) => {
-        console.log('in save question')
+    saveProblem: async (problem, testCases) => {
+        const createProblemTransaction = await sequelize.transaction()
         try {
-            const q = await createQuestion(question)
-            return  q.id
-        } catch (error) {
-            console.log(error)
-        }
-    },
-    saveTestCases: (testCases, questionId) => {
-        try {
-            for(let i = 0 ; i < testCases.length ; i++){
-                createTestCase(testCases[i], questionId)
+            const newProblem = await createProblem(problem, createProblemTransaction)
+            for (let i = 0; i < testCases.length; i++) {
+                await createTestCase(testCases[i], newProblem.id, createProblemTransaction)
             }
-            return 'ok'
-        } catch (error) {
-            return error
+            await createProblemTransaction.commit()
+
+            return newProblem
+        } catch (err) {
+            await createProblemTransaction.rollback()
+            console.log(err)
+            return err
         }
     }
 

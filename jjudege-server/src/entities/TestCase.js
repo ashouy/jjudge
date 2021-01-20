@@ -33,42 +33,45 @@ module.exports = {
     createTestCaseTable: () => {
         TestCase.sync()
     },
-    createTestCase: (params, questionId) => {
-        try {     
-            const testCase = TestCase.create({
-                name: params.title,
-                input: params.input,
-                expectedOutput: params.expected,
-                visibility: params.visibility,
+    createTestCase: async (testCase, questionId, incomingTransaction) => {
+        try {
+            const testCase = await TestCase.create({
+                name: testCase.title,
+                input: testCase.input,
+                expectedOutput: testCase.expected,
+                visibility: testCase.visibility,
                 QuestionId: questionId
-            })
+            },
+                {transaction: incomingTransaction}
+            )
             return testCase
-        } catch (error) {
-            console.log(error)
+        } catch (err) {
+            console.log(err)
+            return err
         }
     },
-    findVisibleTestCases: async (questionId) =>{
-        try{
+    findVisibleTestCases: async (questionId) => {
+        try {
             const visibleTestCases = await TestCase.findAll({
-                where:{
+                where: {
                     visibility: true,
                     QuestionId: questionId
                 }
             })
             return visibleTestCases
-        }catch(error){
+        } catch (error) {
             console.log(error)
         }
     },
-    getTestCases: async questionId =>{
-        try{
+    getTestCases: async questionId => {
+        try {
             const testCases = await TestCase.findAll({
-                where:{
+                where: {
                     QuestionId: questionId
                 }
             })
             return testCases
-        }catch(error){
+        } catch (error) {
             console.log(error)
             return error
         }

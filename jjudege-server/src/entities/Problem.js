@@ -29,17 +29,19 @@ module.exports = {
     getProblemModel: () => {
         return Problem
     },
-    createQuestionTable: async() => {
+    createProblemTable: async() => {
         await Problem.sync()
     },
-    createQuestion: async (problem) => {    
+    createProblem: async (problem, incomingTransaction) => {    
         try {
             const newProblem = await Problem.create({
                 title: problem.title,
                 enunciated: problem.enunciated,
                 level: problem.level,
                 rate: problem.rate
-            })
+            },
+            {transaction: incomingTransaction}
+            )
             return newProblem
         } catch (err) {
             return err
