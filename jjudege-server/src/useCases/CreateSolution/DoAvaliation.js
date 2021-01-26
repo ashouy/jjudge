@@ -4,7 +4,6 @@ const sequelize = require('../../database/dbInstance')
 const { updateAvaliationState, updateAvaliationResult } = require('../../entities/Avaliation')
 
 var avaliationList = []
-var running = false
 const runCode = async (solution, testCases) => {
     try {
         let program = {
@@ -60,7 +59,7 @@ const checkAvaliationsToBeDone = async () => {
     }
 }
 module.exports = {
-    avaliate: async (avaliation, solution, testCases) => {
+    avaliate: (avaliation, solution, testCases) => {
         let avaliationObj = {
             done: false,
             id: uuid(),
@@ -69,6 +68,6 @@ module.exports = {
             testCases: testCases
         }
         avaliationList.push(avaliationObj)
-        checkAvaliationsToBeDone()
+        await checkAvaliationsToBeDone()
     }
 }

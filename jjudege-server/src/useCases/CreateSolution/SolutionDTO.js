@@ -1,8 +1,11 @@
 
 class SolutionDTO {
-    constructor(codigo, questionId) {
-        this.codigo = codigo,
-        this.questionId = questionId
+    constructor(code, language, problemId, userId) {
+        this.code = code,
+            this.language = language,
+            this.problemId = parseInt(problemId),
+            this.userId = parseInt(userId)
+
     }
 }
 

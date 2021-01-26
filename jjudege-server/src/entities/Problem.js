@@ -38,7 +38,9 @@ module.exports = {
                 title: problem.title,
                 enunciated: problem.enunciated,
                 level: problem.level,
-                rate: problem.rate
+                rate: problem.rate,
+                TagId: problem.tagId,
+                UserId: problem.userId
             },
             {transaction: incomingTransaction}
             )

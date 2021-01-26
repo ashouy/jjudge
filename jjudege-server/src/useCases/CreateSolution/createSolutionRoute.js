@@ -2,45 +2,35 @@ const express = require('express')
 const SolutionDTO = require('./SolutionDTO')
 const { json } = require('body-parser')
 const router = express.Router()
-const { getProblemToSolution, getVisibleTestCases, save, saveAvaliation, getTestCases, updateSolution, getAvaliationBySolutionId, refreshAvaliation, solutionAlredyExist } = require('./CreateSolutionPersistence')
+const { getProblemToSolution, getVisibleTestCases, save, updateSolution, getAvaliationBySolutionId, refreshAvaliation, solutionAlredyExist, getTestCasesById } = require('./CreateSolutionPersistence')
 const axios = require('axios')
 const { avaliate } = require('./DoAvaliation')
-const sequelize = require('../../database/dbInstance')
 const { verifyToken } = require('../verifyJWT')
-const {saveLog} = require('../Logs/Logs')
+const { saveLog } = require('../Logs/Logs')
+const AvaliationDTO = require('./AvaliationDTO')
 
 const url = 'https://api.jdoodle.com/v1/execute'
 router.post('/', verifyToken, async (req, res) => { //submit
     try {
+        const newSolution = SolutionDTO(
+            req.body.code,
+            req.body.language,
+            req.body.problemId,
+            req.body.userId,
+        )
+        const newAvaliation = AvaliationDTO(
+            req.body.problemTitle,
+            req.body.userId
+        )
+        const auxObj = await save(newAvaliation, newSolution)
 
-        const result = sequelize.transaction(async (t) => {
-
-            const solution = {
-                codigo: req.body.codigo,
-                language: req.body.language,
-                questionId: req.body.questionId,
-                userId: req.body.userId,
-                transaction: t
-            }
-            const s = await save(solution)
-            const avaliation = {
-                problemTitle: req.body.problemTitle,
-                status: 0, //enfileirada
-                result: 1, //errado
-                solutionId: s.id,
-                userId: req.body.userId,
-                transaction: t
-            }
-            const a = await saveAvaliation(avaliation)
-        })
         saveLog('/createSolution')
-        const testCases = await getTestCases(req.body.questionId)
+        const testCases = await getTestCasesById(req.body.problemId)
 
         res.status(200).send('submitted')
 
-        avaliate(a, s, testCases)
-
-
+        avaliate(auxObj.newAvaliation, auxObj.newSolution, testCases)
+        
     } catch (error) {
         console.log(error)
         res.status(400).send("can't save")
