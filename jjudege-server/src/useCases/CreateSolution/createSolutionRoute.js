@@ -5,12 +5,10 @@ const router = express.Router()
 const { getProblemToSolution, getVisibleTestCases, save, updateSolution, getAvaliationBySolutionId, refreshAvaliation, solutionAlredyExist, getTestCasesById } = require('./CreateSolutionPersistence')
 const axios = require('axios')
 const { avaliate } = require('./DoAvaliation')
-const { verifyToken } = require('../verifyJWT')
 const { saveLog } = require('../Logs/Logs')
 const AvaliationDTO = require('./AvaliationDTO')
 
-const url = 'https://api.jdoodle.com/v1/execute'
-router.post('/', verifyToken, async (req, res) => { //submit
+router.post('/', async (req, res) => { //submit
     try {
         const newSolution = SolutionDTO(
             req.body.code,
@@ -24,7 +22,6 @@ router.post('/', verifyToken, async (req, res) => { //submit
         )
         const auxObj = await save(newAvaliation, newSolution)
 
-        saveLog('/createSolution')
         const testCases = await getTestCasesById(req.body.problemId)
 
         res.status(200).send('submitted')
@@ -37,12 +34,14 @@ router.post('/', verifyToken, async (req, res) => { //submit
 
     }
 })
-router.get('/problemToSolution/:id', verifyToken, async (req, res) => {
+
+router.get('/problemToSolution/:id', async (req, res) => {
     try {
-        const p = await getProblemToSolution(req.params.id)
-        res.send(p)
-    } catch (error) {
-        throw error
+        const problem = await getProblemToSolution(req.params.id)
+        res.send(problem)
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(`can't find problemm info`)
     }
 
 })
@@ -66,22 +65,6 @@ router.post('/run', verifyToken, async (req, res) => {
         console.log(error)
         res.send(erro)
     }
-})
-router.get('/visibleTestCases/:questionId', verifyToken, async (req, res) => {
-    try {
-        let visibleTestCases = []
-        const proto = await getVisibleTestCases(req.params.questionId)
-        console.log(proto)
-        for (let i = 0; i < proto.length; i++) {
-            visibleTestCases.push(proto[i].dataValues)
-        }
-        res.send(visibleTestCases)
-
-    } catch (error) {
-
-        res.send(error)
-    }
-
 })
 router.post('/exist', verifyToken, async (req, res) => {
     try {

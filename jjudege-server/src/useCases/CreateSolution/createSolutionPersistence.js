@@ -26,11 +26,25 @@ module.exports = {
             return err
         }
     },
+    /** 
+     * get problem info and problem visible test cases
+     */
     getProblemToSolution: async problemId => {
-        return await findProblemById(problemId)
-    },
-    getVisibleTestCases: async problemId => {
-        return await findVisibleTestCases(problemId)
+        try {
+            let visibleTestCases = []
+            const problem = await findProblemById(problemId)
+            const proto = await findVisibleTestCases(problemId)
+            for (let i = 0; i < proto.length; i++) {
+                visibleTestCases.push(proto[i].dataValues)
+            }
+            problem.visibleTestCases = visibleTestCases
+            return problem
+
+        } catch (err) {
+            console.log(err)
+            return err
+        }
+
     },
     solutionAlredyExist: async (userId, questionId) => {
         return await findByUser(userId, questionId)
