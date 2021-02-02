@@ -34,7 +34,6 @@ router.post('/', async (req, res) => { //submit
 
     }
 })
-
 router.get('/problemToSolution/:id', async (req, res) => {
     try {
         const problem = await getProblemToSolution(req.params.id)
@@ -45,28 +44,30 @@ router.get('/problemToSolution/:id', async (req, res) => {
     }
 
 })
-router.post('/run', verifyToken, async (req, res) => {
+router.post('/run', async (req, res) => {
     try {
-        console.log(req.body)
+        const stdins = req.body.stdins
+        const outputs = []
         const program = {
             script: req.body.script,
             language: req.body.language,
             versionIndex: "0",
-            stdin: req.body.stdin,
+            stdin: "",
             clientId: process.env.CLIENT_ID,
             clientSecret: process.env.CLIENT_SECRET
         }
-        let output = await axios.post('https://api.jdoodle.com/v1/execute', program)
-
-        console.log(output.data)
-        saveLog('createSolution/run')
-        res.send(output.data)
-    } catch (error) {
-        console.log(error)
-        res.send(erro)
+        stdins.forEach(stdin => {
+            program.stdin = stdin
+            outputs.push( await axios.post('https://api.jdoodle.com/v1/execute', program))
+        });
+        console.log(outputs)
+        res.send(outputs)
+    } catch (err) {
+        console.log(err)
+        res.send(err)
     }
 })
-router.post('/exist', verifyToken, async (req, res) => {
+router.post('/exist', async (req, res) => {
     try {
         let solution = {
             new: true
@@ -91,7 +92,7 @@ router.post('/exist', verifyToken, async (req, res) => {
         res.status(400).send(error)
     }
 })
-router.post('/updateSolution', verifyToken, async (req, res) => {
+router.post('/updateSolution', async (req, res) => {
     try {
         const prevAvaliation = await getAvaliationBySolutionId(req.body.solutionId)
         const a = await refreshAvaliation(prevAvaliation.id)
