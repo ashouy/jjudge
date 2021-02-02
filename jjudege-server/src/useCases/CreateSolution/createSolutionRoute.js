@@ -2,7 +2,7 @@ const express = require('express')
 const SolutionDTO = require('./SolutionDTO')
 const { json } = require('body-parser')
 const router = express.Router()
-const { getProblemToSolution, getVisibleTestCases, save, updateSolution, getAvaliationBySolutionId, refreshAvaliation, solutionAlredyExist, getTestCasesById } = require('./CreateSolutionPersistence')
+const { getProblemToSolution, save, updateSolution, getAvaliationBySolutionId, refreshAvaliation, solutionAlredyExist, getTestCasesById } = require('./CreateSolutionPersistence')
 const axios = require('axios')
 const { avaliate } = require('./DoAvaliation')
 const { saveLog } = require('../Logs/Logs')
@@ -67,20 +67,20 @@ router.post('/run', async (req, res) => {
         res.send(err)
     }
 })
+/**
+ * return a solution object if exists
+ */
 router.post('/exist', async (req, res) => {
+    
     try {
         let solution = {
-            new: true
+            exist: false
         }
-        console.log(req.body)
         let result = await solutionAlredyExist(req.body.userId, req.body.questionId)
         if (result != null) {
-            solution.solutionId = result.id
-            solution.new = false
-            solution.codigo = result.codigo
-            solution.language = result.language
-            console.log(solution)
-            res.status(200).send(solution)
+            solution.existingSolution = result
+            solution.exist = true
+            res.send(solution)
         } else {
             console.log(solution)
             res.send(solution)
