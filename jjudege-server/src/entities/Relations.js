@@ -6,7 +6,6 @@ const { getLoggerModel } = require('./Logger')
 const { getAvaliationModel } = require('./Avaliation')
 const { getProblemModel } = require('./Problem')
 const {getTagModel} = require('./Tag')
-const Question = getQuestionModel()
 const Problem = getProblemModel()
 const Solution = getSolutionModel()
 const TestCase = getTestCaseModel()
@@ -58,7 +57,8 @@ module.exports = {
                 onUpdate: 'CASCADE'
             })
             Problem.belongsTo(User)
-            
+            console.log("syncing")
+
             await dbInstance.sync()
         } catch (error) {
             return error

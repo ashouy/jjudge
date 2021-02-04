@@ -22,6 +22,7 @@ router.post('/signUp', async (req, res) => {
         }
 
         res.status(201).send(await save(user))
+        
     } catch (error) {
         console.log(error)
         res.send(error)

@@ -19,6 +19,10 @@ const User = dbInstance.define('User', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    identifacation:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     admin: {
         type: DataTypes.INTEGER,
         allowNull: false
@@ -37,6 +41,7 @@ module.exports = {
                 name: user.name,
                 email: user.email,
                 password: user.password,
+                identifacation: user.identifacation,
                 admin: 0
             })
             return u

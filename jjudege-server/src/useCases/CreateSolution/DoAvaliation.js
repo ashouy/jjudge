@@ -58,7 +58,7 @@ const checkAvaliationsToBeDone = async () => {
     }
 }
 module.exports = {
-    avaliate: (avaliation, solution, testCases) => {
+    avaliate: async (avaliation, solution, testCases) => {
         let avaliationObj = {
             done: false,
             id: uuid(),

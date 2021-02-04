@@ -7,8 +7,10 @@ const axios = require('axios')
 const { avaliate } = require('./DoAvaliation')
 const { saveLog } = require('../Logs/Logs')
 const AvaliationDTO = require('./AvaliationDTO')
+const sequelize = require('../../database/dbInstance')
 
-router.post('/', async (req, res) => { //submit
+router.post('/', async (req, res) => { 
+    //create a solution in to the dataBase
     try {
         const newSolution = SolutionDTO(
             req.body.code,
@@ -35,6 +37,7 @@ router.post('/', async (req, res) => { //submit
     }
 })
 router.get('/problemToSolution/:id', async (req, res) => {
+    //return all problem info and visible test cases
     try {
         const problem = await getProblemToSolution(req.params.id)
         res.send(problem)
@@ -45,6 +48,7 @@ router.get('/problemToSolution/:id', async (req, res) => {
 
 })
 router.post('/run', async (req, res) => {
+    // run all visible test cases to the delivery script
     try {
         const stdins = req.body.stdins
         const outputs = []
@@ -56,9 +60,10 @@ router.post('/run', async (req, res) => {
             clientId: process.env.CLIENT_ID,
             clientSecret: process.env.CLIENT_SECRET
         }
-        stdins.forEach(stdin => {
+        stdins.forEach(async stdin => {
             program.stdin = stdin
-            outputs.push( await axios.post('https://api.jdoodle.com/v1/execute', program))
+            let result = await axios.post('https://api.jdoodle.com/v1/execute', program)
+            outputs.push(result)
         });
         console.log(outputs)
         res.send(outputs)
@@ -67,11 +72,8 @@ router.post('/run', async (req, res) => {
         res.send(err)
     }
 })
-/**
- * return a solution object if exists
- */
 router.post('/exist', async (req, res) => {
-    
+    //return a solution object if exists
     try {
         let solution = {
             exist: false
@@ -93,20 +95,23 @@ router.post('/exist', async (req, res) => {
     }
 })
 router.post('/updateSolution', async (req, res) => {
+    const updateTrasaction = await sequelize.transaction()
     try {
         const prevAvaliation = await getAvaliationBySolutionId(req.body.solutionId)
-        const a = await refreshAvaliation(prevAvaliation.id)
-        const s = await updateSolution(req.body.codigo, req.body.language, req.body.solutionId)
+        const a = await refreshAvaliation(prevAvaliation.id, updateTrasaction)
+        const s = await updateSolution(req.body.codigo, req.body.language, req.body.solutionId, updateTrasaction)
         const testCases = await getTestCases(req.body.questionId)
+        await updateTrasaction.commit()
 
         console.log('solução alterada -->')
         console.log(s)
-        res.status(200).send('updated')
+        res.status(200).send('updated');
+        
         saveLog('createSolution/updateSolution')
         avaliate(a, s, testCases)
 
-
     } catch (error) {
+        updateTrasaction.rollback()
         console.log(error)
         res.status(400).send("can't update solution")
     }

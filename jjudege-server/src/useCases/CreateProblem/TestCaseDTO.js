@@ -4,4 +4,4 @@ class TestCaseDTO {
     }
 }
 
-export default TestCaseDTO
+module.exports = TestCaseDTO

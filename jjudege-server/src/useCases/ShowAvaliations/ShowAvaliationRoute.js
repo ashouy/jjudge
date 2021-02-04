@@ -1,11 +1,10 @@
 const express = require('express')
 const { getAvaliations } = require('./ShowAvaliationPersistence')
 const router = express.Router()
-const { verifyToken } = require('../verifyJWT')
 const { saveLog } = require('../Logs/Logs')
 
 
-router.get('/:userId', verifyToken, async (req, res) => {
+router.get('/:userId', async (req, res) => {
     try {
         res.send(await getAvaliations(req.params.userId))
         saveLog('/showAvaliations')

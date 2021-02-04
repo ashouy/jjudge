@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize')
+const { hasHook } = require('../database/dbInstance')
 const dbInstance = require('../database/dbInstance')
-const { createQuestion } = require('./Question')
 
 const Solution = dbInstance.define('Solution', {
     id: {
@@ -31,19 +31,19 @@ module.exports = {
                 {
                     codigo: solution.codigo,
                     language: solution.language,
-                    QuestionId: solution.questionId,
+                    ProblemId: solution.problemId,
                     UserId: solution.userId
-                },{transaction: solution.transaction})
+                }, { transaction: solution.transaction })
             return s
         } catch (error) {
             console.log(error)
         }
     },
-    findByUser: async (userId, questionId) => {
+    findByUser: async (userId, problemId) => {
         try {
             const s = await Solution.findOne({
                 where: {
-                    QuestionId: questionId,
+                    ProblemId: problemId,
                     UserId: userId
                 }
             })
@@ -53,16 +53,17 @@ module.exports = {
             return error
         }
     },
-    updateSolution: async (language, codigo, solutionId) => {
+    updateSolution: async (language, codigo, solutionId, transaction) => {
         try {
             const s = await Solution.findOne({
                 where: {
                     id: solutionId
                 }
             })
+            
             s.codigo = codigo,
                 s.language = language
-            await s.save()
+            await s.save({transaction: transaction})
             return s
         } catch (error) {
             console.log(error)

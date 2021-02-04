@@ -43,7 +43,7 @@ module.exports = {
             return err
         }
     },
-    findAvaliationBySolutionId: async solutionId => {
+    findAvaliationBySolutionId: async (solutionId) => {
         try {
             const avaliation = await Avaliation.findOne({
                 where: {
@@ -85,12 +85,8 @@ module.exports = {
             return err
         }
     },
-    /**
-     * Change avaliation status/result to initial state,
-     * to redo the avaliation process
-     * @param {*} avaliationId 
-     */
-    refreshAvaliation: async avaliationId => {
+
+    refreshAvaliation: async (avaliationId, transaction) => {
         try {
             const updatedAvaliation = await Avaliation.findOne({
                 where: {
@@ -99,7 +95,7 @@ module.exports = {
             })
             updatedAvaliation.status = 0
             updatedAvaliation.result = 1
-            await updatedAvaliation.save()
+            await updatedAvaliation.save({transaction: transaction})
             return updatedAvaliation
         } catch (err) {
             console.log(err)

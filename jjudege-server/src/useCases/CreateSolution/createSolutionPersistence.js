@@ -1,5 +1,5 @@
 const { createSolution, findByUser, updateSolution } = require('../../entities/Solution')
-const { findProblemById } = require('../../entities/Question')
+const { findProblemById } = require('../../entities/Problem')
 const { findVisibleTestCases, getTestCases } = require('../../entities/TestCase')
 const { createAvaliation, findAvaliationBySolutionId, refreshAvaliation } = require('../../entities/Avaliation')
 const sequelize = require('../../database/dbInstance')
@@ -46,25 +46,40 @@ module.exports = {
         }
 
     },
-    solutionAlredyExist: async (userId, questionId) => {
-        return await findByUser(userId, questionId)
+    solutionAlredyExist: async (userId, problemId) => {
+        return await findByUser(userId, problemId)
     },
-    getTestCasesById: async questionId => {
-        const proto = await getTestCases(questionId)
+    /**
+     * return all visible test case of the given problem Id
+     * @param {*} problemId
+     */
+    getTestCasesById: async problemId => {
+        const proto = await getTestCases(problemId)
         let t = []
         for (let i = 0; i < proto.length; i++) {
             t.push(proto[i].dataValues)
         }
         return t
     },
-    updateSolution: async (codigo, language, solutionId) => {
-        return await updateSolution(language, codigo, solutionId)
+    /**
+     * update script and language of the given problem Id
+     * @param {*} codigo 
+     * @param {*} language 
+     * @param {*} solutionId 
+     * @param {*} transaction
+     */
+    updateSolution: async (codigo, language, solutionId, transaction) => {
+        return await updateSolution(language, codigo, solutionId, transaction)
     },
     getAvaliationBySolutionId: async solutionId => {
         return await findAvaliationBySolutionId(solutionId)
     },
-    refreshAvaliation: async avaliationId => {
-        return await refreshAvaliation(avaliationId)
+    /**
+     * set avaliation status to 'enqueue' and result to 'wrong'
+     * @param avaliationId 
+     */
+    refreshAvaliation: async (avaliationId, transaction) => {
+        await refreshAvaliation(avaliationId, transaction)
     }
 
 }

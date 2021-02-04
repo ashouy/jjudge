@@ -8,4 +8,4 @@ class ProblemDTO {
             this.userId = parseInt(userId)
     }
 }
-export default ProblemDTO
+module.exports = ProblemDTO

@@ -7,10 +7,6 @@ const Logger = dbInstance.define('Logger', {
         primaryKey: true,
         autoIncrement: true
     },
-    userId:{
-        type: DataTypes.STRING,
-        allowNull: false
-    },
     log: {
         type: DataTypes.STRING,
         allowNull: false

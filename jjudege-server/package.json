@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon  -r dotenv/config src/server.js ",
-    "migrate": "node -r dotenv/config ./src/migrate.js"
+    "migrate": "node -r dotenv/config src/migrate.js"
   },
   "author": "João Paulo Santos",
   "license": "ISC",

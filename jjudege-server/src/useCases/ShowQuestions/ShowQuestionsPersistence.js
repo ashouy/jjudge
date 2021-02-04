@@ -1,4 +1,4 @@
-const {findAll} = require('../../entities/Question')
+const {findAll} = require('../../entities/Problem')
 module.exports ={
     getProblems: async () =>{
         return await findAll();
