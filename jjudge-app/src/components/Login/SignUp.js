@@ -2,19 +2,12 @@ import { Grid, makeStyles, TextField, Paper, Avatar, Typography, Button, Link, C
 import React from 'react'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 const useStyles = makeStyles((theme) => ({
-    paper: {
-        margin: theme.spacing(8, 4),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        backgroundColor: 'rgba(255, 255, 255, .8)'
-    },
     avatar: {
         margin: theme.spacing(1),
         background: theme.palette.secondary.main
     },
     form: {
-        width: '90%',
+        width: '100%',
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(2)
     },
@@ -27,22 +20,28 @@ const SignUp = props => {
     const classes = useStyles()
 
     return (
-        
-        <Grid item xs={12} sm={8} md={5} elevation={6}>
-        <CssBaseline />
-            <Paper className={classes.paper}>
+        <Grid
+            container
+            direction='column'
+            alignItems='center'
+            spacing={2}
+        >
+            <CssBaseline />
+            <Grid item>
                 <Avatar className={classes.avatar}>
                     <LockOutlinedIcon />
                 </Avatar>
+            </Grid>
+            <Grid item>
                 <Typography component='h1' variant='h5'>
                     Sign up
                 </Typography>
-
+            </Grid>
+            <Grid item>
                 <form className={classes.form}>
                     <TextField
                         variant='outlined'
                         margin='normal'
-                        required
                         fullWidth
                         id='email'
                         label='Email Address'
@@ -53,7 +52,6 @@ const SignUp = props => {
                     <TextField
                         variant='outlined'
                         margin='normal'
-                        required
                         fullWidth
                         id='name'
                         label='Name'
@@ -89,20 +87,21 @@ const SignUp = props => {
                     >
                         Sign Up
                     </Button>
-
-                    <Grid container >
-                        <Grid item xs>
-                            <Link
-                                component='button'
-                                variant='body2'
-                                onClick={props.haveAccountHandler.bind(this)}
-                            >
-                                Alredy have an account
-                            </Link>
-                        </Grid>
-                    </Grid>
                 </form>
-            </Paper>
+            </Grid>
+            <Grid item>
+                <Grid container alignItems='stretch'>
+                    <Grid item >
+                        <Link
+                            component='button'
+                            variant='body2'
+                            onClick={props.haveAccountHandler.bind(this)}
+                        >
+                            Alredy have an account
+                            </Link>
+                    </Grid>
+                </Grid>
+            </Grid>
         </Grid>
     )
 }
