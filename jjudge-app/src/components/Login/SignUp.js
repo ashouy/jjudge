@@ -1,7 +1,6 @@
-import { Avatar, CssBaseline, Checkbox, Grid, makeStyles, Paper, Typography, TextField, FormControlLabel, Button, Link } from '@material-ui/core'
+import { Grid, makeStyles, TextField, Paper, Avatar, Typography, Button, Link, CssBaseline } from '@material-ui/core'
+import React from 'react'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import React, { useState } from 'react'
-
 const useStyles = makeStyles((theme) => ({
     paper: {
         margin: theme.spacing(8, 4),
@@ -22,41 +21,44 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2)
     },
-
 }))
 
-const SignIn = props => {
+const SignUp = props => {
     const classes = useStyles()
-    const [remember, setRemember] = useState(false)
-    
-    const ChangeRememberHandler = event => {
-        setRemember(event.target.checked)
-    }
 
-    const forgotPasswordHandler = () => {
-        alert('forgot :(')
-    }
     return (
+        
         <Grid item xs={12} sm={8} md={5} elevation={6}>
-            <CssBaseline />
+        <CssBaseline />
             <Paper className={classes.paper}>
                 <Avatar className={classes.avatar}>
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component='h1' variant='h5'>
-                    Sign in
+                    Sign up
                 </Typography>
 
                 <form className={classes.form}>
                     <TextField
                         variant='outlined'
                         margin='normal'
+                        required
                         fullWidth
                         id='email'
                         label='Email Address'
                         name='email'
                         autoComplete='email'
                         autoFocus
+                    />
+                    <TextField
+                        variant='outlined'
+                        margin='normal'
+                        required
+                        fullWidth
+                        id='name'
+                        label='Name'
+                        name='name'
+                        autoComplete='name'
                     />
                     <TextField
                         variant='outlined'
@@ -68,15 +70,15 @@ const SignIn = props => {
                         autoComplete='current-password'
                         type='password'
                     />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                value='remember'
-                                color='primary'
-                                onChange={ChangeRememberHandler}
-                            />
-                        }
-                        label='Remember me'
+                    <TextField
+                        variant='outlined'
+                        margin='normal'
+                        fullWidth
+                        id='cpassword'
+                        label='Confirm Password'
+                        name='cpassword'
+                        autoComplete='current-password'
+                        type='cpassword'
                     />
                     <Button
                         type='submit'
@@ -85,36 +87,24 @@ const SignIn = props => {
                         color='primary'
                         className={classes.submit}
                     >
-                        Sign In
+                        Sign Up
                     </Button>
 
                     <Grid container >
-                        <Grid item xs={6}>
+                        <Grid item xs>
                             <Link
                                 component='button'
                                 variant='body2'
-                                onClick={forgotPasswordHandler}
+                                onClick={props.haveAccountHandler.bind(this)}
                             >
-                                Forgot Password?
+                                Alredy have an account
                             </Link>
                         </Grid>
-                        <Grid item xs={6}>
-                            <Link
-                                component='button'
-                                variant='body2'
-                                
-                            >
-                                Don't haveAccount an account?
-                            </Link>
-                        </Grid>
-
                     </Grid>
                 </form>
-
             </Paper>
- 
         </Grid>
     )
 }
 
-export default SignIn
+export default SignUp
