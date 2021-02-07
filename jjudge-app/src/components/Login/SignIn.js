@@ -1,4 +1,4 @@
-import { Avatar, CssBaseline, Checkbox, Grid, makeStyles, Paper, Typography, TextField, FormControlLabel, Button, Link } from '@material-ui/core'
+import { Avatar,Slide, CssBaseline, Checkbox, Grid, makeStyles, Paper, Typography, TextField, FormControlLabel, Button, Link } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import React, { useState } from 'react'
 
@@ -30,6 +30,7 @@ const SignIn = props => {
         alert('forgot :(')
     }
     return (
+        <Slide direction='right' in={true} mountOnEnter unmountOnExit>
         <Grid
             container
             direction='column'
@@ -113,7 +114,8 @@ const SignIn = props => {
                 </Grid>
             </Grid>
         </Grid>
-    )
+        </Slide>
+    )   
 }
 
 export default SignIn

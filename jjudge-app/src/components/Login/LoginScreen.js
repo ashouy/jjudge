@@ -30,24 +30,25 @@ const LoginScreen = () => {
             container
             component='main'
             className={classes.root}
-            direction='row-reverse'
+            direction='row'
             alignItems='center'
         >
             <CssBaseline />
-            <Grid item>
-                <Slide direction='right' in={haveAccount} mountOnEnter unmountOnExit>
-                    <Paper className={classes.paper}>
-                        <SignIn haveAccountHandler={haveAccountHandler} />
-                    </Paper>
-                </Slide>
-
-                <Slide direction='right' in={!haveAccount} mountOnEnter unmountOnExit>
-                    <Paper className={classes.paper}>
-                        <SignUp haveAccountHandler={haveAccountHandler} />
-                    </Paper>
-                </Slide>
+            <Grid item xs={12} sm={8} md={6} lg={4}>
+                <Paper className={classes.paper}>
+                    {haveAccount 
+                    ?<SignUp haveAccountHandler={haveAccountHandler} />
+                    :<SignIn haveAccountHandler={haveAccountHandler} />
+                    }
+                </Paper>
+            </Grid>
+            <Grid item xs={12} sm={12} lg={8}>
+                <Paper className={classes.paper}>
+                    <Typography>text</Typography>
+                </Paper>
 
             </Grid>
+
 
         </Grid>
     )
