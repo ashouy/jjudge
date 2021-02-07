@@ -1,4 +1,4 @@
-import { Avatar,Slide, CssBaseline, Checkbox, Grid, makeStyles, Paper, Typography, TextField, FormControlLabel, Button, Link } from '@material-ui/core'
+import { Avatar, Slide, Zoom, CssBaseline, Checkbox, Grid, makeStyles, Paper, Typography, TextField, FormControlLabel, Button, Link } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import React, { useState } from 'react'
 
@@ -30,92 +30,97 @@ const SignIn = props => {
         alert('forgot :(')
     }
     return (
-        <Slide direction='right' in={true} mountOnEnter unmountOnExit>
-        <Grid
-            container
-            direction='column'
-            alignItems='center'
-            spacing={2}
+        <Zoom
+            //direction='right'
+            in={true}
+            //mountOnEnter
+            //unmountOnExit
         >
-            <CssBaseline />
-            <Grid item >
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
-            </Grid>
-            <Grid item >
-                <Typography component='h1' variant='h5'>
-                    Sign in
+            <Grid
+                container
+                direction='column'
+                alignItems='center'
+                spacing={2}
+            >
+                <CssBaseline />
+                <Grid item >
+                    <Avatar className={classes.avatar}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                </Grid>
+                <Grid item >
+                    <Typography component='h1' variant='h5'>
+                        Sign in
                 </Typography>
-            </Grid>
-            <Grid item >
-                <form className={classes.form}>
-                    <TextField
-                        variant='outlined'
-                        margin='normal'
-                        fullWidth
-                        id='email'
-                        label='Email Address'
-                        name='email'
-                        autoComplete='email'
-                        autoFocus
-                    />
-                    <TextField
-                        variant='outlined'
-                        margin='normal'
-                        fullWidth
-                        id='password'
-                        label='Password'
-                        name='password'
-                        autoComplete='current-password'
-                        type='password'
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                value='remember'
-                                color='primary'
-                                onChange={ChangeRememberHandler}
-                            />
-                        }
-                        label='Remember me'
-                    />
-                    <Button
-                        type='submit'
-                        fullWidth
-                        variant='contained'
-                        color='primary'
-                        className={classes.submit}
-                    >
-                        Sign In
+                </Grid>
+                <Grid item >
+                    <form className={classes.form}>
+                        <TextField
+                            variant='outlined'
+                            margin='normal'
+                            fullWidth
+                            id='email'
+                            label='Email Address'
+                            name='email'
+                            autoComplete='email'
+                            autoFocus
+                        />
+                        <TextField
+                            variant='outlined'
+                            margin='normal'
+                            fullWidth
+                            id='password'
+                            label='Password'
+                            name='password'
+                            autoComplete='current-password'
+                            type='password'
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    value='remember'
+                                    color='primary'
+                                    onChange={ChangeRememberHandler}
+                                />
+                            }
+                            label='Remember me'
+                        />
+                        <Button
+                            type='submit'
+                            fullWidth
+                            variant='contained'
+                            color='primary'
+                            className={classes.submit}
+                        >
+                            Sign In
                     </Button>
-                </form>
-            </Grid>
-            <Grid item >
-                <Grid container alignItems='stretch'>
-                    <Grid item xs={6}>
-                        <Link
-                            component='button'
-                            variant='body2'
-                            onClick={forgotPasswordHandler}
-                        >
-                            Forgot Password?
+                    </form>
+                </Grid>
+                <Grid item >
+                    <Grid container alignItems='stretch'>
+                        <Grid item xs={6}>
+                            <Link
+                                component='button'
+                                variant='body2'
+                                onClick={forgotPasswordHandler}
+                            >
+                                Forgot Password?
                             </Link>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Link
-                            component='button'
-                            variant='body2'
-                            onClick={props.haveAccountHandler.bind(this)}
-                        >
-                            Don't haveAccount an account?
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Link
+                                component='button'
+                                variant='body2'
+                                onClick={props.haveAccountHandler.bind(this)}
+                            >
+                                Don't haveAccount an account?
                             </Link>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Grid>
-        </Grid>
-        </Slide>
-    )   
+        </Zoom>
+    )
 }
 
 export default SignIn

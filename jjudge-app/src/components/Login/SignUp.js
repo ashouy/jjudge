@@ -1,4 +1,4 @@
-import { Grid, makeStyles, TextField, Avatar, Typography, Button, Link, CssBaseline, Slide } from '@material-ui/core'
+import { Grid, Zoom, makeStyles, TextField, Avatar, Typography, Button, Link, CssBaseline, Slide } from '@material-ui/core'
 import React from 'react'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 const useStyles = makeStyles((theme) => ({
@@ -20,7 +20,12 @@ const SignUp = props => {
     const classes = useStyles()
 
     return (
-        <Slide direction='left' in={true} mountOnEnter unmountOnExit>
+        <Zoom
+            //direction='left'
+            in={true}
+            //mountOnEnter
+            //unmountOnExit
+        >
             <Grid
                 container
                 direction='column'
@@ -105,7 +110,7 @@ const SignUp = props => {
                 </Grid>
 
             </Grid>
-        </Slide>
+        </Zoom>
     )
 }
 
