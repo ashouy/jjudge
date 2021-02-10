@@ -14,13 +14,13 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '5px',
         margin: 'auto',
         maxWidth: '950px',
-        [theme.breakpoints.up(900)]:{
-            minWidth: '900px',
-        }
+    //    [theme.breakpoints.up(900)]:{
+    //         minWidth: '900px',
+    //     } 
     },
     grow: {
         flexGrow: 1,
-
+        boxShadow:0
     },
 
     title: {
@@ -56,7 +56,7 @@ export default function PrimarySearchAppBar() {
     };
 
 
-    const menuId = 'primary-search-account-menu';
+    const menuId = 'account-menu';
     const renderMenu = (
         <Menu
             anchorEl={anchorEl}
@@ -75,13 +75,12 @@ export default function PrimarySearchAppBar() {
     return (
         <div className={classes.grow}>
 
-            <AppBar position="static" className={classes.appBar}>
+            <AppBar position='static' className={classes.appBar}>
                 <Toolbar>
                     <Typography className={classes.title} variant="h6" noWrap>
                         Judge
                     </Typography>
                     <div className={classes.grow}>
-
                     </div>
                     <div className={classes.sectionDesktop}>
                         <IconButton
