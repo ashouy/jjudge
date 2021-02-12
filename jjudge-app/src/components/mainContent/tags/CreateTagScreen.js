@@ -1,6 +1,5 @@
 import { Grid, makeStyles, Typography } from '@material-ui/core'
 import React from 'react'
-import TagCard from './TagCard'
 
 
 function createData(name, description, amount) {
@@ -17,39 +16,27 @@ const cards = [
     createData('TODOS', 'Problemas básicos para que acabou de iniciar na programação', 1253)
 ]
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
+const useStyles = makeStyles((theme) =>({
+    root:{
+        padding:'2px'
     },
-    title_bar: {
-        padding: '5px'
+    title_bar:{ 
     }
 }))
 
 const Tags = props => {
-    const classes = useStyles()
-
+    const classes= useStyles()
+    
     return (
-        <Grid
-            container
-            direction='row'
-            spacing={2}
-            justify='flex-start'
-            alignItems='flex-start'
-            className={classes.root}
-        >
-            <Grid item className={classes.title_bar} xs={12}>
+        <Grid  
+        container 
+        direction='column' 
+        spacing={2} 
+        alignItems='stretch'
+        className={classes.root}>
+            <Grid item className={classes.title_bar}>
                 <Typography>CATEGORIES</Typography>
             </Grid>
-
-            {cards.map((card, index) => {
-                return (
-                    <Grid item xs={12} sm={6} md={4}>
-                        <TagCard
-                         />
-                    </Grid>
-                )
-            })}
         </Grid>
     )
 }

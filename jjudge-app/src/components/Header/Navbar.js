@@ -10,7 +10,9 @@ const useStyles = makeStyles((theme) => ({
         margin: 'auto',
         maxWidth: '950px',
         marginTop: '5px',
-        border: '1px solid black',
+        backgroundColor: '#e6e6ff',
+        padding:'2px',
+        boxShadow:' 1px 3px 5px #4d4dff'
     },
     ul: {
         listStyleType: 'none',
@@ -22,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     li: {
         display: 'inline',
         float: 'left',
+        margin:'1px'
     },
 
 
@@ -111,6 +114,12 @@ const Navbar = () => {
                     className={classes.li}>
                     <Link to='/help' style={{ textDecoration: 'none' }} >
                         <Button variant='outlined' color='primary'>Help</Button>
+                    </Link>
+                </li>
+                <li
+                    className={classes.li}>
+                    <Link to='/tags' style={{ textDecoration: 'none' }} >
+                        <Button variant='outlined' color='primary'>Tags</Button>
                     </Link>
                 </li>
             </ul>

@@ -10,7 +10,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
-        backgroundColor: '#ffffff',
+        backgroundColor: '#e6e6ff',
         borderRadius: '5px',
         margin: 'auto',
         maxWidth: '950px',

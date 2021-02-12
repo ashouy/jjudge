@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -6,7 +6,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import { Button, Grid, TableFooter } from '@material-ui/core';
 import TablePagination from '@material-ui/core/TablePagination'
 import SearchIcon from '@material-ui/icons/Search';
@@ -47,7 +46,7 @@ const rows = [
 const Problems = props => {
 
     const classes = useStyles();
-    const [page, setPage] = React.useState(0);
+    const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -61,13 +60,11 @@ const Problems = props => {
         setPage(0);
     };
     return (
-
         <TableContainer component={'div'} className={classes.root}>
             <Filter />
             <Table className={classes.table} aria-label="simple table" size='small'>
                 <TableHead>
                     <TableRow>
-
                         <TableCell align='left'>Title</TableCell>
                         <TableCell />
                         <TableCell align='left'>Info</TableCell>
