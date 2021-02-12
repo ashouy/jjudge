@@ -7,24 +7,27 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Button, TableFooter } from '@material-ui/core';
+import { Button, Grid, TableFooter } from '@material-ui/core';
 import TablePagination from '@material-ui/core/TablePagination'
-
+import SearchIcon from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton'
 import InfoIcon from '@material-ui/icons/Info';
+import Filter from './Filter';
 
 const useStyles = makeStyles({
     table: {
         minWidth: 650,
+        border: '1px solid black',
+        marginTop: '2px'
     },
-});
-
-const useStyles1 = makeStyles((theme) => ({
+    filter: {
+        border: '1px solid black'
+    },
     root: {
-        flexShrink: 0,
-        marginLeft: theme.spacing(2.5),
-    },
-}));
+        flexGrow: 1
+
+    }
+});
 
 function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
@@ -58,11 +61,15 @@ const Problems = props => {
         setPage(0);
     };
     return (
-        <TableContainer component={Paper}>
+
+        <TableContainer component={'div'} className={classes.root}>
+            <Filter />
             <Table className={classes.table} aria-label="simple table" size='small'>
                 <TableHead>
                     <TableRow>
-                        <TableCell align='left' >Title</TableCell>
+
+                        <TableCell align='left'>Title</TableCell>
+                        <TableCell />
                         <TableCell align='left'>Info</TableCell>
                         <TableCell align="right">Code</TableCell>
                         <TableCell align="right">Tag</TableCell>
@@ -77,17 +84,25 @@ const Problems = props => {
                     ).map((row) => {
                         return (
                             <TableRow
-                                hover
+
                                 key={row.name}
                             >
-                                <TableCell component="th" scope="row">
+
+                                <TableCell component="th" scope="row" >
                                     {row.name}
+                                </TableCell>
+
+                                <TableCell>
+                                    <IconButton size='small'>
+                                        <SearchIcon />
+                                    </IconButton>
                                 </TableCell>
                                 <TableCell align='left'>
                                     <IconButton >
                                         <InfoIcon />
                                     </IconButton>
                                 </TableCell>
+
                                 <TableCell align="right">{row.calories}</TableCell>
                                 <TableCell align="right">{row.fat}</TableCell>
                                 <TableCell align="right">{row.carbs}</TableCell>
@@ -101,9 +116,10 @@ const Problems = props => {
                         </TableRow>
                     )}
                 </TableBody>
-                <TableFooter>
+                <TableFooter >
                     <TableRow>
                         <TablePagination
+                            align='right'
                             rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                             component='div'
                             // colSpan={3}
@@ -117,6 +133,7 @@ const Problems = props => {
                 </TableFooter>
             </Table>
         </TableContainer>
+
     );
 }
 

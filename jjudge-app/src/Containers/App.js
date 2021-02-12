@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
     },
     mainContent: {
+        padding:'4px',
         marginTop: '10px',
         maxWidth: '950px',
         margin: 'auto',
