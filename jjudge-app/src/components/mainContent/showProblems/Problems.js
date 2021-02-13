@@ -81,14 +81,11 @@ const Problems = props => {
                     ).map((row) => {
                         return (
                             <TableRow
-
                                 key={row.name}
                             >
-
                                 <TableCell component="th" scope="row" >
                                     {row.name}
                                 </TableCell>
-
                                 <TableCell>
                                     <IconButton size='small'>
                                         <SearchIcon />
@@ -99,7 +96,6 @@ const Problems = props => {
                                         <InfoIcon />
                                     </IconButton>
                                 </TableCell>
-
                                 <TableCell align="right">{row.calories}</TableCell>
                                 <TableCell align="right">{row.fat}</TableCell>
                                 <TableCell align="right">{row.carbs}</TableCell>

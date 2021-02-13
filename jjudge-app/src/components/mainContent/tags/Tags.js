@@ -4,7 +4,7 @@ import TagCard from './TagCard'
 
 
 function createData(name, description, amount) {
-    return name, description, amount
+    return {name, description, amount}
 }
 const cards = [
     createData('INICIANTE', 'Problemas básicos para que acabou de iniciar na programação', 49),
@@ -42,14 +42,16 @@ const Tags = props => {
                 <Typography>CATEGORIES</Typography>
             </Grid>
 
-            {cards.map((card, index) => {
-                return (
-                    <Grid item xs={12} sm={6} md={4}>
-                        <TagCard
-                         />
-                    </Grid>
-                )
-            })}
+            {cards.map((card, index) =>
+                <Grid key={index} item xs={12} sm={6} md={4}>
+                    <TagCard
+                        title={card.name}
+                        description={card.description}
+                        amount={card.amount}
+                    />
+                </Grid>
+            )
+            }
         </Grid>
     )
 }
