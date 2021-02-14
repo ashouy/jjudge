@@ -1,4 +1,4 @@
-import { Button, Checkbox, Divider, FormControlLabel, Grid, makeStyles, TextField, Typography } from '@material-ui/core'
+import { Button, Checkbox, Divider, FormControl, FormControlLabel, Grid, InputLabel, makeStyles, MenuItem, Select, TextField, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import TestCasesList from './TestCasesList'
 
@@ -7,37 +7,65 @@ const useStyles = makeStyles((theme) => ({
 
     }
 }))
+
+const options = [
+    'grafos',
+    'vetores',
+    'arrays',
+    'struct',
+    'matriz',
+    'programação funcional',
+    'pilha',
+    'fila',
+];
 const CreateProblemScreen = props => {
     const classes = useStyles()
     const [visibility, setVisibility] = useState(false)
+    const [tag, setTag] = useState('')
 
     const changeVisibilityHandler = event => {
         setVisibility(event.target.checked)
+    }
+    const changeTagHandler = event => {
+        setTag(event.target.value)
     }
     return (
         <Grid
             container
             direction='column'
-            spacing='2'
+            spacing={2}
             className={classes.root}
         >
             <Grid item>
                 <TextField label='Title' />
             </Grid>
             <Grid item>
-
+                <FormControl>
+                    <InputLabel>Tag</InputLabel>
+                    <Select
+                        value={tag}
+                        onChange={changeTagHandler}
+                    >
+                        {options.map((tag, index) => (
+                            <MenuItem key={index} value={tag} >{tag}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
             </Grid>
+
             <Grid item>
                 <TextField label='Enunciated' />
             </Grid>
+            <Select>
 
+            </Select>
             <Grid item>
                 <Typography>Test Cases</Typography>
                 <Divider />
                 <Grid
                     container
                     direction='row'
-                    spacing='2'
+                    spacing={2}
                     justify='flex-start'
                     alignItems='center'
                 >
@@ -73,7 +101,8 @@ const CreateProblemScreen = props => {
                 <TestCasesList />
             </Grid>
             <Grid item>
-                <Typography> Save container</Typography>
+                <Button variant='outlined'>Save</Button>
+                <Button variant='outlined'>Cancel</Button>
             </Grid>
         </Grid>
     )

@@ -112,7 +112,6 @@ const Problems = props => {
                 <TableFooter >
                     <TableRow>
                         <TablePagination
-                            align='right'
                             rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                             component='div'
                             // colSpan={3}
