@@ -1,5 +1,4 @@
 import { FormControl, Grid, InputLabel, List, ListItem, ListItemText, makeStyles, Menu, MenuItem, Select, TextField } from '@material-ui/core'
-import { TagFacesSharp } from '@material-ui/icons';
 import React, { useState } from 'react'
 
 const useStyles = makeStyles((theme) => ({
@@ -47,12 +46,6 @@ const Filter = props => {
     const [level, setLevel] = useState('')
     const [tag, setTag] = useState('')
 
-
-    const [anchorElTag, setAnchorElTag] = useState(null);
-    const [anchorElLevel, setAnchorElLevel] = useState(null);
-    const [selectedIndexTag, setSelectedIndexTag] = useState(1);
-    const [selectedIndexLevel, setSelectedIndexLevel] = useState(1);
-
     const changeLevelHandler = event => {
         setLevel(event.target.value)
     }
@@ -60,30 +53,6 @@ const Filter = props => {
         setTag(event.target.value)
     }
 
-    const handleClickListItemTag = (event) => {
-        setAnchorElTag(event.currentTarget);
-    };
-
-    const handleMenuItemClickTag = (event, index) => {
-        setSelectedIndexTag(index);
-        setAnchorElTag(null);
-    };
-    const handleCloseTag = () => {
-        setAnchorElTag(null);
-    };
-
-
-    const handleClickListItemLevel = (event) => {
-        setAnchorElLevel(event.currentTarget);
-    };
-
-    const handleMenuItemClickLevel = (event, index) => {
-        setSelectedIndexLevel(index);
-        setAnchorElLevel(null);
-    };
-    const handleCloseLevel = () => {
-        setAnchorElLevel(null);
-    };
     return (
         <Grid container
             className={classes.root}
