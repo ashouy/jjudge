@@ -1,4 +1,5 @@
-import { Grid, List, ListItem, ListItemText, makeStyles, Menu, MenuItem, TextField } from '@material-ui/core'
+import { FormControl, Grid, InputLabel, List, ListItem, ListItemText, makeStyles, Menu, MenuItem, Select, TextField } from '@material-ui/core'
+import { TagFacesSharp } from '@material-ui/icons';
 import React, { useState } from 'react'
 
 const useStyles = makeStyles((theme) => ({
@@ -11,8 +12,16 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const ITEM_HEIGHT = 48;
-
-const options = [
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
+const tagOpt = [
     'grafos',
     'vetores',
     'arrays',
@@ -22,6 +31,8 @@ const options = [
     'pilha',
     'fila',
 ];
+
+
 const levelList = [
     'Muito Fácil',
     'Fácil',
@@ -33,10 +44,21 @@ const levelList = [
 const Filter = props => {
 
     const classes = useStyles()
+    const [level, setLevel] = useState('')
+    const [tag, setTag] = useState('')
+
+
     const [anchorElTag, setAnchorElTag] = useState(null);
     const [anchorElLevel, setAnchorElLevel] = useState(null);
     const [selectedIndexTag, setSelectedIndexTag] = useState(1);
     const [selectedIndexLevel, setSelectedIndexLevel] = useState(1);
+
+    const changeLevelHandler = event => {
+        setLevel(event.target.value)
+    }
+    const changeTagHandler = event => {
+        setTag(event.target.value)
+    }
 
     const handleClickListItemTag = (event) => {
         setAnchorElTag(event.currentTarget);
@@ -50,7 +72,7 @@ const Filter = props => {
         setAnchorElTag(null);
     };
 
-    
+
     const handleClickListItemLevel = (event) => {
         setAnchorElLevel(event.currentTarget);
     };
@@ -74,81 +96,39 @@ const Filter = props => {
                     label='Título/Código'
                 />
             </Grid>
-      
-            <Grid item>
-                <List component="nav" aria-label="Tags">
-                    <ListItem
-                        button
-                        aria-haspopup="true"
-                        aria-controls="tag-list"
-                        aria-label="Tag"
-                        onClick={handleClickListItemTag}
-                    >
-                        <ListItemText primary="Tag" secondary={options[selectedIndexTag]} />
-                    </ListItem>
-                </List>
-                <Menu
-                    id="tag-list"
-                    anchorEl={anchorElTag}
-                    keepMounted
-                    open={Boolean(anchorElTag)}
-                    onClose={handleCloseTag}
-                    PaperProps={{
-                        style: {
-                            maxHeight: ITEM_HEIGHT * 4.5,
-                            width: '20ch'
-                        }
-                    }}
-                >
-                    {options.map((option, index) => (
-                        <MenuItem
-                            key={option}
-                            selected={index === selectedIndexTag}
-                            onClick={(event) => handleMenuItemClickTag(event, index)}
-                        >
-                            {option}
-                        </MenuItem>
-                    ))}
-                </Menu>
 
+            <Grid item>
+                <FormControl>
+                    <InputLabel>Tags</InputLabel>
+                    <Select
+                        value={tag}
+                        onChange={changeTagHandler}
+                        MenuProps={MenuProps}
+                    >
+                        {
+                            tagOpt.map((tag, index) =>(
+                                <MenuItem key={index} value={tag} >{tag}</MenuItem>
+                            ))
+                        }
+                    </Select>
+                </FormControl>
             </Grid>
-            
-            <Grid item>
-                <List component="nav" aria-label="Levels">
-                    <ListItem
-                        button
-                        aria-haspopup="true"
-                        aria-controls="level-list"
-                        aria-label="Level"
-                        onClick={handleClickListItemLevel}
-                    >
-                        <ListItemText primary="Nível" secondary={levelList[selectedIndexLevel]} />
-                    </ListItem>
-                </List>
-                <Menu
-                    id="level-list"
-                    anchorEl={anchorElLevel}
-                    keepMounted
-                    open={Boolean(anchorElLevel)}
-                    onClose={handleCloseLevel}
-                    PaperProps={{
-                        style: {
-                            maxHeight: ITEM_HEIGHT * 4.5,
-                            width: '20ch'
-                        }
-                    }}
-                >
-                    {levelList.map((level, index) => (
-                        <MenuItem
-                            key={level}
-                            selected={index === selectedIndexLevel}
-                            onClick={(event) => handleMenuItemClickLevel(event, index)}
-                        >
-                            {level}
-                        </MenuItem>
-                    ))}
-                </Menu>
 
+            <Grid item>
+                <FormControl>
+                    <InputLabel>Nível</InputLabel>
+                    <Select
+                        value={level}
+                        onChange={changeLevelHandler}
+                        MenuProps={MenuProps}
+                    >
+                        {
+                            levelList.map((level, index) =>(
+                                <MenuItem key={index} value={level} >{level}</MenuItem>
+                            ))
+                        }
+                    </Select>
+                </FormControl>
             </Grid>
         </Grid>
     )
