@@ -18,15 +18,13 @@ const useStyles = makeStyles((theme) => ({
 
     },
     mainContent: {
-        backgroundColor:'#e6e6ff',
-        padding:'4px',
+        padding:'10px',
         marginTop: '10px',
         maxWidth: '950px',
         margin: 'auto',
         flexGrow: 1,
-        borderRadius: '5px',
-        boxShadow:' 1px 3px 5px #4d4dff'
-
+        borderRadius: '3px',
+        border: '1px solid #e1e4e8',
     }
 
 }))

@@ -1,9 +1,8 @@
-import { Button, Checkbox, FormControlLabel, Grid, makeStyles, TextField } from '@material-ui/core'
+import { Button, Checkbox, FormControlLabel, Grid, makeStyles, TextField, Typography } from '@material-ui/core'
 import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
     root: {
-
     }
 }))
 
@@ -19,30 +18,31 @@ const tests = [
 ]
 
 const TestCasesList = props => {
-
+    const classes = useStyles()
     return (
         <Grid
             container
             direction='column'
             justify='flex-start'
+            spacing={2}
         >
             {tests.map((test, index) => {
                 return (
                     <Grid
                         key={index}
                         container
-                        direction='row'
+                        direction='column'
                         justify='flex-start'
-                        alignItems='center'>
+                        alignItems='stretch'
+                        className={classes.root}
+                        >
                         <Grid item>
-                            <TextField
-                                variant='outlined'
-                                label={test.name}
-                                disabled
-                            />
+                            <Typography>{test.name}</Typography>
                         </Grid>
                         <Grid item>
                             <TextField
+                                fullWidth
+                                multiline
                                 variant='outlined'
                                 label={test.stdin}
                                 disabled
@@ -50,7 +50,9 @@ const TestCasesList = props => {
                         </Grid>
                         <Grid item>
                             <TextField
-                            variant='outlined'
+                                fullWidth
+                                multiline
+                                variant='outlined'
                                 label={test.expectStdout}
                                 disabled
                             />

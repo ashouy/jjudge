@@ -6,13 +6,13 @@ import { Button, Menu, MenuItem } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        borderRadius: '5px',
+        borderRadius: '3px',
         margin: 'auto',
         maxWidth: '950px',
         marginTop: '5px',
-        backgroundColor: '#e6e6ff',
-        padding:'2px',
-        boxShadow:' 1px 3px 5px #4d4dff'
+        paddingLeft:'10px',
+        paddingRight:'10px',
+        borderBottom: '1px solid #e1e4e8',
     },
     ul: {
         listStyleType: 'none',

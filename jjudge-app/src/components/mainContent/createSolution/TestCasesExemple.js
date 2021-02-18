@@ -3,16 +3,16 @@ import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        
     },
-    testCases:{
-        border: '1px solid black',
-        
+    testCases: {
+        border: '1px solid #e1e4e8',
+        borderRadius: '3px',
+        backgroundColor: '#f1f2f4',
     }
 }))
 
 function create(name, stdin, expectedStdoutput,) {
-    return {name, stdin, expectedStdoutput}
+    return { name, stdin, expectedStdoutput }
 }
 const testCases = [
     create('divAB', 'stdin exemple', 'stdout exemple'),
@@ -30,10 +30,10 @@ const TestCasesExemple = props => {
         <Grid
             container
             direction='column'
-            spacing={1}
-            justify='flex-start'
+s            justify='flex-start'
             alignItems='stretch'
             className={classes.root}
+            spacing={2}
         >
             {
                 testCases.map((test, index) => (
@@ -48,33 +48,24 @@ const TestCasesExemple = props => {
 
                         >
                             <Grid item >
-                                <Typography>Name</Typography>
-                                <Divider />
-                                <TextField
-                                    fullWidth
-                                    variant='outlined'
-                                    disabled
-                                    defaultValue={test.name}
-                                />
+                                <Typography>{test.name}</Typography>
                             </Grid>
                             <Grid item>
-                                <Typography>Stdin</Typography>
-                                <Divider />
                                 <TextField
                                     fullWidth
                                     variant='outlined'
                                     disabled
                                     defaultValue={test.stdin}
-                                />
+                                    label='stdin'
+                                    />
                             </Grid>
                             <Grid item>
-                                <Typography>Expected Output</Typography>
-                                <Divider />
                                 <TextField
                                     fullWidth
                                     variant='outlined'
                                     disabled
                                     defaultValue={test.expectedStdoutput}
+                                    label='expected stdout'
                                 />
                             </Grid>
                         </Grid>

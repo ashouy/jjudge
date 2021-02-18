@@ -10,10 +10,12 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
-        backgroundColor: '#e6e6ff',
-        borderRadius: '5px',
+        borderRadius: '3px',
         margin: 'auto',
         maxWidth: '950px',
+        marginTop: '5px',
+        padding:'2px',
+        border: '1px solid #e1e4e8'
     //    [theme.breakpoints.up(900)]:{
     //         minWidth: '900px',
     //     } 
@@ -75,7 +77,7 @@ export default function PrimarySearchAppBar() {
     return (
         <div className={classes.grow}>
 
-            <AppBar position='static' className={classes.appBar}>
+            <div position='static' className={classes.appBar}>
                 <Toolbar>
                     <Typography className={classes.title} variant="h6" noWrap>
                         Judge
@@ -95,7 +97,7 @@ export default function PrimarySearchAppBar() {
                     </div>
 
                 </Toolbar>
-            </AppBar>
+            </div>
             {renderMenu}
 
         </div>

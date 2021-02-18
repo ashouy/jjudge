@@ -1,6 +1,7 @@
 import { Button, Checkbox, Divider, FormControl, FormControlLabel, Grid, InputLabel, makeStyles, MenuItem, Select, TextField, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import TestCasesList from './TestCasesList'
+import CreateTag from './CreateTag'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -18,6 +19,9 @@ const options = [
     'pilha',
     'fila',
 ];
+const createTag = (name, description) =>{
+    return{name, description}
+}
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -29,10 +33,26 @@ const MenuProps = {
     },
 };
 const CreateProblemScreen = props => {
+    const [tags, setTags] = useState([])
     const classes = useStyles()
     const [visibility, setVisibility] = useState(false)
     const [tag, setTag] = useState('')
+    const [dialog, setDialog] = useState(false)
 
+    const openDialogHandler = () => {
+        setDialog(true)
+    }
+    const closeDialogHandler = () => {
+        setDialog(false)
+    }
+
+    const saveTagHandler = (tagName, tagDescription) => {
+        const newTag = createTag(tagName, tagDescription)
+        setTags(prevTags =>[
+            ...prevTags, newTag
+        ])
+        setDialog(false)
+    }
     const changeVisibilityHandler = event => {
         setVisibility(event.target.checked)
     }
@@ -58,34 +78,63 @@ const CreateProblemScreen = props => {
                         MenuProps={MenuProps}
                     >
                         {
-                            options.map((tag, index) => (
-                                <MenuItem key={index} value={tag} >{tag}</MenuItem>
-                        ))}
+                            tags.map((tag, index) => (
+                                <MenuItem key={index} value={tag.name} >{tag.name}</MenuItem>
+                            ))}
                     </Select>
                 </FormControl>
+                <Button
+                    style={{ marginLeft: '8px' }}
+                    variant='outlined'
+                    onClick={openDialogHandler}
+                >
+                    New Tag
+                </Button>
             </Grid>
-
+            <CreateTag
+                open={dialog}
+                handleClose={closeDialogHandler}
+                saveTag={saveTagHandler}
+            />
             <Grid item>
-                <TextField label='Enunciated' />
+                <TextField
+                    label='Enunciated'
+                    fullWidth
+                    variant='outlined'
+                    multiline
+                    rows={5}
+                />
             </Grid>
+            <Divider />
             <Grid item>
                 <Typography>Test Cases</Typography>
-                <Divider />
                 <Grid
                     container
-                    direction='row'
+                    direction='column'
                     spacing={2}
                     justify='flex-start'
-                    alignItems='center'
+                    alignItems='stretch'
                 >
                     <Grid item>
                         <TextField label='Name' />
                     </Grid>
                     <Grid item>
-                        <TextField label='Stdin' />
+                        <TextField
+                            label='Stdin'
+                            fullWidth
+                            variant='outlined'
+                            multiline
+                            rows={3}
+                        />
                     </Grid>
                     <Grid item>
-                        <TextField label='Expected Stdout' />
+                        <TextField
+                            label='Expected Stdout'
+                            fullWidth
+                            variant='outlined'
+                            multiline
+                            rows={3}
+                        />
                     </Grid>
                     <Grid item>
                         <FormControlLabel
@@ -105,8 +154,9 @@ const CreateProblemScreen = props => {
                     </Grid>
                 </Grid>
             </Grid>
-
+            <Divider />
             <Grid item>
+                <Typography>Casos de Teste Adicionados</Typography>
                 <TestCasesList />
             </Grid>
             <Grid item>
