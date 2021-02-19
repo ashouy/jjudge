@@ -26,7 +26,7 @@ const TestCasesList = props => {
             justify='flex-start'
             spacing={2}
         >
-            {tests.map((test, index) => {
+            {props.tests.map((test, index) => {
                 return (
                     <Grid
                         key={index}
@@ -35,7 +35,7 @@ const TestCasesList = props => {
                         justify='flex-start'
                         alignItems='stretch'
                         className={classes.root}
-                        >
+                    >
                         <Grid item>
                             <Typography>{test.name}</Typography>
                         </Grid>
@@ -53,7 +53,7 @@ const TestCasesList = props => {
                                 fullWidth
                                 multiline
                                 variant='outlined'
-                                label={test.expectStdout}
+                                label={test.stdout}
                                 disabled
                             />
                         </Grid>
@@ -61,6 +61,7 @@ const TestCasesList = props => {
                             <FormControlLabel
                                 control={
                                     <Checkbox
+
                                         checked={test.visibility}
                                         name='visibilityBtn'
                                         color='primary'
@@ -71,7 +72,11 @@ const TestCasesList = props => {
                             />
                         </Grid>
                         <Grid item>
-                            <Button variant='outlined'>Remove</Button>
+                            <Button
+                                onClick={props.onRemove.bind(this, index)}
+                                variant='outlined'>
+                                Remove
+                                 </Button>
                         </Grid>
                     </Grid>
                 )

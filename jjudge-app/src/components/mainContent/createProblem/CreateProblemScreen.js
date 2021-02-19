@@ -19,8 +19,8 @@ const options = [
     'pilha',
     'fila',
 ];
-const createTag = (name, description) =>{
-    return{name, description}
+const createTag = (name, description) => {
+    return { name, description }
 }
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -32,23 +32,54 @@ const MenuProps = {
         },
     },
 };
+const createTestCase = (name, stdin, stdout, visibility) =>{
+    return {name, stdin, stdout, stdout, visibility}
+}
+
 const CreateProblemScreen = props => {
     const [tags, setTags] = useState([])
     const classes = useStyles()
     const [visibility, setVisibility] = useState(false)
+    const [stdin, setStdin] = useState('')
+    const [stdout, setStdout] = useState('')
+    const [testCaseName, setTestCaseName] = useState('')
     const [tag, setTag] = useState('')
     const [dialog, setDialog] = useState(false)
+    const [addedTestCases, setAddedTestCases] = useState([])
 
+    const addTestCaseHandler = () => {
+        setAddedTestCases(prevTests => [
+            ...prevTests, createTestCase(testCaseName, stdin, stdout, visibility)
+        ])
+        setVisibility(false)
+        setStdout('')
+        setStdin('')
+        setTestCaseName('')
+    }
+    const removeTestCases = (index) =>{
+        setAddedTestCases(addedTestCases.filter((test)=>{
+            return addedTestCases.indexOf(test) != index
+        }))
+
+    }
+    const stdinHandler = event => {
+        setStdin(event.target.value)
+    }
+    const stdoutHandler = event => {
+        setStdout(event.target.value)
+    }
+    const testCaseNameHandler = event => {
+        setTestCaseName(event.target.value)
+    }
     const openDialogHandler = () => {
         setDialog(true)
     }
     const closeDialogHandler = () => {
         setDialog(false)
     }
-
     const saveTagHandler = (tagName, tagDescription) => {
         const newTag = createTag(tagName, tagDescription)
-        setTags(prevTags =>[
+        setTags(prevTags => [
             ...prevTags, newTag
         ])
         setDialog(false)
@@ -116,19 +147,28 @@ const CreateProblemScreen = props => {
                     alignItems='stretch'
                 >
                     <Grid item>
-                        <TextField label='Name' />
+                        <TextField
+                            value={testCaseName}
+                            onChange={testCaseNameHandler}
+                            label='Name'
+                        />
                     </Grid>
                     <Grid item>
                         <TextField
+                            value={stdin}
+                            onChange={stdinHandler}
                             label='Stdin'
                             fullWidth
                             variant='outlined'
                             multiline
                             rows={3}
+
                         />
                     </Grid>
                     <Grid item>
                         <TextField
+                            value={stdout}
+                            onChange={stdoutHandler}
                             label='Expected Stdout'
                             fullWidth
                             variant='outlined'
@@ -150,14 +190,19 @@ const CreateProblemScreen = props => {
                         />
                     </Grid>
                     <Grid item>
-                        <Button variant='outlined'>Add</Button>
+                        <Button
+                            variant='outlined'
+                            onClick={addTestCaseHandler}
+                        >
+                            Add
+                        </Button>
                     </Grid>
                 </Grid>
             </Grid>
             <Divider />
             <Grid item>
                 <Typography>Casos de Teste Adicionados</Typography>
-                <TestCasesList />
+                <TestCasesList tests={addedTestCases} onRemove={removeTestCases}/>
             </Grid>
             <Grid item>
                 <Button variant='outlined'>Save</Button>
