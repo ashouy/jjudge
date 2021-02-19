@@ -41,6 +41,7 @@ const TestCasesList = props => {
                         </Grid>
                         <Grid item>
                             <TextField
+                                rows={4}
                                 fullWidth
                                 multiline
                                 variant='outlined'
@@ -50,6 +51,7 @@ const TestCasesList = props => {
                         </Grid>
                         <Grid item>
                             <TextField
+                                rows={4}
                                 fullWidth
                                 multiline
                                 variant='outlined'

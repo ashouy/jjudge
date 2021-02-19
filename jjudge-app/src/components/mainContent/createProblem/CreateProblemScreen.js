@@ -2,6 +2,7 @@ import { Button, Checkbox, Divider, FormControl, FormControlLabel, Grid, InputLa
 import React, { useState } from 'react'
 import TestCasesList from './TestCasesList'
 import CreateTag from './CreateTag'
+import axios from 'axios'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -9,21 +10,13 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const options = [
-    'grafos',
-    'vetores',
-    'arrays',
-    'struct',
-    'matriz',
-    'programação funcional',
-    'pilha',
-    'fila',
-];
-const createTag = (name, description) => {
-    return { name, description }
+
+const createTag = (name, description, isNew) => {
+    return { name, description, isNew}
 }
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
+
 const MenuProps = {
     PaperProps: {
         style: {
@@ -32,21 +25,63 @@ const MenuProps = {
         },
     },
 };
-const createTestCase = (name, stdin, stdout, visibility) =>{
-    return {name, stdin, stdout, stdout, visibility}
+
+const levels =[
+    'Muito Fácil',
+    'Fácil',
+    'Médio',
+    'Difícil',
+    'Muito Difícil',
+]
+
+const createTestCase = (name, stdin, stdout, visibility) => {
+    return { name, stdin, stdout, stdout, visibility }
 }
 
 const CreateProblemScreen = props => {
-    const [tags, setTags] = useState([])
     const classes = useStyles()
+
+    const [tags, setTags] = useState([])
+    const [tag, setTag] = useState('')
+    const [level, setLevel] = useState('')
+    const [title, setTitle] = useState('')
+    const [enunciated, setEnunciated] = useState('')
+    const [dialog, setDialog] = useState(false)
+
     const [visibility, setVisibility] = useState(false)
     const [stdin, setStdin] = useState('')
     const [stdout, setStdout] = useState('')
     const [testCaseName, setTestCaseName] = useState('')
-    const [tag, setTag] = useState('')
-    const [dialog, setDialog] = useState(false)
     const [addedTestCases, setAddedTestCases] = useState([])
 
+    const saveProblem = () => {
+        const newTags = tags.filter((tag)=>{
+            return tag.isNew === true
+        })
+        const problem = {
+            title: title,
+            enunciated: enunciated,
+            level: level,
+            newTags: newTags,
+            selectedTag: tag,
+            testCases: addedTestCases,
+        }
+        axios({
+            method:'post',
+            url:'https://ahdahld',
+            data: problem
+            // headers:{"x-access-token": token}
+        })
+    }
+    const levelHandler = event =>{
+        setLevel(event.target.value)
+    }
+    const titleHandler = event => {
+        setTitle(event.target.value)
+    }
+    const enunciatedHandler = event => {
+        setEnunciated(event.target.value)
+    }
     const addTestCaseHandler = () => {
         setAddedTestCases(prevTests => [
             ...prevTests, createTestCase(testCaseName, stdin, stdout, visibility)
@@ -56,9 +91,9 @@ const CreateProblemScreen = props => {
         setStdin('')
         setTestCaseName('')
     }
-    const removeTestCases = (index) =>{
-        setAddedTestCases(addedTestCases.filter((test)=>{
-            return addedTestCases.indexOf(test) != index
+    const removeTestCases = (index) => {
+        setAddedTestCases(addedTestCases.filter((test) => {
+            return addedTestCases.indexOf(test) !== index
         }))
 
     }
@@ -78,7 +113,7 @@ const CreateProblemScreen = props => {
         setDialog(false)
     }
     const saveTagHandler = (tagName, tagDescription) => {
-        const newTag = createTag(tagName, tagDescription)
+        const newTag = createTag(tagName, tagDescription, true)
         setTags(prevTags => [
             ...prevTags, newTag
         ])
@@ -98,7 +133,28 @@ const CreateProblemScreen = props => {
             className={classes.root}
         >
             <Grid item>
-                <TextField label='Title' />
+                <TextField
+                    onChange={titleHandler}
+                    value={title}
+                    label='Title'
+                />
+            
+            </Grid>
+            <Grid item>
+                <FormControl>
+                    <InputLabel>Nível</InputLabel>
+                    <Select
+                        value={level}
+                        onChange={levelHandler}
+                        MenuProps={MenuProps}
+                    >
+                        {
+                            levels.map((level, index)=>(
+                                <MenuItem key={index} value={level}>{level}</MenuItem>
+                            ))
+                        }
+                    </Select>
+                </FormControl>
             </Grid>
             <Grid item>
                 <FormControl>
@@ -129,6 +185,8 @@ const CreateProblemScreen = props => {
             />
             <Grid item>
                 <TextField
+                    onChange={enunciatedHandler}
+                    value={enunciated}
                     label='Enunciated'
                     fullWidth
                     variant='outlined'
@@ -202,10 +260,15 @@ const CreateProblemScreen = props => {
             <Divider />
             <Grid item>
                 <Typography>Casos de Teste Adicionados</Typography>
-                <TestCasesList tests={addedTestCases} onRemove={removeTestCases}/>
+                <TestCasesList tests={addedTestCases} onRemove={removeTestCases} />
             </Grid>
             <Grid item>
-                <Button variant='outlined'>Save</Button>
+                <Button
+                    onClick={saveProblem}
+                    variant='outlined'
+                >
+                    Save
+                </Button>
                 <Button variant='outlined'>Cancel</Button>
             </Grid>
         </Grid>
