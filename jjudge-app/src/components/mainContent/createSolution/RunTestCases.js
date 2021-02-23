@@ -10,7 +10,6 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#f1f2f4',
     }
 }))
-
 function create(name, stdin, expectedStdoutput,) {
     return { name, stdin, expectedStdoutput }
 }
@@ -22,8 +21,7 @@ const testCases = [
     create('divAB', 'stdin exemple', 'stdout exemple'),
 ]
 
-const TestCasesExemple = props => {
-
+const RunTestCases = props => {
     const classes = useStyles()
 
     return (
@@ -57,7 +55,7 @@ const TestCasesExemple = props => {
                                     disabled
                                     defaultValue={test.stdin}
                                     label='stdin'
-                                    />
+                                />
                             </Grid>
                             <Grid item>
                                 <TextField
@@ -77,4 +75,4 @@ const TestCasesExemple = props => {
 
 }
 
-export default TestCasesExemple
+export default RunTestCases

@@ -26,7 +26,7 @@ const CreateSolutionPlainText = props => {
                         <Button variant='outlined'>Submeter</Button>
                     </Grid>
                     <Grid item>
-                        <Button variant='outlined'>Rodar</Button>
+                        <Button variant='outlined' onClick={props.runClick} >Rodar</Button>
                     </Grid>
                 </Grid>
             </Grid>

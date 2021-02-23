@@ -1,13 +1,18 @@
-import { Grid, makeStyles, Typography } from '@material-ui/core'
-import React from 'react'
+import { Collapse, Grid, makeStyles, Typography } from '@material-ui/core'
+import React, { useState } from 'react'
 import CreateSolutionHeader from './CreateSolutionHeader'
 import CreateSolutionPlainText from './CreateSolutionPlainText'
+import RunTestCases from './RunTestCases'
 
 const useStyles = makeStyles((theme) => ({
 
 }))
 const CreateSolutionScreen = props => {
     const classes = useStyles()
+    const [expanded, setExpanded] = useState(false)
+    const expandedHandler = () =>{
+        setExpanded(prev => !prev)
+    }
     return (
         <Grid
             container
@@ -20,7 +25,12 @@ const CreateSolutionScreen = props => {
                     <CreateSolutionHeader/>
                 </Grid>
                 <Grid item>
-                    <CreateSolutionPlainText />
+                    <CreateSolutionPlainText runClick={expandedHandler}/>
+                </Grid>
+                <Grid item>
+                    <Collapse in={expanded} timeout='auto' unmountOnExit>
+                        <RunTestCases/>
+                    </Collapse>
                 </Grid>
 
         </Grid>
