@@ -40,7 +40,7 @@ const App = () => {
                     <Route path='/showProblems' component={Problems} />
                     <Route path='/createProblem' component={CreateProbleScreen} />
                     <Route
-                        path='/createSolution'
+                        path='/createSolution/:code'
                         component={CreateSolutionScreen}
                     />
                     <Route path='/avaliations' component={Avaliations} />

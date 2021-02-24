@@ -93,7 +93,7 @@ const Problems = props => {
                                         {row.name}
                                     </TableCell>
                                     <TableCell>
-                                        <Link to={`/createSolution?id=1&title=bla&level=3`}>
+                                        <Link to={`/createSolution/${rows.indexOf(row)}`} >
                                             <IconButton size='small'>
                                                 <SearchIcon />
                                             </IconButton>
