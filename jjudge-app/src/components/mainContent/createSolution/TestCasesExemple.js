@@ -11,21 +11,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-function create(name, stdin, expectedStdoutput,) {
-    return { name, stdin, expectedStdoutput }
-}
-const testCases = [
-    create('divAB', 'stdin exemple', 'stdout exemple'),
-    create('divAB', 'stdin exemple', 'stdout exemple'),
-    create('divAB', 'stdin exemple', 'stdout exemple'),
-    create('divAB', 'stdin exemple', 'stdout exemple'),
-    create('divAB', 'stdin exemple', 'stdout exemple'),
-]
 
 const TestCasesExemple = props => {
 
     const classes = useStyles()
-
     return (
         <Grid
             container
@@ -36,7 +25,7 @@ const TestCasesExemple = props => {
             spacing={2}
         >
             {
-                testCases.map((test, index) => (
+                props.testCases.map((test, index) => (
                     <Grid key={index} item >
                         <Grid
                             container

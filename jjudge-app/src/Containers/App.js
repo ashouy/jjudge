@@ -1,4 +1,4 @@
-import { makeStyles, Tabs, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 import React from 'react'
 import Header from '../components/Header/Header'
 import Navbar from '../components/Header/Navbar'
@@ -10,7 +10,7 @@ import Avaliations from '../components/mainContent/avaliations/Avaliations'
 import CreateProbleScreen from '../components/mainContent/createProblem/CreateProblemScreen'
 import CreateSolutionScreen from '../components/mainContent/createSolution/CreateSolutionScreen'
 
-import { BrowserRouter, Route, Router } from 'react-router-dom'
+import { BrowserRouter, Route, Router, useLocation } from 'react-router-dom'
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
     },
     mainContent: {
-        padding:'10px',
+        padding: '10px',
         marginTop: '10px',
         maxWidth: '950px',
         margin: 'auto',
@@ -39,7 +39,10 @@ const App = () => {
                     <Route path='/' exact component={Home} />
                     <Route path='/showProblems' component={Problems} />
                     <Route path='/createProblem' component={CreateProbleScreen} />
-                    <Route path='/createSolution' component={CreateSolutionScreen} />
+                    <Route
+                        path='/createSolution'
+                        component={CreateSolutionScreen}
+                    />
                     <Route path='/avaliations' component={Avaliations} />
                     <Route path='/help' component={Help} />
                     <Route path='/tags' component={Tags} />
