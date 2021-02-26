@@ -50,7 +50,11 @@ const Filter = props => {
         setLevel(event.target.value)
     }
     const changeTagHandler = event => {
+        props.changeTag(event.target.value.toUpperCase())
         setTag(event.target.value)
+    }
+    const titleCodeHandler = event =>{
+        props.changeTitleCode(event.target.value.toUpperCase())
     }
 
     return (
@@ -61,6 +65,7 @@ const Filter = props => {
         >
             <Grid item >
                 <TextField
+                    onChange={titleCodeHandler}
                     id='search-by-code-title'
                     label='Título/Código'
                 />
