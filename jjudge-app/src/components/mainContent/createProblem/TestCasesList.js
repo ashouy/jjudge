@@ -6,16 +6,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-function createData(name, stdin, expectStdout, visibility) {
-    return { name, stdin, expectStdout, visibility }
-}
-
-const tests = [
-    createData('mult ab', ' a /nb', 'c', true),
-    createData('mult ab', ' a /nb', 'c', false),
-    createData('mult ab', ' a /nb', 'c', true),
-    createData('mult ab', ' a /nb', 'c', false),
-]
 
 const TestCasesList = props => {
     const classes = useStyles()

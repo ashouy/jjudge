@@ -1,6 +1,5 @@
-import { Grid, List, ListItem, ListItemText, makeStyles, Menu, MenuItem, TextField } from '@material-ui/core'
+import { Button, FormControl, Grid, InputLabel, makeStyles, MenuItem, Select, TextField } from '@material-ui/core'
 import React, { useState } from 'react'
-import Avaliations from './Avaliations';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -11,51 +10,59 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ITEM_HEIGHT = 48;
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
 
-const result = [
+const resultOpt = [
     'Todas',
-    'Corretas',
-    'Incorretas',
+    'Correta',
+    'Errada',
 ];
-const status = [
-    'Finalizadas',
+const statusOpt = [
+    'Todas',
+    'Finalizada',
     'Aguardando',
 ];
 
 const AvaliationsFilter = props => {
-
+    const { changeFilter } = props
     const classes = useStyles()
-    const [anchorElResult, setAnchorElResult] = useState(null);
-    const [selectedIndexResult, setSelectedIndexResult] = useState(0);
 
-    const [anchorElStatus, setAnchorElStatus] = useState(null);
-    const [selectedIndexStatus, setSelectedIndexStatus] = useState(1);
+    const [titleCode, setTitleCode] = useState('')
+    const [result, setResult] = useState('')
+    const [status, setStatus] = useState('')
+    const [apply, setApply] = useState(true)
 
-    const handleClickListItemResult = (event) => {
-        setAnchorElResult(event.currentTarget);
-    };
+    const TitleCodeHandler = event => {
+        setTitleCode(event.target.value)
+        setApply(false)
+    }
+    const resultHandler = event => {
+        setResult(event.target.value)
+        setApply(false)
+    }
+    const statusHandler = event => {
+        setStatus(event.target.value)
+        setApply(false)
+    }
 
-    const handleMenuItemClickTag = (event, index) => {
-        setSelectedIndexResult(index);
-        setAnchorElResult(null);
-    };
-    const handleCloseResult = () => {
-        setAnchorElResult(null);
-    };
+    const filterHandler = () => {
+            changeFilter(
+                result.toUpperCase(),
+                status.toUpperCase(),
+                titleCode.toUpperCase()
+            )
+        setApply(true)
+    }
 
-    
-    const handleClickListItemStatus = (event) => {
-        setAnchorElStatus(event.currentTarget);
-    };
-
-    const handleMenuItemClickLevel = (event, index) => {
-        setSelectedIndexStatus(index);
-        setAnchorElStatus(null);
-    };
-    const handleCloseStatus = () => {
-        setAnchorElStatus(null);
-    };
     return (
         <Grid container
             className={classes.root}
@@ -64,85 +71,57 @@ const AvaliationsFilter = props => {
         >
             <Grid item >
                 <TextField
+                    onChange={TitleCodeHandler}
                     id='search-by-code-title'
                     label='Título/Código'
                 />
             </Grid>
-      
-            <Grid item>
-                <List component="nav" aria-label="Result">
-                    <ListItem
-                        button
-                        aria-haspopup="true"
-                        aria-controls="result-opt"
-                        aria-label="result"
-                        onClick={handleClickListItemResult}
-                    >
-                        <ListItemText primary="Resultado" secondary={result[selectedIndexResult]} />
-                    </ListItem>
-                </List>
-                <Menu
-                    id="result-opt"
-                    anchorEl={anchorElResult}
-                    keepMounted
-                    open={Boolean(anchorElResult)}
-                    onClose={handleCloseResult}
-                    PaperProps={{
-                        style: {
-                            maxHeight: ITEM_HEIGHT * 4.5,
-                            width: '20ch'
-                        }
-                    }}
-                >
-                    {result.map((result, index) => (
-                        <MenuItem
-                            key={result}
-                            selected={index === selectedIndexResult}
-                            onClick={(event) => handleMenuItemClickTag(event, index)}
-                        >
-                            {result}
-                        </MenuItem>
-                    ))}
-                </Menu>
 
+            <Grid item>
+                <FormControl>
+                    <InputLabel>Resultado</InputLabel>
+                    <Select
+                        value={result}
+                        onChange={resultHandler}
+                        MenuProps={MenuProps}
+                    >
+                        {
+                            resultOpt.map((result, index) => (
+                                result !== 'Todas'
+                                    ? <MenuItem key={index} value={result} >{result}</MenuItem>
+                                    : <MenuItem key={index} value={''} >todas</MenuItem>
+                            ))
+                        }
+                    </Select>
+                </FormControl>
             </Grid>
-            
-            <Grid item>
-                <List component="nav" aria-label="Status">
-                    <ListItem
-                        button
-                        aria-haspopup="true"
-                        aria-controls="status-opt"
-                        aria-label="status"
-                        onClick={handleClickListItemStatus}
-                    >
-                        <ListItemText primary="Status" secondary={status[selectedIndexStatus]} />
-                    </ListItem>
-                </List>
-                <Menu
-                    id="status-opt"
-                    anchorEl={anchorElStatus}
-                    keepMounted
-                    open={Boolean(anchorElStatus)}
-                    onClose={handleCloseStatus}
-                    PaperProps={{
-                        style: {
-                            maxHeight: ITEM_HEIGHT * 4.5,
-                            width: '20ch'
-                        }
-                    }}
-                >
-                    {status.map((result, index) => (
-                        <MenuItem
-                            key={result}
-                            selected={index === selectedIndexStatus}
-                            onClick={(event) => handleMenuItemClickLevel(event, index)}
-                        >
-                            {result}
-                        </MenuItem>
-                    ))}
-                </Menu>
 
+            <Grid item>
+                <FormControl>
+                    <InputLabel>Status</InputLabel>
+                    <Select
+                        value={status}
+                        onChange={statusHandler}
+                        MenuProps={MenuProps}
+                    >
+                        {
+                            statusOpt.map((status, index) => (
+                                status !== 'Todas'
+                                    ? <MenuItem key={index} value={status} >{status}</MenuItem>
+                                    : <MenuItem key={index} value={''} >todas</MenuItem>
+                            ))
+                        }
+                    </Select>
+                </FormControl>
+            </Grid>
+            <Grid item>
+                <Button
+                    variant='outlined'
+                    disabled={apply}
+                    onClick={filterHandler}
+                >
+                    Aplicar
+                    </Button>
             </Grid>
         </Grid>
     )

@@ -1,4 +1,4 @@
-import { FormControl, Grid, InputLabel, List, ListItem, ListItemText, makeStyles, Menu, MenuItem, Select, TextField } from '@material-ui/core'
+import { Button, FormControl, Grid, InputLabel, makeStyles, MenuItem, Select, TextField } from '@material-ui/core'
 import React, { useState } from 'react'
 
 const useStyles = makeStyles((theme) => ({
@@ -21,6 +21,7 @@ const MenuProps = {
     },
 };
 const tagOpt = [
+    'todas',
     'grafos',
     'vetores',
     'arrays',
@@ -33,27 +34,42 @@ const tagOpt = [
 
 
 const levelList = [
-    'Muito Fácil',
+    'todos',
     'Fácil',
     'Médio',
     'Difícil',
-    'Muito difícil',
 ];
 
 const Filter = props => {
     const { changeFilter } = props
     const classes = useStyles()
+    const [titleCode, setTitleCode] = useState('')
     const [level, setLevel] = useState('')
     const [tag, setTag] = useState('')
+    const [apply, setApply] = useState(true)
 
+    const titleCodeHandler = event => {
+        setTitleCode(event.target.value)
+        setApply(false)
+    }
     const changeLevelHandler = event => {
         setLevel(event.target.value)
+        setApply(false)
+
     }
     const changeTagHandler = event => {
         setTag(event.target.value)
+        setApply(false)
+
     }
-    const titleCodeHandler = event =>{
-        changeFilter(event.target.value.toUpperCase())
+    const filterHandler = () => {
+        changeFilter(
+            titleCode.toUpperCase(),
+            tag.toUpperCase(),
+            level.toUpperCase()
+        )
+        setApply(true)
+
     }
 
     return (
@@ -79,8 +95,10 @@ const Filter = props => {
                         MenuProps={MenuProps}
                     >
                         {
-                            tagOpt.map((tag, index) =>(
-                                <MenuItem key={index} value={tag} >{tag}</MenuItem>
+                            tagOpt.map((tag, index) => (
+                                tag !== 'todas'
+                                    ? <MenuItem key={index} value={tag} >{tag}</MenuItem>
+                                    : <MenuItem key={index} value={''} >todas</MenuItem>
                             ))
                         }
                     </Select>
@@ -96,12 +114,17 @@ const Filter = props => {
                         MenuProps={MenuProps}
                     >
                         {
-                            levelList.map((level, index) =>(
-                                <MenuItem key={index} value={level} >{level}</MenuItem>
-                            ))
+                            levelList.map((level, index) => (
+                                level !== 'todos'
+                                    ? <MenuItem key={index} value={level} >{level}</MenuItem>
+                                    :<MenuItem key={index} value={''} >todos</MenuItem>
+                                ))
                         }
                     </Select>
                 </FormControl>
+            </Grid>
+            <Grid item>
+                <Button variant='outlined' onClick={filterHandler} disabled={apply}>Aplicar</Button>
             </Grid>
         </Grid>
     )

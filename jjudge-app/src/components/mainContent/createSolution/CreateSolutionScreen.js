@@ -1,17 +1,11 @@
-import { Collapse, Grid, makeStyles, Typography } from '@material-ui/core'
+import { Collapse, Grid } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import CreateSolutionHeader from './CreateSolutionHeader'
 import CreateSolutionPlainText from './CreateSolutionPlainText'
 import RunTestCases from './RunTestCases'
 
 import axios from 'axios'
-import TestCasesList from '../createProblem/TestCasesList'
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-
-    }
-}))
 
 function create(name, stdin, expectedStdoutput,) {
     return { name, stdin, expectedStdoutput }
@@ -55,7 +49,6 @@ const problemInfoExp = {
 
 const CreateSolutionScreen = props => {
 
-    const classes = useStyles()
     const { code } = props.match.params
     const [testCases, setTestCases] = useState([])
     const [problemInfo, setProblemInfo] = useState({})

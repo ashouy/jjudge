@@ -9,8 +9,7 @@ import Help from '../components/mainContent/help/Help'
 import Avaliations from '../components/mainContent/avaliations/Avaliations'
 import CreateProbleScreen from '../components/mainContent/createProblem/CreateProblemScreen'
 import CreateSolutionScreen from '../components/mainContent/createSolution/CreateSolutionScreen'
-
-import { BrowserRouter, Route, Router, useLocation } from 'react-router-dom'
+import { BrowserRouter, Route, } from 'react-router-dom'
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,

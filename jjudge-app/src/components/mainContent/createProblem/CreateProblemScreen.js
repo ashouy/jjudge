@@ -35,7 +35,7 @@ const levels =[
 ]
 
 const createTestCase = (name, stdin, stdout, visibility) => {
-    return { name, stdin, stdout, stdout, visibility }
+    return { name, stdin, stdout, visibility }
 }
 
 const CreateProblemScreen = props => {

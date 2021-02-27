@@ -1,11 +1,7 @@
-import { Button, FormControl, Grid, InputLabel, makeStyles, MenuItem, Select, TextareaAutosize, Typography } from '@material-ui/core'
+import { Button, FormControl, Grid, InputLabel,  MenuItem, Select, TextareaAutosize } from '@material-ui/core'
 import React from 'react'
 
-const useStyles = makeStyles((theme) => ({
-    root: {
 
-    }
-}))
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -28,7 +24,6 @@ const CreateSolutionPlainText = props => {
         submmitSolution,
         runSolution
     } = props
-    const classes = useStyles()
 
     const changeLanguageHandler = event => {
         changeLanguage(event.target.value)
