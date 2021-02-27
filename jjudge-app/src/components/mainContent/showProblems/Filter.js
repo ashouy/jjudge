@@ -41,7 +41,7 @@ const levelList = [
 ];
 
 const Filter = props => {
-
+    const { changeFilter } = props
     const classes = useStyles()
     const [level, setLevel] = useState('')
     const [tag, setTag] = useState('')
@@ -50,11 +50,10 @@ const Filter = props => {
         setLevel(event.target.value)
     }
     const changeTagHandler = event => {
-        props.changeTag(event.target.value.toUpperCase())
         setTag(event.target.value)
     }
     const titleCodeHandler = event =>{
-        props.changeTitleCode(event.target.value.toUpperCase())
+        changeFilter(event.target.value.toUpperCase())
     }
 
     return (
